@@ -3,8 +3,12 @@ __pycache__
 
 simple_llama/__pycache__
 
-# Add Dataset folder when completed later on
-simple_llama/dataset
+# Skipping Misc/Test files and dataset folders (too large to push)
+simple_llama/dataset/short_1800_tokens
+simple_llama/dataset/medium_200_tokens
+simple_llama/dataset/Dockerfile
+simple_llama/dataset/temp.py
+
 
 # Skipping Misc/Testing files
 simple_llama/finetune/ft_dataset
