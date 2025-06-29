@@ -6,8 +6,11 @@ simple_llama/__pycache__
 # Add Dataset folder when completed later on
 simple_llama/dataset
 
-# Add Finetune when completed later on
-simple_llama/finetune
+# Skipping Misc/Testing files
+simple_llama/finetune/ft_dataset
+simple_llama/finetune/lora_peft/*.txt
+simple_llama/finetune/lora_peft/plot_lora_progress.py
+simple_llama/finetune/ft_test1.py
 
 # Add Inference when completed later on
 simple_llama/inference
