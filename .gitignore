@@ -1,0 +1,32 @@
+.idea
+__pycache__
+
+simple_llama/__pycache__
+
+# Add Dataset folder when completed later on
+simple_llama/dataset
+
+# Add Finetune when completed later on
+simple_llama/finetune
+
+# Add Inference when completed later on
+simple_llama/inference
+
+# Personal Folder
+simple_llama/rollback
+
+# Include everything except the Test Model's weights
+simple_llama/scaling_law_tests/*LLaMA
+
+# Main pretraining folder
+simple_llama/pretraining/__pycache__
+simple_llama/pretraining/checkpoints
+simple_llama/pretraining/ckpt_verification
+simple_llama/pretraining/mha_vs_mla
+
+# Ignore all test files, which is mostly training progresses saved
+simple_llama/pretraining/*.txt
+
+# Ignore notes and test files
+simple_llama/notes.txt
+simple_llama/llama_test*
