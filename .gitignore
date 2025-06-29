@@ -16,8 +16,8 @@ simple_llama/finetune/lora_peft/*.txt
 simple_llama/finetune/lora_peft/plot_lora_progress.py
 simple_llama/finetune/ft_test1.py
 
-# Add Inference when completed later on
-simple_llama/inference
+# Excluding test file
+simple_llama/inference/test_inf.py
 
 # Personal Folder
 simple_llama/rollback
