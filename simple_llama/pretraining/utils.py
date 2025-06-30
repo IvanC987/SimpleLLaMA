@@ -2,7 +2,7 @@ import os
 import torch
 
 
-def load_checkpoint(config, ckpt_dir):
+def load_checkpoint(config: any, ckpt_dir: str, ddp: bool, master_process: bool):
     if not os.path.exists(ckpt_dir):
         raise FileNotFoundError(f"Checkpoint directory {ckpt_dir} does not exist.")
 
@@ -35,14 +35,19 @@ def load_checkpoint(config, ckpt_dir):
     print("\n")
 
 
-    selected_idx = int(input("Select a checkpoint to load (number): ")) - 1
+    if ddp:
+        if master_process:
+            print(f"User is using DDP. Defaulting to Option 1 (Longest Trained Model)...")
+        selected_idx = 0  # Adjust as needed. Can't directly use input() if using DDP when training
+    else:
+        selected_idx = int(input("Select a checkpoint to load (number): ")) - 1
     path = available_checkpoints[selected_idx]
 
     print(f"Loading in {path}...")
     ckpt = torch.load(path)
 
     # Asserting proper hyperparameter alignment
-    assert_hyperparameter_equivalence(config, ckpt["training_config"])
+    assert_hyperparameter_equivalence(config, ckpt["config"])
 
     total_tok_trained = ckpt["total_tok_trained"]
 
@@ -75,6 +80,46 @@ def assert_hyperparameter_equivalence(config1: any, config2: any):
         _assert_equal("qk_nope_head_dim")
         _assert_equal("qk_rope_head_dim")
         _assert_equal("v_head_dim")
+
+
+def check_log_file_existence(log_file: str, ddp: bool):
+    if ddp and os.path.exists(log_file):
+        print(f"Log file '{log_file}' already exists.")
+        print("DDP usage detected.")
+        print("Default Behavior: Deleting log file...")
+        os.remove(log_file)
+        print("Log file removed")
+        return
+
+    if os.path.exists(log_file):
+        print(f"Log file '{log_file}' already exists.")
+        print("Options:")
+        print("1. Delete the existing log file")
+        print("2. Use a new log file name")
+        print("3. Exit")
+
+        user = input("Enter choice (1/2/3): ").strip()
+
+        if user == "1":
+            confirm = input("Confirm deletion of file? [Y/N]: ")
+            if confirm.lower() != "y":
+                print("Now exiting")
+                exit()
+            os.remove(log_file)
+            print("Deleted original log file.")
+        elif user == "2":
+            new_name = input("Enter new log file name: ").strip()
+            if not new_name:
+                print("Invalid filename. Exiting.")
+                exit()
+            else:
+                log_file = new_name + ".txt" if not new_name.endswith(".txt") else new_name
+                print(f"Now using new log file: {log_file}")
+        else:
+            print("Exiting") if user == "3" else print("Invalid response. Now exiting.")
+            exit()
+
+        print("\n\n")
 
 
 def root_path(*subpaths):
