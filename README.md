@@ -29,6 +29,7 @@
 - [Custom Model Training](#custom-model-training)
 - [Additional Observations](#additional-observations)
   - [Checkpoint Validation](#checkpoint-validation)
+  - [MHA vs MLA](#mha-vs-mla-throughput-comparison)
 - [License](#license)
 - [Author](#author)
 - [Acknowledgements](#acknowledgements)
@@ -169,6 +170,8 @@ Need to run 'pip install -e .' if want to run without full qualifications
 - **RMSNorm**: Used instead of LayerNorm, stabilizes training by re-scaling activations without centering.
 - **Final Linear Layer**: Maps the hidden representation back to the vocabulary logits for language modeling.
 
+
+<Should mention the configs for Final/SpecDec model>
 
 ---
 
@@ -477,10 +480,25 @@ Although the training losses differ somewhat, the end result was close enough to
 
 
 
+### MHA vs MLA Throughput Comparison
 
-<MLA scales better as model size increases? What about Seq len?>
+Although this project includes a full implementation of Multi-head Latent Attention (MLA) based on the DeepSeek-V3 Technical Report, it is not used during pretraining or SFT, primarily due to throughput inefficiencies at smaller model scales.
 
+While MLA may offer certain architectural advantages such as low-rank key/value compression, its computational cost is higher than standard Multi-head Attention (MHA) in practice.
 
+I tested both MHA and MLA across multiple model sizes on an A100 PCIe GPU, with the results plotted below:
+
+<p align="center">
+  <img src="simple_llama/readme_images/mha_vs_mla_throughput.png" alt="MHA VS MLA" width="500px">
+</p>
+
+As shown in the plot, MLA remains consistently slower than MHA across all model sizes tested (Up to around 3.4B parameters).
+My guess is that there are additional computation overheads caused by MLA (E.g. tensor decomposition, concatenation, many smaller matmul, etc.,) where DeepSeek directly address that by implementing and using custom, optimized, kernels for better efficiency. 
+
+However, the performance gap does seem to narrow as model size increases, suggesting possibility better scalability when using MLA.
+For small-to-mid scale models, though, MHA remains the practical default (Which is the one used in this project)
+
+(The above was measured using a batch size of 1 and sequence length of 512. Throughput will differ across various configurations/devices)
 
 ---
 
