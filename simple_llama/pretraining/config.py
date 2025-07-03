@@ -11,7 +11,7 @@ class TrainingConfig:
     log_file: str = root_path("simple_llama", "pretraining", "training_progress.txt")  # File to log training progress
 
     # === Batch & Sequence ===
-    batch_size: int = 4             # Minibatch size
+    batch_size: int = 8             # Minibatch size
     max_seq_len: int = 2048         # Maximum sequence length per sample
     tokens_per_update: int = 2**19  # ~512K tokens per optimizer update
 
@@ -27,9 +27,9 @@ class TrainingConfig:
     # === MLA Hyperparameters ===
     use_mla: bool = False           # If using MLA attention variant
     q_lora_rank: int = 0            # LoRA rank for query projection
-    kv_lora_rank: int = 512         # LoRA rank for key/value projection
-    qk_nope_head_dim: int = 128     # Head dim for NOPE-style Q/K positional encoding
-    qk_rope_head_dim: int = 64      # Head dim for RoPE Q/K positional encoding
+    kv_lora_rank: int = 256         # LoRA rank for key/value projection
+    qk_nope_head_dim: int = 64      # Head dim for NOPE-style Q/K positional encoding
+    qk_rope_head_dim: int = 32      # Head dim for RoPE Q/K positional encoding
     v_head_dim: int = 64            # Head dim for value projection
 
     # === LoRA Hyperparameters ===
@@ -46,7 +46,7 @@ class TrainingConfig:
     enable_compilation: bool = True     # Enables torch.compile if possible
 
     # === Training Schedule ===
-    warmup_iterations: int = 750        # Warmup steps for LR scheduler
+    warmup_iterations: int = 250        # Warmup steps for LR scheduler
     max_lr: float = 6e-4                # Peak LR after warmup
     min_lr: float = 6e-5                # Minimum LR at end of cosine decay
     beta1: float = 0.9                  # AdamW beta1
