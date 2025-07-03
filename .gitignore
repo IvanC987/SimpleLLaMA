@@ -30,6 +30,7 @@ simple_llama/pretraining/__pycache__
 simple_llama/pretraining/checkpoints
 simple_llama/pretraining/ckpt_verification
 simple_llama/pretraining/mha_vs_mla
+simple_llama/pretraining/tests
 
 # Ignore all test files, which is mostly training progresses saved
 simple_llama/pretraining/*.txt

@@ -6,29 +6,33 @@ import torch
 class DatasetLoader:
     """Simple dataset loader class for training"""
 
-    def __init__(self, batch: int, seq_len: int, dataset_dir: str, device: str, bytes_per_token=2):
+    def __init__(self, batch: int, seq_len: int, process_rank: int, num_processes: int, dataset_dir: str, device: str):
         """
         Creates DatasetLoader obj
         No validation needed, detailed in README
 
         :param batch: Batch size
         :param seq_len: Max seq len
+        :param process_rank: Rank of the process that initializes an instance of this class
+        :param num_processes: Total number of processes (World Size)
         :param dataset_dir: Dataset directory
         :param device: "cuda" or "cpu"
-        :param bytes_per_token: Number of bytes per token (defaults to 2 for uint16)
         """
 
         self.batch = batch
         self.seq_len = seq_len
+        self.process_rank = process_rank
+        self.num_processes = num_processes
         self.device = device
 
         # Holds all the filepaths
         self.filepaths = [os.path.join(dataset_dir, p) for p in os.listdir(dataset_dir)]
 
         # Load in current train file
+        # Make sure that tokens_per_file >= batch * seq_len * num_processes!
         self.file_data = np.load(self.filepaths[0])
         self.file_idx = 0  # Current file index
-        self.tok_idx = 0  # Current token idx
+        self.tok_idx = batch * seq_len * process_rank  # Current token idx
 
 
     def print_ds_info(self, bytes_per_token=2):
@@ -66,14 +70,14 @@ class DatasetLoader:
         x = batch[:-1].reshape(self.batch, self.seq_len)
         y = batch[1:].reshape(self.batch, self.seq_len)
 
-        self.tok_idx += (self.batch * self.seq_len)
-        if self.tok_idx + (self.batch * self.seq_len) + 1 >= len(self.file_data):
+        self.tok_idx += (self.batch * self.seq_len * self.num_processes)
+        if self.tok_idx + (self.batch * self.seq_len * self.num_processes) + 1 >= len(self.file_data):
             self.file_idx += 1
             if self.file_idx >= len(self.filepaths):
                 self.file_idx = 0
 
             self.file_data = np.load(self.filepaths[self.file_idx])
-            self.tok_idx = 0
+            self.tok_idx = self.batch * self.seq_len * self.process_rank
 
 
         # Convert from uint16 to int32 then to torch.long and move to device
