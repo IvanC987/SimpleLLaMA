@@ -224,7 +224,11 @@ if load_ckpt:
 # Compiling the model via torch.compile reduces the training time
 # Though may not be compatible with certain GPUs. If so, turn "compile_model" in config to False
 if enable_compilation and ddp:
-    model_handle = DDP(torch.compile(model), device_ids=[ddp_rank])
+    # model_handle = DDP(torch.compile(model), device_ids=[ddp_rank]) REMOVE
+
+    # Interestingly enough, DDP docs recommends applying ddp wrapper before compiling
+    # Karpathy's implementation is the other way around, compile -> ddp wrapper
+    model_handle = torch.compile(DDP(model, device_ids=[ddp_rank]))
 elif enable_compilation and not ddp:
     model_handle = torch.compile(model)
 elif ddp:
