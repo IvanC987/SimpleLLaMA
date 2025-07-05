@@ -19,6 +19,9 @@ simple_llama/finetune/ft_test1.py
 # Excluding test file
 simple_llama/inference/test_inf.py
 
+# Will add RL Folder later on when nearing completion
+simple_llama/reinforcement_learning
+
 # Personal Folder
 simple_llama/rollback
 
