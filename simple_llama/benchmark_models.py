@@ -1,29 +1,11 @@
-import os
 import torch
 from torch.nn import functional as F
 from tokenizers import Tokenizer
-from llama_transformer import LLaMaTransformer
-from config import tokenizer_path
 from datasets import load_dataset
 from tqdm import tqdm
-import code
 
-
-
-# def download_benchmarks():
-#     # MMLU
-#     mmlu = load_dataset("cais/mmlu", "all")  # Specify subsets as needed
-#
-#     # ARC
-#     arc_easy = load_dataset("ai2_arc", "ARC-Easy")  #
-#     arc_challenge = load_dataset("ai2_arc", "ARC-Challenge")
-#
-#     # PIQA
-#     piqa = load_dataset("piqa")
-#
-#     # HellaSwag
-#     hellaswag = load_dataset("Rowan/hellaswag")
-
+from simple_llama.pretraining.llama_transformer import LLaMaTransformer
+from simple_llama.pretraining.utils import root_path
 
 
 def normalize_characters(text: str):
@@ -85,18 +67,26 @@ def format_sample(question: str, choices: list[str]):
     Answer: green
     =============
 
-    As a list of strings
+    Where they share the same question (prefix_string) along with a list of answer strings (chosen)
     """
-
+    # Convert integer value into a character (E.g. 0 -> A, 1 -> B, ...)
     letters = [chr(ord("A") + i) for i in range(len(choices))]
 
+    # Combine all into a list of choices
     all_choices = [f"{letters[i]}. {choices[i]}" for i in range(len(choices))]
 
-    return [f"Question: {question}\nChoices:\n{"\n".join(all_choices)}\n\nAnswer: {choices[i]}" for i in range(len(choices))]
+    # Format result
+    choices_str = '\n'.join(all_choices)
+    prefix_string = f"Question: {question}\nChoices:\n{choices_str}\n\n"
+    chosen = [f"Answer: {choices[i]}" for i in range(len(choices))]
+
+    # Return resulting options and prefix string to mask out the shared prefix string
+    # Excluded the '\n\nAnswer: ' part due to uncertainty in tokenization
+    return prefix_string, chosen
 
 
-
-def mmlu_eval():
+@torch.no_grad()
+def mmlu_eval(model: LLaMaTransformer, tokenizer: Tokenizer, max_chars: int, pad_tok_id: int):
     """
     This method is used to evaluate the model on the MMLU benchmark.
     Using the 'all' subset, there is 14_042 samples, of which, 1821 contains non-ascii characters either in 'question' or 'choices'
@@ -112,102 +102,154 @@ def mmlu_eval():
 
     # Filter out examples with non-ascii characters with basic replacement
     count = 0
-    normalized_test_set = []
+    normalized_dataset = []
     for sample in test_set:
+        # Example sample format:
+        # {'question': 'Find the degree for the given field extension Q(sqrt(2), sqrt(3), sqrt(18)) over Q.',
+        # 'subject': 'abstract_algebra',
+        # 'choices': ['0', '4', '2', '6'],
+        # 'answer': 1}
         sample["question"] = normalize_characters(sample["question"])
 
-        new_choices = []
-        for choice in sample["choices"]:
-            new_choices.append(choice)
+        # Not sure what I had this part for originally?
+        # new_choices = []
+        # for choice in sample["choices"]:
+        #     new_choices.append(choice)
+        #
+        # sample["choices"] = new_choices
 
-        sample["choices"] = new_choices
-
-
+        # Need to make sure they are all valid ASCII
         if not sample["question"].isascii():
             count += 1
         elif not "".join(sample["choices"]).isascii():
             count += 1
+        elif len(sample["question"] + "".join(sample["choices"])) > max_chars:
+            count += 1
         else:
-            normalized_test_set.append(sample)
+            normalized_dataset.append(sample)
+
+    print(f"Discarded ({count} samples) {100 * count / len(test_set):.2f}% discarded after ASCII filtering")
 
     # Now iterating through the test samples
-    for sample in tqdm(normalized_test_set):
+    final_result = []  # 1 for correct, 0 for incorrect
+    for sample in tqdm(normalized_dataset):
         question = sample["question"]  # A single string. E.g. "What color is the sky?"
         choices = sample["choices"]  # A list of strings. E.g. ["blue", "red", "green"]
         answer = sample["answer"]  # A single integer (index). E.g. 0 for A, 1 for B, 2 for C and 3 for D
 
         # Options will now be a list of strings, formatted accordingly
-        options = format_sample(question, choices)
+        # prefix_str is the prefix shared by all options
+        prefix_string, chosen = format_sample(question, choices)
 
-        token_sequence = [tokenizer.encode(string).ids for string in options]
-        max_tok_len = max([len(t) for t in token_sequence])
-        for ts in token_sequence:  # Need to pad accordingly
-            ts.extend([pad_tok_id] * (max_tok_len - len(ts)))
+        prefix_tokens = tokenizer.encode(prefix_string).ids
+        chosen_tokens = [tokenizer.encode(e).ids for e in chosen]
+        max_seq_len = max([len(t) for t in chosen_tokens]) + len(prefix_tokens)
+        pad_count = []  # Keep track how many padding token each option got
+        concat_str = []  # This will be the final string of prefix question + answer tokens + padding
+        for toks in chosen_tokens:  # Need to pad accordingly
+            pc = max_seq_len - len(toks)
+            pad_count.append(pc)
+            concat_str.append(prefix_tokens + toks + [pad_tok_id] * pc)
 
-        batch_tensor = torch.tensor(token_sequence, dtype=torch.long, device=device)
+        # Shape (x, max_tok_len, vocab_size), x being number of choices (batches)
+        batch_tensor = torch.tensor(concat_str, dtype=torch.long, device=device)
+
+        try:
+            # Pass it through the model, should be same shape as input, left shifted
+            result = model(batch_tensor)
+        except Exception as e:
+            print(f"Model execution failed on sample with error: {e}\n"
+                  f"{question=}\n"
+                  f"{choices=}\n"
+                  f"{answer=}\n")
+            continue  # skip to next sample, or handle differently
+
+        # Slice off the question/choices part. Only retain answer portion
+        num_prefix_tokens = len(prefix_tokens)
+        result = result[:, num_prefix_tokens:, :]
+
+        # Now calculate the model's 'choice'
+        model_answer = []
+        for i, sequence in enumerate(result):
+            truncate_idx = len(sequence) - pad_count[i] - 1  # Additional -1 due to next-token-prediction objective?
+            sequence = sequence[:truncate_idx, :]  # Remove padding token
+            probs = F.softmax(sequence, dim=-1)
+
+            # Grab the target ids, need to convert probs.shape (seq_len, vocab_size) to (seq_len)
+            target_ids = chosen_tokens[i][1:]
+            target_ids = torch.tensor(target_ids, dtype=torch.long, device=device).unsqueeze(1)
+            log_probs = torch.log(probs + 1e-12)  # Numerical safety
+
+            # Gather the log-probs for the target tokens
+            target_log_probs = log_probs.gather(dim=1, index=target_ids).unsqueeze(1)
+
+            # Final log sum
+            model_answer.append(target_log_probs.sum().item())
+
+        # Convert into tensor
+        model_answer = torch.tensor(model_answer, dtype=torch.long, device=device)
+        final_result.append(1 if torch.argmax(model_answer) == answer else 0)
+
+    num_correct = sum(final_result)
+    print(f"Total Questions: {len(final_result)}")
+    print(f"Number of answers correct: {num_correct}")
+
+    print(f"Accuracy: {num_correct/len(final_result)}")
 
 
-    # Remember to use with torch.no_grad!
+
+@torch.no_grad()
+def arc_c_eval():
+    pass
+
+
+@torch.no_grad()
+def hellaswag_eval():
+    pass
+
+
 
 
 
 if __name__ == "__main__":
+    """
+    This is a custom benchmarking script that I created for comparison
+    Results wouldn't be 'exactly' correct per-say, due to non-ascii truncation, padding, removing prefix strings, among others
+    But it would give a good idea of how well the model performs
+    """
+
     device = "cuda" if torch.cuda.is_available() else "cpu"
-    model_path = f"scaling_law_tests/55.1M-LLaMA/model_3800M_2865_2048.pth"
+    print(f"Now using {device=}")
 
-
-    # Load in state dict
-    model_ckpt = torch.load(model_path, map_location=device, weights_only=True)
-
-    model_params = model_ckpt["training_params"]
-
-    # Hyperparam for setting up the model should remain the same
-    max_seq_len = model_params["max_seq_len"]
-    n_embd = model_params["n_embd"]
-    n_heads = model_params["n_heads"]
-    n_layers = model_params["n_layers"]
-    multiple_of = model_params["multiple_of"]
-    eps = model_params["eps"]
-    theta = model_params["theta"]
-
-    use_mla = model_params["use_mla"]
-    q_lora_rank = model_params["q_lora_rank"]
-    kv_lora_rank = model_params["kv_lora_rank"]
-    qk_nope_head_dim = model_params["qk_nope_head_dim"]
-    qk_rope_head_dim = model_params["qk_rope_head_dim"]
-    v_head_dim = model_params["v_head_dim"]
+    # Specify the 'model' path (technically checkpoint) and state dict
+    model_path = root_path("simple_llama", "pretraining", "checkpoints", "model_300M_4278L_2048MSQ.pth")
+    ckpt = torch.load(model_path, map_location=device, weights_only=False)
 
     # Load in pretrained tokenizer. Don't really need to decode here, just need raw logits
+    tokenizer_path = root_path("simple_llama", "dataset", "bpe_8k.json")
     tokenizer = Tokenizer.from_file(tokenizer_path)
     # tokenizer.model.unk_token = "<UNK>"  # Set unknown token to <UNK>
     # tokenizer.decoder = decoders.ByteLevel()  # For byte-level decoding
 
-    pad_tok_id = tokenizer.encode("<PAD>").ids
+    # Assuming only pretrained, sft, and rl'ed model, no lora for now
+    model = LLaMaTransformer(
+        config=ckpt["config"],
+        tokenizer=tokenizer,
+        device=device,
+    ).to(device)
+
+    model.load_state_dict(ckpt["model_state_dict"], strict=True)
+
+    n_params = sum([p.numel() for p in model.parameters()])
+    print(f"\nThere is {n_params / 1e6:.1f}M parameters in the model")
+
+    pad_token = "<PAD>"
+    pad_tok_id = tokenizer.encode(pad_token).ids
     # Doesn't necessarily 'have to' be a single token, I suppose, but it should be.
     # Need to adjust padding token logic if not of length 1
     assert len(pad_tok_id) == 1, f"Padding token ID must be of length 1, instead {pad_tok_id=}"
+    pad_tok_id = pad_tok_id[0]
 
-    model = LLaMaTransformer(
-        max_seq_len=max_seq_len,
-        n_embd=n_embd,
-        n_heads=n_heads,
-        n_layers=n_layers,
-        multiple_of=multiple_of,
-        eps=eps,
-        use_mla=use_mla,
-        q_lora_rank=q_lora_rank,
-        kv_lora_rank=kv_lora_rank,
-        qk_nope_head_dim=qk_nope_head_dim,
-        qk_rope_head_dim=qk_rope_head_dim,
-        v_head_dim=v_head_dim,
-        theta=theta,
-        tokenizer=tokenizer,
-        device=device,
-        dropout=0.0,
-        use_flash_attention=True,
-    ).to(device)
-
-    model.load_state_dict(model_ckpt["model_state_dict"])
-
-
-    mmlu_eval()
+    # Generally either 2048 or 4096 for max tokens
+    max_chars = int(ckpt["config"].max_seq_len * 3.5)  # Usually it's around 4 chars per token, 3.5 for a bit of room
+    mmlu_eval(model=model, tokenizer=tokenizer, max_chars=max_chars, pad_tok_id=pad_tok_id)
