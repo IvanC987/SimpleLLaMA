@@ -1,4 +1,5 @@
 import json
+import pandas as pd
 import torch
 from torch.nn import functional as F
 from tokenizers import Tokenizer
@@ -528,6 +529,8 @@ if __name__ == "__main__":
     This is a custom benchmarking script that I created for comparison
     Results wouldn't be 'exactly' correct per-say, due to non-ascii truncation, padding, removing prefix strings, among others
     But it would give a good idea of how well the model performs
+    
+    (It is somewhat inefficient, but seems to suffice. Will later optimize if needed)
     """
 
     device = "cuda" if torch.cuda.is_available() else "cpu"
@@ -549,6 +552,7 @@ if __name__ == "__main__":
         tokenizer=tokenizer,
         device=device,
     ).to(device)
+    model.eval()
 
     model.load_state_dict(ckpt["model_state_dict"], strict=True)
 
@@ -568,10 +572,26 @@ if __name__ == "__main__":
     mmlu_results = mmlu_eval(model=model, tokenizer=tokenizer, max_chars=max_chars, pad_tok_id=pad_tok_id)
     arc_c_results = arc_c_eval(model=model, tokenizer=tokenizer, max_chars=max_chars, pad_tok_id=pad_tok_id)
     arc_e_results = arc_e_eval(model=model, tokenizer=tokenizer, max_chars=max_chars, pad_tok_id=pad_tok_id)
-    hellaswag_eval(model=model, tokenizer=tokenizer, max_chars=max_chars, pad_tok_id=pad_tok_id)
-    piqa_eval(model=model, tokenizer=tokenizer, max_chars=max_chars, pad_tok_id=pad_tok_id)
+    hellaswag_results = hellaswag_eval(model=model, tokenizer=tokenizer, max_chars=max_chars, pad_tok_id=pad_tok_id)
+    piqa_results = piqa_eval(model=model, tokenizer=tokenizer, max_chars=max_chars, pad_tok_id=pad_tok_id)
 
-    # It's the length of total questions, number of answers correct, and accuracy
-    # print(f"Total Questions: {len(final_result)}")
-    # print(f"Number of answers correct: {num_correct}")
-    # print(f"Accuracy: {}")
+    results = {
+        "MMLU": mmlu_results,
+        "ARC-Challenge": arc_c_results,
+        "ARC-Easy": arc_e_results,
+        "HellaSwag": hellaswag_results,
+        "PIQA": piqa_results,
+    }
+
+    print("\n=== Benchmark Results ===")
+    summary = []
+    for name, (n_total, n_correct, accuracy) in results.items():
+        summary.append({
+            "Benchmark": name,
+            "Total": n_total,
+            "Correct": n_correct,
+            "Accuracy": f"{accuracy * 100:.2f}%"
+        })
+
+    df = pd.DataFrame(summary)
+    print(df.to_markdown(index=False))
