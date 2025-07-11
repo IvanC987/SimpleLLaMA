@@ -9,11 +9,13 @@ simple_llama/dataset/medium_200_tokens
 simple_llama/dataset/Dockerfile
 simple_llama/dataset/temp.py
 
+# Possiblly adding in KD later on from models like llama3 3/7B? Maybe...
+simple_llama/distillation
 
 # Skipping Misc/Testing files
 simple_llama/finetune/ft_dataset
 simple_llama/finetune/lora_peft/*.txt
-simple_llama/finetune/lora_peft/plot_lora_progress.py
+simple_llama/finetune/full_sft/*.txt
 simple_llama/finetune/ft_test1.py
 
 # Excluding test file
