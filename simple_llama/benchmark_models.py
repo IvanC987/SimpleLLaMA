@@ -1,3 +1,4 @@
+import json
 import torch
 from torch.nn import functional as F
 from tokenizers import Tokenizer
@@ -105,10 +106,10 @@ def helper_function(model: LLaMaTransformer, tokenizer: Tokenizer, pad_tok_id: i
         # Pass it through the model, should be same shape as input, left shifted
         result = model(batch_tensor)
     except Exception as e:
-        print(f"Model execution failed on sample with error: {e}\n"
-              f"{question=}\n"
-              f"{choices=}\n"
-              f"{answer=}\n")
+        print(f"Model execution failed on sample with error: {e}\n")
+              # f"{question=}\n"
+              # f"{choices=}\n"
+              # f"{answer=}\n")
         return
 
         # Slice off the question/choices part. Only retain answer portion
@@ -137,7 +138,7 @@ def helper_function(model: LLaMaTransformer, tokenizer: Tokenizer, pad_tok_id: i
 
 
 @torch.no_grad()
-def mmlu_eval(model: LLaMaTransformer, tokenizer: Tokenizer, max_chars: int, pad_tok_id: int):
+def mmlu_eval(model: LLaMaTransformer, tokenizer: Tokenizer, max_chars: int, pad_tok_id: int) -> tuple[int, int, float]:
     """
     This method is used to evaluate the model on the MMLU benchmark.
     Using the 'all' subset, there is 14_042 samples, of which, 1821 contains non-ascii characters either in 'question' or 'choices'
@@ -179,7 +180,7 @@ def mmlu_eval(model: LLaMaTransformer, tokenizer: Tokenizer, max_chars: int, pad
         else:
             normalized_dataset.append(sample)
 
-    print(f"Discarded {count}/{len(test_set)} samples ({100 * count / len(test_set):.2f}%) after ASCII filtering")
+    print(f"MMLU: Discarded {count}/{len(test_set)} samples ({100 * count / len(test_set):.2f}%) after ASCII filtering")
 
     # Now iterating through the test samples
     final_result = []  # 1 for correct, 0 for incorrect
@@ -212,15 +213,13 @@ def mmlu_eval(model: LLaMaTransformer, tokenizer: Tokenizer, max_chars: int, pad
         final_result.append(1 if torch.argmax(model_answer) == answer else 0)
 
     num_correct = sum(final_result)
-    print(f"Total Questions: {len(final_result)}")
-    print(f"Number of answers correct: {num_correct}")
+    return len(final_result), num_correct, num_correct/len(final_result)
 
-    print(f"Accuracy: {num_correct/len(final_result)}")
 
 
 
 @torch.no_grad()
-def arc_c_eval(model: LLaMaTransformer, tokenizer: Tokenizer, max_chars: int, pad_tok_id: int):
+def arc_c_eval(model: LLaMaTransformer, tokenizer: Tokenizer, max_chars: int, pad_tok_id: int) -> tuple[int, int, float]:
     """
     It seems like there are a few questions that have 3/5 choices in the test set.
     Vast majority (>99.9%) have 4 choices
@@ -259,7 +258,7 @@ def arc_c_eval(model: LLaMaTransformer, tokenizer: Tokenizer, max_chars: int, pa
         else:
             normalized_dataset.append(sample)
 
-    print(f"Discarded {count}/{len(test_set)} samples ({100 * count / len(test_set):.2f}%) after ASCII filtering")
+    print(f"ARC-C: Discarded {count}/{len(test_set)} samples ({100 * count / len(test_set):.2f}%) after ASCII filtering")
 
     # Now iterating through the test samples
     final_result = []  # 1 for correct, 0 for incorrect
@@ -293,26 +292,235 @@ def arc_c_eval(model: LLaMaTransformer, tokenizer: Tokenizer, max_chars: int, pa
         final_result.append(1 if torch.argmax(model_answer) == answer else 0)
 
     num_correct = sum(final_result)
-    print(f"Total Questions: {len(final_result)}")
-    print(f"Number of answers correct: {num_correct}")
+    return len(final_result), num_correct, num_correct/len(final_result)
 
-    print(f"Accuracy: {num_correct/len(final_result)}")
 
 
 @torch.no_grad()
-def arc_e_eval(model: LLaMaTransformer, tokenizer: Tokenizer, max_chars: int, pad_tok_id: int):
+def arc_e_eval(model: LLaMaTransformer, tokenizer: Tokenizer, max_chars: int, pad_tok_id: int) -> tuple[int, int, float]:
+    """
+    2376 examples in the test set before filtering
+    """
+
     arc_easy = load_dataset("ai2_arc", "ARC-Easy")
 
+    test_set = arc_easy["test"]
+    results = [0, 0, 0, 0, []]
+
+    # Filter out examples with non-ascii characters with basic replacement
+    count = 0
+    normalized_dataset = []
+    for sample in test_set:
+        # Example sample format:
+        # {'id': 'Mercury_417466',
+        # 'question': 'Which statement best explains why photosynthesis is the foundation of most food webs?',
+        # 'choices': {'text': ['Sunlight is the source of energy for nearly all ecosystems.',
+        #               'Most ecosystems are found on land instead of in water.',
+        #               'Carbon dioxide is more available than other gases.',
+        #               'The producers in all ecosystems are plants.'],
+        # 'label': ['A', 'B', 'C', 'D']},
+        # 'answerKey': 'A'}
+
+        sample["question"] = normalize_characters(sample["question"])
+
+        # Need to make sure they are all valid ASCII
+        if not sample["question"].isascii():
+            count += 1
+        elif not "".join(sample["choices"]["text"]).isascii():
+            count += 1
+        elif len(sample["question"] + "".join(sample["choices"]["text"])) > max_chars:
+            count += 1
+        elif sample["answerKey"] not in ['A', 'B', 'C', 'D', 'E']:
+            count += 1
+        else:
+            normalized_dataset.append(sample)
+
+    print(f"ARC-E: Discarded {count}/{len(test_set)} samples ({100 * count / len(test_set):.2f}%) after ASCII filtering")
+
+    # Now iterating through the test samples
+    final_result = []  # 1 for correct, 0 for incorrect
+    mapping = {'A': 0, 'B': 1, 'C': 2, 'D': 3, 'E': 4}
+    for sample in tqdm(normalized_dataset):
+        question = sample["question"]  # A single string. E.g. "What color is the sky?"
+        choices = sample["choices"]["text"]  # A list of strings. E.g. ["blue", "red", "green"]
+        answer = mapping[sample["answerKey"]]  # An integer based on the mapped answer
+
+        # Options will now be a list of strings, formatted accordingly
+        # prefix_str is the prefix shared by all options
+        prefix_string, chosen = format_sample(question, choices)
+
+        kwargs = {
+            "model": model,
+            "tokenizer": tokenizer,
+            "pad_tok_id": pad_tok_id,
+            "prefix_string": prefix_string,
+            "chosen": chosen,
+            "question": question,
+            "choices": choices,
+            "answer": answer,
+            "device": device
+        }
+        model_answer = helper_function(**kwargs)
+        if model_answer is None:
+            continue
+
+        # Convert into tensor
+        model_answer = torch.tensor(model_answer, dtype=torch.long, device=device)
+        final_result.append(1 if torch.argmax(model_answer) == answer else 0)
+
+    num_correct = sum(final_result)
+    return len(final_result), num_correct, num_correct/len(final_result)
+
 
 @torch.no_grad()
-def hellaswag_eval(model: LLaMaTransformer, tokenizer: Tokenizer, max_chars: int, pad_tok_id: int):
+def hellaswag_eval(model: LLaMaTransformer, tokenizer: Tokenizer, max_chars: int, pad_tok_id: int) -> tuple[int, int, float]:
     hellaswag = load_dataset("Rowan/hellaswag")
 
+    validation_set = hellaswag["validation"]  # 10042 examples
+    # An example from the validation set:
+    # {'ind': 24,
+    # 'activity_label': 'Roof shingle removal',
+    # 'ctx_a': 'A man is sitting on a roof.',
+    # 'ctx_b': 'he',
+    # 'ctx': 'A man is sitting on a roof. he',
+    # 'endings': ['is using wrap to wrap a pair of skis.', 'is ripping level tiles off.',
+    #             "is holding a rubik's cube.", 'starts pulling up roofing on a roof.'],
+    # 'source_id': 'activitynet~v_-JhWjGDPHMY',
+    # 'split': 'val',
+    # 'split_type':
+    # 'indomain',
+    # 'label': '3'}
+
+    # Filter out examples with non-ascii characters with basic replacement
+    count = 0
+    normalized_dataset = []
+    for sample in validation_set:
+        sample["ctx"] = normalize_characters(sample["ctx"])
+
+        # Need to make sure they are all valid ASCII
+        if not sample["ctx"].isascii():
+            count += 1
+        elif not "".join(sample["endings"]).isascii():
+            count += 1
+        elif len(sample["ctx"] + "".join(sample["endings"])) > max_chars:
+            count += 1
+        else:
+            normalized_dataset.append(sample)
+
+    print(f"HellaSwag: Discarded {count}/{len(validation_set)} samples "
+          f"({100 * count / len(validation_set):.2f}%) after ASCII filtering")
+
+    # Now iterating through the validation samples
+    final_result = []  # 1 for correct, 0 for incorrect
+    for sample in tqdm(normalized_dataset):
+        question = sample["ctx"]  # A single string. E.g. "What color is the sky?"
+        choices = sample["endings"]  # A list of strings. E.g. ["blue", "red", "green"]
+        answer = int(sample["label"])  # A single integer (index). E.g. 0 for A, 1 for B, 2 for C and 3 for D
+
+        # Options will now be a list of strings, formatted accordingly
+        # prefix_str is the prefix shared by all options
+        prefix_string, chosen = format_sample(question, choices)
+
+        kwargs = {
+            "model": model,
+            "tokenizer": tokenizer,
+            "pad_tok_id": pad_tok_id,
+            "prefix_string": prefix_string,
+            "chosen": chosen,
+            "question": question,
+            "choices": choices,
+            "answer": answer,
+            "device": device
+        }
+        model_answer = helper_function(**kwargs)
+        if model_answer is None:
+            continue
+
+        # Convert into tensor
+        model_answer = torch.tensor(model_answer, dtype=torch.long, device=device)
+        final_result.append(1 if torch.argmax(model_answer) == answer else 0)
+
+    num_correct = sum(final_result)
+    return len(final_result), num_correct, num_correct/len(final_result)
+
 
 @torch.no_grad()
-def piqa_eval(model: LLaMaTransformer, tokenizer: Tokenizer, max_chars: int, pad_tok_id: int):
-    piqa = load_dataset("piqa")
+def piqa_eval(model: LLaMaTransformer, tokenizer: Tokenizer, max_chars: int, pad_tok_id: int) -> tuple[int, int, float]:
+    # Had to download the piqa validation set manually, as just doing load_dataset("piqa") results in an UnicodeDecodeError
+    # Here is the link: https://github.com/ybisk/ybisk.github.io/tree/master/piqa/data
+    # I've also placed it in the `piqa_validation_set` folder
+    # piqa = load_dataset("piqa")
 
+    question_dict_path = root_path("simple_llama", "piqa_validation_set", "valid.jsonl")
+    label_path = root_path("simple_llama", "piqa_validation_set", "valid-labels.lst")
+
+    with open(question_dict_path, "r", encoding="utf-8") as f:
+        question_dicts = f.read().splitlines()
+        question_dicts = [json.loads(q) for q in question_dicts]
+
+    with open(label_path, "r") as f:
+        labels = [int(e) for e in f.read().splitlines()]
+
+    # Example:
+    # Question: {
+    # 'goal': "How do I ready a guinea pig cage for it's new occupants?",
+    # 'sol1': 'Provide the guinea pig with a cage full of a few inches of bedding made of ripped paper strips, you will also need to supply it with a water bottle and a food dish.',
+    # 'sol2': 'Provide the guinea pig with a cage full of a few inches of bedding made of ripped jeans material, you will also need to supply it with a water bottle and a food dish.'
+    # }
+    # Label: 0
+
+    # Filter out examples with non-ascii characters with basic replacement
+    count = 0
+    normalized_dataset = []
+    for q_dict, label in zip(question_dicts, labels):
+        q_dict["goal"] = normalize_characters(q_dict["goal"])
+
+        # Need to make sure they are all valid ASCII
+        if not q_dict["goal"].isascii():
+            count += 1
+        elif not (q_dict["sol1"] + q_dict["sol2"]).isascii():
+            count += 1
+        elif len(q_dict["goal"] + q_dict["sol1"] + q_dict["sol2"]) > max_chars:
+            count += 1
+        else:
+            q_dict["label"] = label  # Add the label to dict
+            normalized_dataset.append(q_dict)
+
+    print(f"PIQA: Discarded {count}/{len(question_dicts)} samples "
+          f"({100 * count / len(question_dicts):.2f}%) after ASCII filtering")
+
+    # Now iterating through the validation samples
+    final_result = []  # 1 for correct, 0 for incorrect
+    for sample in tqdm(normalized_dataset):
+        question = sample["goal"]  # A single string question
+        choices = [sample["sol1"], sample["sol2"]]  # A list of strings (Should be exactly 2). E.g. ["blue", "red"]
+        answer = sample["label"]  # A single integer (index). 0 or 1
+
+        # Options will now be a list of strings, formatted accordingly
+        # prefix_str is the prefix shared by all options
+        prefix_string, chosen = format_sample(question, choices)
+
+        kwargs = {
+            "model": model,
+            "tokenizer": tokenizer,
+            "pad_tok_id": pad_tok_id,
+            "prefix_string": prefix_string,
+            "chosen": chosen,
+            "question": question,
+            "choices": choices,
+            "answer": answer,
+            "device": device
+        }
+        model_answer = helper_function(**kwargs)
+        if model_answer is None:
+            continue
+
+        # Convert into tensor
+        model_answer = torch.tensor(model_answer, dtype=torch.long, device=device)
+        final_result.append(1 if torch.argmax(model_answer) == answer else 0)
+
+    num_correct = sum(final_result)
+    return len(final_result), num_correct, num_correct/len(final_result)
 
 
 if __name__ == "__main__":
@@ -356,6 +564,14 @@ if __name__ == "__main__":
 
     # Generally either 2048 or 4096 for max tokens
     max_chars = int(ckpt["config"].max_seq_len * 3.5)  # Usually it's around 4 chars per token, 3.5 for a bit of room
-    # arc_c_eval(model=model, tokenizer=tokenizer, max_chars=max_chars, pad_tok_id=pad_tok_id)
-    # exit()
-    mmlu_eval(model=model, tokenizer=tokenizer, max_chars=max_chars, pad_tok_id=pad_tok_id)
+
+    mmlu_results = mmlu_eval(model=model, tokenizer=tokenizer, max_chars=max_chars, pad_tok_id=pad_tok_id)
+    arc_c_results = arc_c_eval(model=model, tokenizer=tokenizer, max_chars=max_chars, pad_tok_id=pad_tok_id)
+    arc_e_results = arc_e_eval(model=model, tokenizer=tokenizer, max_chars=max_chars, pad_tok_id=pad_tok_id)
+    hellaswag_eval(model=model, tokenizer=tokenizer, max_chars=max_chars, pad_tok_id=pad_tok_id)
+    piqa_eval(model=model, tokenizer=tokenizer, max_chars=max_chars, pad_tok_id=pad_tok_id)
+
+    # It's the length of total questions, number of answers correct, and accuracy
+    # print(f"Total Questions: {len(final_result)}")
+    # print(f"Number of answers correct: {num_correct}")
+    # print(f"Accuracy: {}")
