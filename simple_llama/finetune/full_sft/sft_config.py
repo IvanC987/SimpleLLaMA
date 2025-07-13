@@ -27,15 +27,15 @@ class SFTConfigs:
 
     # === Performance Features ===
     use_flash_attention: bool = True    # Enables FlashAttention if supported
-    enable_compilation: bool = False    # Enables torch.compile if possible
+    enable_compilation: bool = True     # Enables torch.compile if possible
 
     # === Training Schedule ===
-    warmup_iterations: int = 250        # Warmup steps for LR scheduler
-    max_lr: float = 6e-4                # Peak LR after warmup
-    min_lr: float = 6e-5                # Minimum LR at end of cosine decay
+    warmup_iterations: int = 100        # Warmup steps for LR scheduler
+    max_lr: float = 1e-4                # Peak LR after warmup
+    min_lr: float = 1e-5                # Minimum LR at end of cosine decay
     beta1: float = 0.9                  # AdamW beta1
     beta2: float = 0.95                 # AdamW beta2
-    weight_decay: float = 0.1           # L2 regularization weight
+    weight_decay: float = 0.01          # L2 regularization weight
     train_split: float = 0.99           # Train-Val split
 
     # === Evaluation ===
