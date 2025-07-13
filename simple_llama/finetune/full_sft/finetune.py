@@ -45,7 +45,6 @@ ft_json_path = sft_configs.ft_json_path
 enable_compilation = sft_configs.enable_compilation
 
 batch_size = sft_configs.batch_size
-max_seq_len = sft_configs.max_seq_len
 
 eval_interval = sft_configs.eval_interval
 
@@ -144,12 +143,13 @@ print(f"{optimization_steps=}")
 ckpt = torch.load(sft_configs.model_path, map_location=device)
 training_config: TrainingConfig = ckpt["config"]
 
-# Update configs accordingly
+# Update/Load configs accordingly
 # ---------------------------------------------
-training_config.max_seq_len = sft_configs.max_seq_len
+max_seq_len = training_config.max_seq_len
 
 training_config.dropout = sft_configs.dropout
 training_config.use_flash_attention = sft_configs.use_flash_attention
+# training_config.enable_compilation = sft_configs.enable_compilation
 # ---------------------------------------------
 
 model = LLaMaTransformer(config=training_config, tokenizer=tokenizer, device=device).to(device)

@@ -20,7 +20,6 @@ class SFTConfigs:
 
     # === Batch & Sequence ===
     batch_size: int = 32            # Minibatch size
-    max_seq_len: int = 2048         # Maximum sequence length per sample
     grad_accum_steps: int = 16      # Step optimizer every( batch_size * grad_accum_steps) samples
 
     # === Model Architecture ===
