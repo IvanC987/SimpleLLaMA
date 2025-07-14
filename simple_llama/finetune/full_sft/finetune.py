@@ -10,6 +10,7 @@ from tokenizers import Tokenizer, decoders
 from simple_llama.pretraining.llama_transformer import LLaMaTransformer, LoRAInjection
 from simple_llama.pretraining.lr_scheduler import Scheduler
 from simple_llama.pretraining.config import TrainingConfig
+from simple_llama.pretraining.utils import check_log_file_existence
 from simple_llama.finetune.full_sft.sft_config import SFTConfigs
 from simple_llama.finetune.json_dataset_loader import JSONDatasetLoader
 from simple_llama.finetune.utils import tokenize_and_pad_data, eval_model, sft_prompts
@@ -68,35 +69,7 @@ eval_interval *= grad_accum_steps  # So evaluate model after eval_interval numbe
 # --------------------------------------
 
 
-if os.path.exists(log_file):
-    print(f"Log file '{log_file}' already exists.")
-    print("Options:")
-    print("1. Delete the existing log file")
-    print("2. Use a new log file name")
-    print("3. Exit")
-
-    user = input("Enter choice (1/2/3): ").strip()
-
-    if user == "1":
-        confirm = input("Confirm deletion of file? [Y/N]: ")
-        if confirm.lower() != "y":
-            print("Now exiting")
-            exit()
-        os.remove(log_file)
-        print("Deleted original log file.")
-    elif user == "2":
-        new_name = input("Enter new log file name: ").strip()
-        if not new_name:
-            print("Invalid filename. Exiting.")
-            exit()
-        else:
-            log_file = new_name + ".txt" if not new_name.endswith(".txt") else new_name
-            print(f"Now using new log file: {log_file}")
-    else:
-        print("Exiting") if user == "3" else print("Invalid response. Now exiting.")
-        exit()
-
-    print("\n\n")
+check_log_file_existence(log_file=log_file, ddp=False)
 
 
 with open(log_file, "a") as f:
