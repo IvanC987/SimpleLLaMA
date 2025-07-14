@@ -40,11 +40,10 @@ def tokenize_and_pad_data(batch: list[tuple], tokenizer: Tokenizer, pad_id: int,
         x = tokenizer.encode(x).ids
         y = tokenizer.encode(y).ids
 
-        if len(y) >= max_seq_len:  # max_seq_len is inclusive of context, so y shouldn't be >= that
+        if len(x) > max_seq_len:  # max_seq_len is inclusive of context, so x shouldn't be >= that
             exceed_len += 1
             continue
 
-        x = x[-max_seq_len:]  # Truncate if it exceeds specified len
         max_len = max(max_len, len(x))
         x_data.append(torch.tensor(x, dtype=torch.long, device=device))
 
@@ -59,7 +58,7 @@ def tokenize_and_pad_data(batch: list[tuple], tokenizer: Tokenizer, pad_id: int,
         y_data.append(torch.cat((y_left_pad, y), dim=-1))
 
     # return x_data, y_data
-    assert len(x_data) != 0, f"All examples has been skipped due to assistant responses exceeding {max_seq_len=}"
+    assert len(x_data) != 0, f"All examples has been skipped due to all chat conversations exceeding {max_seq_len=}"
     if exceed_len/len(batch) >= 0.1:
         warnings.warn(f"{100 * exceed_len/len(batch):.2f}% of examples in this batch has been skipped due to assistant responses exceeding {max_seq_len=}")
 
