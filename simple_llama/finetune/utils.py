@@ -174,7 +174,7 @@ sft_prompts = [
     {
         "Template": ["CUSTOM"],
         "User": [
-            "What’s the square root of 49?"
+            "What's the square root of 49?"
         ],
         "Assistant": []
     },
@@ -188,7 +188,7 @@ sft_prompts = [
     {
         "Template": ["CUSTOM"],
         "User": [
-            "What is a virus?\nIt’s a tiny infectious agent that can replicate only inside living cells."
+            "What is a virus?\nIt's a tiny infectious agent that can replicate only inside living cells."
         ],
         "Assistant": []
     },
