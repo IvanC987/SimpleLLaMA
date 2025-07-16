@@ -82,14 +82,14 @@ def assert_hyperparameter_equivalence(config1: any, config2: any):
         _assert_equal("v_head_dim")
 
 
-def check_log_file_existence(log_file: str, ddp: bool):
+def check_log_file_existence(log_file: str, ddp: bool) -> str:
     if ddp and os.path.exists(log_file):
         print(f"Log file '{log_file}' already exists.")
         print("DDP usage detected.")
         print("Default Behavior: Deleting log file...")
         os.remove(log_file)
         print("Log file removed")
-        return
+        return log_file
 
     if os.path.exists(log_file):
         print(f"Log file '{log_file}' already exists.")
@@ -120,6 +120,9 @@ def check_log_file_existence(log_file: str, ddp: bool):
             exit()
 
         print("\n\n")
+
+
+    return log_file
 
 
 def root_path(*subpaths):

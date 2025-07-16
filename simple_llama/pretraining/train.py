@@ -100,7 +100,7 @@ eval_interval = eval_interval // ddp_world_size
 
 
 if master_process:  # Check if log_file already exists and deal with it accordingly
-    check_log_file_existence(log_file, ddp)
+    log_file = check_log_file_existence(log_file, ddp)
 
 
 if master_process:

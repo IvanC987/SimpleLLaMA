@@ -69,7 +69,7 @@ eval_interval *= grad_accum_steps  # So evaluate model after eval_interval numbe
 # --------------------------------------
 
 
-check_log_file_existence(log_file=log_file, ddp=False)
+log_file = check_log_file_existence(log_file=log_file, ddp=False)
 
 
 with open(log_file, "a") as f:
