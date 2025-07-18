@@ -13,6 +13,11 @@ from simple_llama.pretraining.llama_transformer import LLaMaTransformer
 from simple_llama.finetune.format_llm_prompt import format_inference_prompt
 from simple_llama.inference.inference_config import InferenceConfig
 
+# Uncomment the following if torch error pops up. Commented due to versioning incompatibility
+# from torch.serialization import add_safe_globals
+# from simple_llama.pretraining.config import TrainingConfig
+# add_safe_globals([TrainingConfig])
+
 
 """
 Need to adjust for speculative decoding and kv cache addition later on!
@@ -227,15 +232,16 @@ def load_history(load_from_history: bool, filepath: str):
 
 
 if __name__ == "__main__":
-    print("\n\n\n")
+    print("\n")
 
     device = "cuda" if torch.cuda.is_available() else "cpu"
     print(f"Using {device=}")
 
     print("(Enter '/help' to view a list of commands for a better user experience)")
 
-
     inf_cfg = InferenceConfig()
+
+    print(f"Using {inf_cfg.model_path=}")
 
     # Hyperparameter Assertions
     assert inf_cfg.temperature != 0  # Generally temperature shouldn't be negative, but might be interested to allow that
