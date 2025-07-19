@@ -87,8 +87,8 @@ Use responsibly. The author is not liable for downstream misuse or harm caused b
 - ✅ Add LoRA modules
 - ✅ Token-based pretraining + scaling law framework
 - ✅ Create and test supervised fine-tuning (SFT) scripts on pretrained models
-- ❌ Implement CLI inference interface with streaming and config flags
-- ❌ Add model benchmarking script for evaluation
+- ✅ Implement CLI inference interface with streaming and config flags
+- ✅ Add model benchmarking script for evaluation
 - ❌ Implement and experiment with Direct Preference Optimization (DPO)
 - ❌ Incorporate speculative decoding support for fast inference
 - ❌ Pretrain ~273M parameter model on FineWebEdu as the Draft Model for Speculative Decoding (12.5B Tokens)
@@ -404,8 +404,9 @@ Approach/Pipeline/Plans- TBD
 
 ## Benchmarks
 
-<Pretrain benchmarks, need any for SFT/RLHF?>
-
+Evaluate against other HF models using lm-evaluation-harness, along with GPT3-XL model at page 63
+<Mention that some questions are filtered out due to non-ascii chars, formats, etc.,>
+Though largely the same, should take it with a grain of salt.
 
 ---
 
