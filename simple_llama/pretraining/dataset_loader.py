@@ -26,7 +26,23 @@ class DatasetLoader:
         self.device = device
 
         # Holds all the filepaths
-        self.filepaths = [os.path.join(dataset_dir, p) for p in os.listdir(dataset_dir)]
+        self.filepaths = sorted([os.path.join(dataset_dir, p) for p in os.listdir(dataset_dir)])
+
+        print("\n========")
+        print("Printing filepaths...")
+        print("-------------------")
+        if len(self.filepaths) < 25:
+            for fp in self.filepaths:
+                print(fp)
+        else:
+            for fp in self.filepaths[:10]:
+                print(fp)
+            print("...")
+            for fp in self.filepaths[-10:]:
+                print(fp)
+        print("========\n")
+
+
 
         # Load in current train file
         # Make sure that tokens_per_file >= batch * seq_len * num_processes!
