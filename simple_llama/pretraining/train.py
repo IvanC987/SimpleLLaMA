@@ -316,7 +316,7 @@ for step in range(1, train_iterations+1):
         save_ckpt["tok_idx"] = dataset_loader.tok_idx
 
         # Save and name based on tokens processed and loss
-        n = 50  # Use avg of last x losses
+        n = 1000  # Use avg of last x losses, granularity varies depending on batch_size and max_seq_len, adjust accordingly
         avg_loss = int((sum(all_losses[-n:]) / len(all_losses[-n:])) * 1000)
         combined_tokens = total_tok_trained + prev_tok_trained
         if combined_tokens < 1e10:
