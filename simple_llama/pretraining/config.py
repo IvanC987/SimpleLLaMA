@@ -11,7 +11,7 @@ class TrainingConfig:
     log_file: str = root_path("simple_llama", "pretraining", "training_progress.txt")  # File to log training progress
 
     # === Batch & Sequence ===
-    batch_size: int = 8             # Minibatch size
+    batch_size: int = 4             # Minibatch size
     max_seq_len: int = 2048         # Maximum sequence length per sample
     tokens_per_update: int = 2**19  # ~512K tokens per optimizer update
 
@@ -46,9 +46,9 @@ class TrainingConfig:
     enable_compilation: bool = True     # Enables torch.compile if possible
 
     # === Training Schedule ===
-    warmup_iterations: int = 250        # Warmup steps for LR scheduler
-    max_lr: float = 6e-4                # Peak LR after warmup
-    min_lr: float = 6e-5                # Minimum LR at end of cosine decay
+    warmup_iterations: int = 500        # Warmup steps for LR scheduler
+    max_lr: float = 1e-4                # Peak LR after warmup
+    min_lr: float = 1e-5                # Minimum LR at end of cosine decay
     beta1: float = 0.9                  # AdamW beta1
     beta2: float = 0.95                 # AdamW beta2
     weight_decay: float = 0.1           # L2 regularization weight
