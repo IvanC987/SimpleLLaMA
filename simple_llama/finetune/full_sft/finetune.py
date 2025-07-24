@@ -298,7 +298,7 @@ for epoch in range(epochs):
         save_ckpt["config"] = training_config  # This is mostly used for model model creation when loading in state dict
 
         # Save and name based on tokens processed and loss
-        n = 50  # Use avg of last x losses
+        n = 1000  # Use avg of last x losses
         avg_loss = int((sum(all_losses[-n:]) / len(all_losses[-n:])) * 1000)
         torch.save(save_ckpt, f"{ckpt_dir}/sft_{epoch+1}E_{avg_loss}L_{max_seq_len}MSQ.pth")
 
