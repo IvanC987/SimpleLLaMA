@@ -213,9 +213,9 @@ if load_ckpt:
         assert ckpt_dict["train_iterations"] == train_iterations
         scheduler.load_state_dict(ckpt_dict["scheduler_state_dict"])
 
-    dataset_loader.file_idx = ckpt_dict["file_idx"]
-    dataset_loader.tok_idx = ckpt_dict["tok_idx"]
-    dataset_loader.file_data = np.load(dataset_loader.filepaths[dataset_loader.file_idx])
+        dataset_loader.file_idx = ckpt_dict["file_idx"]
+        dataset_loader.tok_idx = ckpt_dict["tok_idx"]
+        dataset_loader.file_data = np.load(dataset_loader.filepaths[dataset_loader.file_idx])
 
     if master_process:
         print(f"{dataset_loader.file_idx=}")
@@ -373,7 +373,7 @@ for step in range(1, train_iterations+1):
         if step >= next_gen_step:
             print("\n")
             print(model.generate(random.choice(few_shot_prompts), 64, 1.0, 0.8, eos_token=eos_token))
-            next_gen_step = int(next_gen_step * model_gen_multiplier)  # exponential growth in generation spacing
+            next_gen_step = int(step * model_gen_multiplier)  # exponential growth in generation spacing
             print("\n")
             print(f"Sampled generation at {step=}, next at {next_gen_step=}")
 
