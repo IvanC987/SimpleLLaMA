@@ -30,9 +30,6 @@ def precompute_theta_pos_frequencies(seq_len: int, h_dim: int, theta: float, dev
     # Code below essentially all came from the original LLaMa model
     assert h_dim % 2 == 0, f"h_dim ({h_dim}) must be even for RoPE complex conversion"
 
-    # One thing I'm not sure is that in the reformers paper, theta indices should be from [1, 2, 3, ... h_dim//2]
-    # But Llama used a step=2, below, which results in [0, 2, 4...h_dim], which doesn't seem quite right.
-    # I'm probably missing something... ¯\_(ツ)_/¯  (offset by one is correct, since working with 0-index)
     theta_numerator = torch.arange(0, h_dim, 2).float()  # Shape = (h_dim//2)
     theta = 1.0 / (theta ** (theta_numerator / h_dim)).to(device)  # Shape remains the same
 
