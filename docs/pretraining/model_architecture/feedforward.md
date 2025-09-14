@@ -25,7 +25,7 @@ Both attention and FFN are wrapped with normalization and residual connections.
 
 ## Vanilla Transformer FFN
 
-In the original Transformer paper (Vaswani et al., 2017), the FFN was simply:  
+In the original Transformer paper (Vaswani et al., 2017), the FFN was defined as:  
 
 ```
 FFN(x) = max(0, xW1 + b1)W2 + b2
@@ -34,48 +34,46 @@ FFN(x) = max(0, xW1 + b1)W2 + b2
 - Two linear layers with a ReLU in between.  
 - The hidden dimension is usually set to **4× the embedding dimension**, then projected back down.  
 
-If embedding size = 1024, the FFN hidden size = 4096.  
+For example, if embedding size = 1024, the FFN hidden size = 4096.  
 
-This “expand and contract” pattern gives the model lots of nonlinear mixing power.  
+This “expand and contract” pattern gives the model strong nonlinear mixing power, because the network has a wide layer to mix features, then projects it back to the model’s working dimension.  
 
-
-Looking at a more concrete implementation, the feedforward class might be defined as:
+### Implementation Example
 
 ```python
 class FeedForward(nn.Module):
     def __init__(self, n_embd: int):
         super().__init__()
-        self.layer1 = nn.Linear(n_embd, 4 * n_embd),
-        self.layer2 = nn.Linear(4 * n_embd, n_embd),
+        self.layer1 = nn.Linear(n_embd, 4 * n_embd)
+        self.layer2 = nn.Linear(4 * n_embd, n_embd)
 
-    def forward(self, x: torch.tensor):
+    def forward(self, x: torch.Tensor):
         return self.layer2(torch.nn.functional.relu(self.layer1(x)))
 ```
 
-Recall that we pass an input tensor `x` into the attention sublayer, after applying the attention mechanism, the output tensor remains the same shape, `(batch, seq_len, n_embd)`  
-That will then get passed into feedforward sublayer (after prenorm, but shape remains the same)
+Let’s walk through this carefully:  
+1. Input tensor `x` has shape `(batch, seq_len, n_embd)`.  
+2. First layer projects it into `(batch, seq_len, 4 * n_embd)`.  
+3. Apply ReLU to introduce non-linearity (important because without it, stacking linear layers would still just be linear).  
+4. Second layer projects it back down to `(batch, seq_len, n_embd)`.  
 
-So in the constructor, we define the two linear layers. 
-The first one takes in a tensor, where the last dimension is of shape `n_embd`, projects it into `4 * n_embd` space. 
-The second layer takes in a tensor, expecting the last dimension to be of shape `4 * n_embd` and projects it back down into `n_embd` 
-
-In the forward function, we can see that given the input tensor x, we apply those two layers, with a `relu` function sandwiched in between to introduce non-linearity. 
+So while the shape going into and out of the FFN is the same, the hidden computation in between allows the network to express far richer functions.
 
 ---
 
 ## LLaMA-Style FFN (SwiGLU)
 
-The LLaMA architecture made one key modification: instead of ReLU, it uses a **SwiGLU activation**.  
+The LLaMA architecture introduced a key modification: instead of the plain ReLU-based FFN, it uses a **SwiGLU activation** (SiLU-Gated Linear Unit).  
 
-In this project, this is implemented in the `FeedForward` class:
+Here’s how it looks in code:  
 
 ```python
 class FeedForward(nn.Module):
     def __init__(self, n_embd: int, multiple_of: int, dropout: float):
         super().__init__()
 
-        hidden_dim = int(4 * n_embd * (2 / 3))  # Authors of LLaMa used 2/3 of 4*n_embd (To distribute num params)
-        # Rather than being 1024*4 * (2/3) = 2730, using multiple_of with a value base 2 functions better (e.g. 64, 128, or 256)
+        hidden_dim = int(4 * n_embd * (2 / 3))  # Authors of LLaMa used 2/3 of 4*n_embd
+        # Round hidden_dim up to a nicer multiple for efficient GPU utilization
         hidden_dim = multiple_of * ((hidden_dim + multiple_of - 1) // multiple_of)
 
         self.w1 = nn.Linear(n_embd, hidden_dim, bias=False)
@@ -84,76 +82,77 @@ class FeedForward(nn.Module):
         self.dropout = nn.Dropout(p=dropout)
 
     def forward(self, x: torch.Tensor):
-        # Element-wise multiplication between two matrices of shape (batch, seq_len, hidden_dim)
-        # along with silu instead of relu activation function
-        h = F.silu(self.w1(x)) * self.w3(x)
+        h = F.silu(self.w1(x)) * self.w3(x)  # SwiGLU block
         return self.dropout(self.w2(h))
 ```
 
-Breaking this down:  
+### Breaking It Down Step by Step
 
-The authors created a variation where they wanted to introduce a gating function, hence the usage of 3 linear layers compared to the traditional 2 layers in FFN. 
+- In the vanilla FFN we had **two linear layers**.  
+- In LLaMA’s FFN we now have **three linear layers**. Why? To introduce a **gating mechanism**.  
 
-This formulation is known as a **SwiGLU activation** (SiLU-Gated Linear Unit).  
-In other words:
+The formula looks like this:  
 
 \[
-h = \text{SiLU}(W_1x) \odot W_3x
+h = \text{SiLU}(W_1x) \odot (W_3x)
 \]
 
-is the SwiGLU block, which replaces the ReLU in the vanilla Transformer FFN.  
+where `⊙` is elementwise (Hadamard) multiplication.  
 
-However simply adding in a third linear layer for gating would just increase the number of parameters in the model. To keep the model size approximately the same for comparison, they split the distribution of parameters evenly among the three layers. 
+- `W1x`: main transformation path.  
+- Apply SiLU activation (smooth, like ReLU but differentiable everywhere).  
+- `W3x`: produces a second transformed version of `x`, used as a **gate**.  
+- Multiply them elementwise: the gate decides how much of each hidden unit passes through.  
 
-Recall that in the original FFN implmentation, there are two layers. 
-They have weights of shape `(n_embd, 4 * n_embd)` and `(4 * n_embd, n_embd)`
-Combined, the total number of parameters they hold is `8 * n_embd**2`
+This means:  
+- If a value in `W3x` is near 0 → the signal from `W1x` gets suppressed.  
+- If large → it amplifies the signal.  
+- If negative → it can flip the sign of the signal.  
 
-By calculating a hidden dimension variable using `hidden_dim = int(4 * n_embd * (2 / 3))`
-That evenly splits the distribution into 3 parts. 
-Then initialize the layers where both `w1` and `w3` are of shape `(n_embd, hidden_dim)` and `w2` of shape `(hidden_dim, n_embd)`
+So the gating function lets the model regulate the flow of information more flexibly than a simple ReLU cutoff.
 
-Overall parameter count would be `3 * n_embd * hidden_dim`
-Substituting in hidden_dim from the above formula would yield `8 * n_embd**2` parameters, which is the same as the original.
+### Parameter Balancing
 
+But wait — adding a third projection layer means more parameters, right?  
+Yes, but the authors balanced this by shrinking the hidden dimension.  
 
-Moving on, let's take a look at what happens when a tensor x, of shape `(batch, seq_len, n_embd)` is passed to this FFN block
+- Vanilla FFN parameters: about `8 * n_embd²`.  
+  (from `(n_embd × 4n_embd) + (4n_embd × n_embd)`).  
+- LLaMA FFN: uses hidden_dim = `int(4 * n_embd * 2/3)`.  
+  With three projections (`w1`, `w2`, `w3`), total ≈ `8 * n_embd²`.  
 
-First, it will pass through `self.w1` layer, transforming it into `(batch, seq_len, hidden_dim)`
-Then apply a SiLU activation function to that, which squashes the range of possible values from [-inf, inf] to approximately [-0.3, inf], followed by a hadamard product with `self.w3(x)`
-This is a gating function where essentially the `self.w3` layer determines how much 'signal' can pass by.
+So both end up with roughly the same parameter budget, but LLaMA gets more expressive power via gating.  
 
-Imagine for a certain value in `self.w3(x)` is close to 0, that mean the corresponding value in `self.w1(x)` gets suppressed to near 0 as well, whereas if the value from w3 is a large value, it will amplify correspondingly. 
-As it also allow negative values, it can also flip value as needed, allowing rich representations. 
+### Shapes in Action
 
-Finally, the resulting tensor gets passed through `self.w2(x)` which transforms the tensor from shape `(batch, seq_len, hidden_dim)` back to `(batch, seq_len, n_embd)`
+- Input: `(batch, seq_len, n_embd)`  
+- After `w1` and `w3`: `(batch, seq_len, hidden_dim)`  
+- After SiLU + elementwise product: `(batch, seq_len, hidden_dim)`  
+- After `w2`: `(batch, seq_len, n_embd)`  
 
+Input and output shapes match the original — only the internal transformation is richer.  
 
-This trick balances parameter count and computational efficiency without hurting performance much.  
+### Multiple-of Trick
 
+The `multiple_of` hyperparameter ensures `hidden_dim` is divisible by a convenient number (like 64, 128, 256).  
+This is purely for GPU efficiency: matrix multiplications run faster on dimensions aligned to powers of two.  
 
-Note that there's an intermediate step of calculating the hidden dimension using the input variable `multiple_of`
-This is used to round-up the `hidden_dim` value up to the nearest multiple of `multiple_of` value. 
+For example:  
+- Without adjustment: `n_embd=1024` → hidden_dim = 2730.  
+- With `multiple_of=128`: hidden_dim becomes 2816, which is far more efficient for hardware.  
 
-For example, say we have `n_embd=1024`
-Using the formula we would get `hidden_dim = int(4 * n_embd * (2 / 3)) = 2730`
-Which has a pitiful amount of powers of two, in fact, it only has a single factor of 2 contained within. 
+### Dropout
 
-By setting `multiple_of` hyperparameter to a power of 2 like 64, 128, 256, etc., the hidden dimension value would be a 'nicer' number per-say
-The reason why these 'nicer' numbers are better is because it allows more efficient GPU utilization. 
-
-Take the previous example, if we set `multiple_of` to get 128, then hidden dimension would turn into `2816`, which is a much nicer number with high numbers of powers of two contained within. 
-
-
-Finally, there's an additional dropout layer at the end, which is only really used in the SFT/RLHF step, not of particular importance here.  
-It prevents overfitting and improves generalization, especially useful in smaller-scale dataset when training. 
+At the end, dropout is applied. This isn’t heavily used during large-scale pretraining, but it becomes important in fine-tuning (SFT, RLHF) to regularize and prevent overfitting when datasets are smaller.  
 
 ---
 
 ## Summary
 
-- The feedforward block provides **nonlinear transformation capacity**, complementing attention.  
-- Vanilla Transformers used Linear → ReLU → Linear.  
-- LLaMA use **SwiGLU-style FFN** for better performance.  
-- Most of the parameters in the model live in these FFNs.  
-- Without them, the Transformer would collapse into a linear model and lose expressive power.
+- Feedforward layers provide the **nonlinear expressiveness** that attention alone cannot.  
+- Vanilla Transformer FFN: **Linear → ReLU → Linear**, with a 4× expansion.  
+- LLaMA FFN: **SwiGLU-style** (SiLU + gating with a third linear layer).  
+- Gating allows richer feature modulation (suppress, amplify, flip).  
+- Parameter count is balanced to stay ~`8 * n_embd²`.  
+- Input/output shapes stay the same, but the internal computation is more expressive.  
+- Most of a Transformer’s parameters live in these FFNs — they are just as crucial as attention.  
