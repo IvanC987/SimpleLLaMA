@@ -1,0 +1,63 @@
+site_name: SimpleLLaMA Documentation
+theme:
+  name: material
+  features:
+    - content.math
+  palette:
+    - scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/weather-night
+        name: Switch to dark mode
+    - scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to light mode
+
+nav:
+  - Home: index.md
+  - Pretraining:
+      - Overview: pretraining/overview.md
+      - Dataset Preparation: pretraining/dataset.md
+      - Tokenization:
+          - Overview: pretraining/tokenization/overview.md
+          - Algorithms: pretraining/tokenization/algorithms.md
+          - Examples: pretraining/tokenization/examples.md
+          - Project Usage: pretraining/tokenization/project.md
+      - Model Architecture:
+          - Overview: pretraining/model_architecture/overview.md
+          - Embeddings: pretraining/model_architecture/embeddings.md
+          - Attention: pretraining/model_architecture/attention.md
+          - Normalization: pretraining/model_architecture/normalization.md
+          - FeedForward: pretraining/model_architecture/feedforward.md
+          - Layer Block: pretraining/model_architecture/decoder_block.md
+          - End To End: pretraining/model_architecture/end_to_end.md
+      - Training Process: pretraining/training.md
+  - Supervised Fine-Tuning:
+      - Overview: sft/overview.md
+      - Dataset: sft/dataset.md
+  - RLHF:
+      - Overview: rlhf/overview.md
+      - Methods: rlhf/methods.md
+  - Misc:
+      - Benchmarking: misc/benchmarking.md
+      - Inference: misc/inference.md
+      - Notes: misc/notes.md
+
+markdown_extensions:
+  - admonition
+  - codehilite
+  - footnotes
+  - pymdownx.arithmatex:
+      generic: true
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+
+extra_javascript:
+  - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
+
