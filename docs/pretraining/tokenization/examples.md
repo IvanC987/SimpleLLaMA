@@ -105,3 +105,12 @@ BPE is a simple but highly efficient algorithm for tokenization, but a few addit
 ---
 
 For this project, these limitations are minor — but it’s good to be aware of them. Overall, BPE still provides an excellent trade-off and is much better suited for LLMs than raw character- or word-level tokenization.
+
+Here's a great [Tokenization Playground](https://byte-pairing.vercel.app/) to get a more hands-on experience with tokenization  
+
+Here's an example: 
+
+![Tokenization Example](../../images/gpt2_tokenizer_example.png)
+
+Note how most of the words is a single token, due to their common occurrence in the tokenizer's vocabulary. However once a relatively uncommon word appears, it would be broken down into chunks. 
+

@@ -35,7 +35,21 @@ nav:
           - FeedForward: pretraining/model_architecture/feedforward.md
           - Layer Block: pretraining/model_architecture/decoder_block.md
           - End To End: pretraining/model_architecture/end_to_end.md
-      - Training Process: pretraining/training.md
+      - Training Process (Beginner):
+          - Introduction: pretraining/training_beginner/introduction.md
+          - Model Configurations: pretraining/training_beginner/model_config.md
+          - Dataset and Batching: pretraining/training_beginner/dataset_and_batching.md
+          - Scheduler: pretraining/training_beginner/scheduler.md
+          - Training Loop: pretraining/training_beginner/training_loop.md
+      - Training Process (Advanced):
+          - Basics Recap: pretraining/training_advanced/recap.md
+          - Optimizer Details: pretraining/training_advanced/optimizers.md
+          - Cross Entropy Loss: pretraining/training_advanced/loss_function.md
+          - Gradient Accumulation: pretraining/training_advanced/gradient_accumulation.md
+          - Distributed Data Parallel: pretraining/training_advanced/ddp.md
+          - Throughput Optimizations: pretraining/training_advanced/throughput_optimizations.md
+          - Checkpointing and Evaluations: pretraining/training_advanced/ckpt_and_eval.md
+          - Final Walkthrough: pretraining/training_advanced/final_walkthrough.md
   - Supervised Fine-Tuning:
       - Overview: sft/overview.md
       - Dataset: sft/dataset.md
@@ -46,6 +60,8 @@ nav:
       - Benchmarking: misc/benchmarking.md
       - Inference: misc/inference.md
       - Notes: misc/notes.md
+  - Custom Training:
+      - PlaceHolder: custom_training/temp.md
 
 markdown_extensions:
   - admonition
