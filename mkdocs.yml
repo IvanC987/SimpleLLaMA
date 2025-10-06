@@ -53,6 +53,9 @@ nav:
   - Supervised Fine-Tuning:
       - Overview: sft/overview.md
       - Dataset: sft/dataset.md
+      - Prompt Formatting: sft/prompt_formatting.md
+      - Utilities: sft/utils.md
+      - Finetuning Process: sft/finetuning.md
   - RLHF:
       - Overview: rlhf/overview.md
       - Methods: rlhf/methods.md
@@ -61,7 +64,10 @@ nav:
       - Inference: misc/inference.md
       - Notes: misc/notes.md
   - Custom Training:
-      - PlaceHolder: custom_training/temp.md
+      - Pretraining: custom_training/pretraining.md
+      - Supervised Fine Tuning: custom_training/sft.md
+      - RLHF: custom_training/rlhf.md
+
 
 markdown_extensions:
   - admonition
