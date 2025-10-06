@@ -16,6 +16,8 @@ from simple_llama.finetune.json_dataset_loader import JSONDatasetLoader
 from simple_llama.finetune.utils import tokenize_and_pad_data, eval_model, sft_prompts
 from simple_llama.finetune.format_llm_prompt import format_inference_prompt
 
+# torch.serialization.add_safe_globals({TrainingConfig})
+
 
 # Manual seeding for reproducibility testings
 seed = 89
@@ -280,7 +282,7 @@ for epoch in range(epochs):
                 # EOS token here is technically a misnomer, but that's fine. (Should rename it to stop_token?)
                 rand_prompt = random.choice(sft_prompts)
                 formatted_prompt = format_inference_prompt(user=rand_prompt["User"], assistant=rand_prompt["Assistant"], template=rand_prompt["Template"][0])
-                print(model.generate(formatted_prompt, 128, 1.0, 0.8, eos_token=tokenizer.encode("<EOA>").ids))
+                print(model.generate(formatted_prompt, 128, 1.0, 0.8, eos_token=tokenizer.encode("<EOA>").ids[0]))
                 next_gen_step = int(next_gen_step * model_gen_multiplier)  # exponential growth in generation spacing
                 print("\n")
                 print(f"Sampled generation at {step=}, next at {next_gen_step=}")

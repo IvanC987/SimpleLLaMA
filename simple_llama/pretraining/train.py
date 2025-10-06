@@ -252,7 +252,7 @@ total_tok_trained = 0  # Keeping track of total current tokens that has been pro
 next_token_ckpt = token_ckpt
 
 
-eos_token = tokenizer.encode("<EOS>").ids
+eos_token = tokenizer.encode("<EOS>").ids[0]
 start = time.time()
 all_losses = []  # Keeping track of all losses
 save_ckpt = {}  # Used to save model checkpoint (Holds all state_dicts, hyperparameters, etc.)
