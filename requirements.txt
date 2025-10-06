@@ -1,0 +1,4 @@
+tokenizers==0.21.1
+torch==2.6.0
+matplotlib==3.10.6
+numpy==2.2.6
