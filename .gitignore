@@ -1,6 +1,9 @@
 .idea
 __pycache__
 
+docs/gather_md.py
+docs/concat.md
+
 simple_llama/__pycache__
 
 # Skipping Misc/Test files and dataset folders (too large to push)
@@ -11,6 +14,12 @@ simple_llama/dataset/temp.py
 
 # Possiblly adding in KD later on from models like llama3 3/7B? Maybe...
 simple_llama/distillation
+
+# Adding in benchmarking using lm_eval
+simple_llama/eluther_harness_eval
+
+# Release later on
+simple_llama/final_models
 
 # Skipping Misc/Testing files
 simple_llama/finetune/ft_dataset
