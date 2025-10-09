@@ -1,0 +1,2249 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../overview/">
+      
+      
+        <link rel="next" href="../prompt_formatting/">
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.18">
+    
+    
+      
+        <title>Dataset - SimpleLLaMA Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.7e37652d.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#supervised-fine-tuning-dataset-creation" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="SimpleLLaMA Documentation" class="md-header__button md-logo" aria-label="SimpleLLaMA Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            SimpleLLaMA Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Dataset
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="SimpleLLaMA Documentation" class="md-nav__button md-logo" aria-label="SimpleLLaMA Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    SimpleLLaMA Documentation
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Pretraining
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Pretraining
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../pretraining/overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Overview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../pretraining/dataset/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Dataset Preparation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_3" id="__nav_2_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Tokenization
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3">
+            <span class="md-nav__icon md-icon"></span>
+            Tokenization
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../pretraining/tokenization/overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Overview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../pretraining/tokenization/algorithms/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Algorithms
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../pretraining/tokenization/examples/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Examples
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../pretraining/tokenization/project/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Project Usage
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_4" id="__nav_2_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Model Architecture
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_4">
+            <span class="md-nav__icon md-icon"></span>
+            Model Architecture
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../pretraining/model_architecture/overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Overview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../pretraining/model_architecture/embeddings/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Embeddings
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../pretraining/model_architecture/attention/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Attention
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../pretraining/model_architecture/normalization/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Normalization
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../pretraining/model_architecture/feedforward/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    FeedForward
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../pretraining/model_architecture/decoder_block/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Layer Block
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../pretraining/model_architecture/end_to_end/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    End To End
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_5" id="__nav_2_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Training Process (Beginner)
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_5">
+            <span class="md-nav__icon md-icon"></span>
+            Training Process (Beginner)
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../pretraining/training_beginner/introduction/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Introduction
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../pretraining/training_beginner/model_config/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Model Configurations
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../pretraining/training_beginner/dataset_and_batching/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Dataset and Batching
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../pretraining/training_beginner/scheduler/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Scheduler
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../pretraining/training_beginner/training_loop/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Training Loop
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_6" id="__nav_2_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Training Process (Advanced)
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_6">
+            <span class="md-nav__icon md-icon"></span>
+            Training Process (Advanced)
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../pretraining/training_advanced/recap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Basics Recap
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../pretraining/training_advanced/optimizers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Optimizer Details
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../pretraining/training_advanced/loss_function/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Cross Entropy Loss
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../pretraining/training_advanced/gradient_accumulation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Gradient Accumulation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../pretraining/training_advanced/ddp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Distributed Data Parallel
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../pretraining/training_advanced/throughput_optimizations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Throughput Optimizations
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../pretraining/training_advanced/ckpt_and_eval/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Checkpointing and Evaluations
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../pretraining/training_advanced/final_walkthrough/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Final Walkthrough
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Supervised Fine-Tuning
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Supervised Fine-Tuning
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Overview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Dataset
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    Dataset
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#why-synthetic-instead-of-using-hugging-face-datasets" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why Synthetic Instead of Using Hugging Face Datasets?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dataset-composition" class="md-nav__link">
+    <span class="md-ellipsis">
+      Dataset Composition
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Dataset Composition">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#subcategories" class="md-nav__link">
+    <span class="md-ellipsis">
+      Subcategories
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#generation-pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      Generation Pipeline
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Generation Pipeline">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-1-few-shot-prompting" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 1: Few-Shot Prompting
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-strict-formatting" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 2: Strict Formatting
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-3-ascii-enforcement" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 3: ASCII Enforcement
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-4-quality-controls" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 4: Quality Controls
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#example-of-prompt-construction" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example of Prompt Construction
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#generation-samples" class="md-nav__link">
+    <span class="md-ellipsis">
+      Generation Samples
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#jsondatasetloader" class="md-nav__link">
+    <span class="md-ellipsis">
+      JSONDatasetLoader
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="JSONDatasetLoader">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#constructor" class="md-nav__link">
+    <span class="md-ellipsis">
+      Constructor
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get_batch-method" class="md-nav__link">
+    <span class="md-ellipsis">
+      get_batch Method
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../prompt_formatting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Prompt Formatting
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../utils/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Utilities
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../finetuning/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Finetuning Process
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    RLHF
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            RLHF
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../rlhf/overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Overview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../rlhf/methods/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Methods
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Misc
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Misc
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../misc/benchmarking/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Benchmarking
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../misc/inference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Inference
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../misc/notes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Notes
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Custom Training
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            Custom Training
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../custom_training/pretraining/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Pretraining
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../custom_training/sft/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Supervised Fine Tuning
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../custom_training/rlhf/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    RLHF
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#why-synthetic-instead-of-using-hugging-face-datasets" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why Synthetic Instead of Using Hugging Face Datasets?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dataset-composition" class="md-nav__link">
+    <span class="md-ellipsis">
+      Dataset Composition
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Dataset Composition">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#subcategories" class="md-nav__link">
+    <span class="md-ellipsis">
+      Subcategories
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#generation-pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      Generation Pipeline
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Generation Pipeline">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-1-few-shot-prompting" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 1: Few-Shot Prompting
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-strict-formatting" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 2: Strict Formatting
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-3-ascii-enforcement" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 3: ASCII Enforcement
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-4-quality-controls" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 4: Quality Controls
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#example-of-prompt-construction" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example of Prompt Construction
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#generation-samples" class="md-nav__link">
+    <span class="md-ellipsis">
+      Generation Samples
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#jsondatasetloader" class="md-nav__link">
+    <span class="md-ellipsis">
+      JSONDatasetLoader
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="JSONDatasetLoader">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#constructor" class="md-nav__link">
+    <span class="md-ellipsis">
+      Constructor
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get_batch-method" class="md-nav__link">
+    <span class="md-ellipsis">
+      get_batch Method
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="supervised-fine-tuning-dataset-creation">Supervised Fine-Tuning Dataset Creation</h1>
+<p>This document explains in detail how the <strong>Supervised Fine-Tuning (SFT) dataset</strong> was created for the SimpleLLaMA project. The dataset contains <strong>216,000 synthetic samples</strong> generated using DeepSeek and Gemini 2.5 (Flash and Pro). It is designed specifically for a 1.3B parameter model — which is much smaller and simpler than the 7B+ models often targeted by publicly available datasets — and therefore required careful curation and balance.</p>
+<hr />
+<h2 id="why-synthetic-instead-of-using-hugging-face-datasets">Why Synthetic Instead of Using Hugging Face Datasets?</h2>
+<p>While there are many instruction-tuning datasets available on Hugging Face, such as <strong>Alpaca, ShareGPT, OASST</strong>, etc., they are generally constructed for <strong>larger-scale models (7B–70B parameters)</strong>. Using them directly could misalign a smaller model in several ways:</p>
+<ul>
+<li><strong>Level of difficulty</strong> – Datasets like OASST or ShareGPT contain complex, nuanced conversations. For a 1.3B model, this would often lead to failure cases. A controlled dataset is used to confirm examples are at the right difficulty level.  </li>
+<li><strong>Distribution mismatch</strong> – Public datasets are often skewed toward open-domain chit-chat, or contain an imbalanced ratio of tasks. Here, the dataset was constructed with explicit category proportions (see below).  </li>
+<li><strong>Control over content</strong> – By generating synthetic data, we can tightly control what categories exist, their frequency, and their complexity. This reduces noise and makes the model more reliable for its intended use.  </li>
+</ul>
+<p>In short: <strong>synthetic generation provides balance, scalability, and suitability for a smaller model</strong>, while avoiding the pitfalls of “overshooting” with datasets made for much larger systems.</p>
+<hr />
+<h2 id="dataset-composition">Dataset Composition</h2>
+<p>The dataset is broken down into <strong>8 categories</strong>, each representing a different skill domain. These categories were chosen to ensure broad but manageable coverage of practical use cases. Below is the distribution:</p>
+<table>
+<thead>
+<tr>
+<th>Category</th>
+<th>Share</th>
+<th>Purpose</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Instruction Following</strong></td>
+<td>30%</td>
+<td>Core alignment skill: teaching the model to obey explicit instructions.</td>
+<td>“Summarize this article in 2 sentences.”</td>
+</tr>
+<tr>
+<td><strong>User Conversation</strong></td>
+<td>20%</td>
+<td>Multi-turn dialogues, simulating back-and-forth exchanges. Adds robustness to conversational flow.</td>
+<td>“Hello! How are you?” → “I’m good, how are you?”</td>
+</tr>
+<tr>
+<td><strong>Reasoning &amp; Logic</strong></td>
+<td>15%</td>
+<td>Arithmetic, logical reasoning, multi-step thought. Strengthens structure in answers.</td>
+<td>“If Sarah has 5 apples and eats 2, how many are left?”</td>
+</tr>
+<tr>
+<td><strong>QA (Factual)</strong></td>
+<td>10%</td>
+<td>Short, grounded factual responses. Prevents drift and strengthens retrieval-like capabilities.</td>
+<td>“What is the capital of Canada?”</td>
+</tr>
+<tr>
+<td><strong>Error Correction</strong></td>
+<td>5%</td>
+<td>Simple grammar/spelling fixes. Teaches token-level precision.</td>
+<td>Input: “She go to market.” → Output: “She goes to the market.”</td>
+</tr>
+<tr>
+<td><strong>Structured Transformation</strong></td>
+<td>5%</td>
+<td>Converting between formats, summarization, bullet-pointing, JSON transformations.</td>
+<td>“Turn this paragraph into a bulleted list.”</td>
+</tr>
+<tr>
+<td><strong>Long Response Generation</strong></td>
+<td>5%</td>
+<td>Encourages extended outputs, storytelling, and maintaining coherence across long sequences.</td>
+<td>“Write a short story about a lost robot.”</td>
+</tr>
+<tr>
+<td><strong>Identity / Miscellaneous</strong></td>
+<td>10%</td>
+<td>Handles “Who are you?” queries, opinions, small-talk, and personality alignment.</td>
+<td>“Who are you?” → “I’m SimpleLLaMA, your assistant.”</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="subcategories">Subcategories</h3>
+<p>Within each major category, subcategories were mixed in to increase diversity. For example:</p>
+<ul>
+<li>
+<p><strong>Instruction Following</strong></p>
+<ul>
+<li>Summarization (“Summarize this paragraph in 3 bullet points”).  </li>
+<li>Classification (“Classify this review as positive or negative”).  </li>
+<li>Style constraints (“Explain this like I’m 5”).  </li>
+</ul>
+</li>
+<li>
+<p><strong>User Conversation</strong></p>
+<ul>
+<li>Multi-turn casual conversation.  </li>
+<li>Task-based (helping with scheduling, answering follow-ups).  </li>
+</ul>
+</li>
+<li>
+<p><strong>Reasoning &amp; Logic</strong></p>
+<ul>
+<li>Arithmetic problems.  </li>
+<li>Deductive logic.  </li>
+<li>Simple word problems.  </li>
+</ul>
+</li>
+<li>
+<p><strong>Structured Transformation</strong></p>
+<ul>
+<li>Bullet point compression.  </li>
+<li>Extracting keywords.  </li>
+</ul>
+</li>
+</ul>
+<p>This is to make sure that within each category, the model isn’t just repeating a narrow skill, but instead sees varied applications of the same general ability.</p>
+<hr />
+<h2 id="generation-pipeline">Generation Pipeline</h2>
+<h3 id="step-1-few-shot-prompting">Step 1: Few-Shot Prompting</h3>
+<p>Examples were generated using <strong>few-shot prompts</strong> with Gemini and DeepSeek. A handful of verified examples were embedded into the system prompt, ensuring that outputs were consistent with the required format:</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;Template&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;Speak like a teacher&quot;</span><span class="p">],</span>
+<span class="w">  </span><span class="nt">&quot;User&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;Why does the sun set?&quot;</span><span class="p">],</span>
+<span class="w">  </span><span class="nt">&quot;Assistant&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;The sun appears to set because the Earth rotates, making it seem like the sun is moving across the sky.&quot;</span><span class="p">]</span>
+<span class="p">}</span>
+</code></pre></div>
+<hr />
+<h3 id="step-2-strict-formatting">Step 2: Strict Formatting</h3>
+<p>The output had to always be a <strong>list of JSON dicts</strong> with exactly three keys: <code>Template</code>, <code>User</code>, <code>Assistant</code>. Each value was wrapped in a list of strings to ensure uniformity with the later dataset loader.</p>
+<hr />
+<h3 id="step-3-ascii-enforcement">Step 3: ASCII Enforcement</h3>
+<p>Since the tokenizer was trained only on <strong>ASCII English text</strong>, all outputs were passed through a normalization step that replaced or removed non-ASCII characters. For example:</p>
+<ul>
+<li>“café” → “cafe”  </li>
+<li>“π” → “pi”  </li>
+<li>“–” (en dash) → “-”  </li>
+</ul>
+<p>This avoided subtle tokenization mismatches that could destabilize training.</p>
+<hr />
+<h3 id="step-4-quality-controls">Step 4: Quality Controls</h3>
+<ul>
+<li><strong>Multi-model variation</strong> – Three different LLMs (DeepSeek, Gemini Flash, Gemini Pro) were used for generation. This provided diverse styles and avoided overfitting to one model’s quirks.  </li>
+<li><strong>Non-ASCII filter</strong> – All responses passed through a script that rejected or normalized invalid characters.  </li>
+<li><strong>Manual inspection</strong> – Roughly <strong>0.5% of the dataset (≈1,000 samples)</strong> was manually checked. Results showed very low hallucination or formatting issues.  </li>
+<li><strong>Broad scope</strong> – Prompts were intentionally kept <strong>simple and general</strong> (instruction following, reasoning, factual questions). This avoided cases where even state-of-the-art models might hallucinate.</li>
+</ul>
+<hr />
+<h2 id="example-of-prompt-construction">Example of Prompt Construction</h2>
+<p>Below is a simplified version of the generation prompt used for instruction-following data:</p>
+<div class="highlight"><pre><span></span><code>You are generating high-quality instruction-following examples for an SFT dataset.
+Make sure responses are ASCII only.
+Each example must be a JSON dict with keys: &quot;Template&quot;, &quot;User&quot;, &quot;Assistant&quot;.
+Responses must be coherent, varied, and reflect the style in &quot;Template&quot;.
+Generate 5 JSON dicts, each containing a unique instruction-response pair.
+</code></pre></div>
+<p>In the actual generation script, varying values such as <code>top_p</code>, <code>temperature</code>, fewshot examples, were injected into the prompt to prevent the LLM from generating the same, or extremely similar, results. </p>
+<hr />
+<h2 id="generation-samples">Generation Samples</h2>
+<p>Here are some examples within the SFT dataset: </p>
+<div class="highlight"><pre><span></span><code><span class="p">[</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;Template&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">            </span><span class="s2">&quot;CUSTOM&quot;</span>
+<span class="w">        </span><span class="p">],</span>
+<span class="w">        </span><span class="nt">&quot;User&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">            </span><span class="s2">&quot;Can you explain the greenhouse effect in simple terms and how it relates to climate change? I&#39;ve heard the term a lot but don&#39;t fully grasp the mechanism.&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;Switching topics completely, what&#39;s your favorite method for organizing a messy garage that hasn&#39;t been cleaned in years? I need practical steps to tackle this overwhelming project.&quot;</span>
+<span class="w">        </span><span class="p">],</span>
+<span class="w">        </span><span class="nt">&quot;Assistant&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">            </span><span class="s2">&quot;The greenhouse effect is when certain gases in Earth&#39;s atmosphere (like carbon dioxide and methane) trap heat from the sun, similar to how glass traps heat in a greenhouse. Normally this keeps Earth warm enough for life, but human activities have increased these gases, causing more heat retention and global climate changes. Burning fossil fuels and deforestation are major contributors to this enhanced greenhouse effect.&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;Start by sorting items into categories: keep, donate, recycle, trash. Use the &#39;5-box method&#39; - one box for each category plus a &#39;relocate&#39; box for items that belong elsewhere. Work in small sections to avoid overwhelm. Install wall hooks for tools, use clear bins for visibility, and label everything. Schedule regular maintenance sessions to prevent future buildup.&quot;</span>
+<span class="w">        </span><span class="p">]</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;Template&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">            </span><span class="s2">&quot;CUSTOM&quot;</span>
+<span class="w">        </span><span class="p">],</span>
+<span class="w">        </span><span class="nt">&quot;User&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">            </span><span class="s2">&quot;All birds have feathers. A penguin is a bird. Does a penguin have feathers?&quot;</span>
+<span class="w">        </span><span class="p">],</span>
+<span class="w">        </span><span class="nt">&quot;Assistant&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">            </span><span class="s2">&quot;Yes, a penguin has feathers. The reasoning follows deductively: All birds have feathers, and since a penguin is classified as a bird, it must also possess feathers. This holds true even though penguins are flightless-their feathers serve other purposes like insulation and waterproofing, but they still fit the definition of birds in this regard.&quot;</span>
+<span class="w">        </span><span class="p">]</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;Template&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">            </span><span class="s2">&quot;Explain concepts as if you are a wise, patient, and old librarian. Use metaphors related to books, stories, and knowledge.&quot;</span>
+<span class="w">        </span><span class="p">],</span>
+<span class="w">        </span><span class="nt">&quot;User&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">            </span><span class="s2">&quot;Can you explain what a &#39;database&#39; is?&quot;</span>
+<span class="w">        </span><span class="p">],</span>
+<span class="w">        </span><span class="nt">&quot;Assistant&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">            </span><span class="s2">&quot;Ah, a wonderful question. Imagine this library is the whole of your information. A &#39;database&#39; is like a magical card catalog. It doesn&#39;t hold the books themselves, but it knows exactly where each one is. It has a card for every story, every fact, every character. When you need to find something, you don&#39;t wander the stacks for ages. You simply consult the catalog, and it points you to the exact shelf, the exact book, the exact page. It&#39;s a system of perfect order for a world of chaotic information.&quot;</span>
+<span class="w">        </span><span class="p">]</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">]</span>
+</code></pre></div>
+<ul>
+<li>The first example shows a <code>CUSTOM</code> system prompt and demonstrates flexibility — answering a science question and then switching to a practical, unrelated task.  </li>
+<li>The second example uses categorical logic (“all birds have feathers”), which strengthens the model’s structured reasoning abilities.  </li>
+<li>The third example illustrates a style template (the whimsical librarian), which enriches the dataset with persona-following behavior.</li>
+</ul>
+<p>Most entries use <code>CUSTOM</code> as the template, which defaults to the general system prompt. Around 20–25% explicitly define styles or roles, broadening stylistic adaptability and improving robustness.
+More will be discussed in the next section, Prompt Formatting. </p>
+<hr />
+<h2 id="jsondatasetloader">JSONDatasetLoader</h2>
+<p>Finally, the <strong><code>JSONDatasetLoader</code></strong> class. This is used for loading, processing, and serving the SFT dataset during fine-tuning. It handles both the training and validation data splits, manages batching, and keeps track of epoch progress.</p>
+<hr />
+<h3 id="constructor">Constructor</h3>
+<p>Let’s start with the constructor, step by step:</p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">json_filepath</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">train_split</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
+    <span class="k">assert</span> <span class="n">batch_size</span> <span class="o">&gt;</span> <span class="mi">0</span>
+    <span class="k">assert</span> <span class="mi">0</span> <span class="o">&lt;</span> <span class="n">train_split</span> <span class="o">&lt;=</span> <span class="mi">1</span>
+
+    <span class="c1"># Load in the dataset, should be a list of dicts</span>
+    <span class="c1"># Should have User, Assistant, and Template keys, of types list[str], list[str] and str respectively</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">json_filepath</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">dataset</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+
+    <span class="n">random</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span>
+</code></pre></div>
+<p>The constructor accepts three arguments:</p>
+<ul>
+<li><strong><code>json_filepath</code></strong>: the path to the JSON dataset file (e.g., <code>merged_ft_dataset.json</code>).</li>
+<li><strong><code>batch_size</code></strong>: how many examples are returned per batch.</li>
+<li><strong><code>train_split</code></strong>: the proportion of examples allocated for training versus validation.</li>
+</ul>
+<p>After confirming valid inputs, the JSON file is opened and loaded. This file should contain a list of dictionaries where each dictionary corresponds to a conversation sample, containing the three keys: <code>User</code>, <code>Assistant</code>, and <code>Template</code>. The dataset is shuffled to ensure randomness before splitting.</p>
+<hr />
+<p>Next, the dataset is converted into a list of formatted <code>(x, y)</code> string pairs using the <strong><code>format_training_prompt</code></strong> function:</p>
+<div class="highlight"><pre><span></span><code><span class="n">dataset</span> <span class="o">=</span> <span class="p">[</span><span class="n">format_training_prompt</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="n">d</span><span class="p">[</span><span class="s2">&quot;User&quot;</span><span class="p">],</span>
+                                  <span class="n">assistant</span><span class="o">=</span><span class="n">d</span><span class="p">[</span><span class="s2">&quot;Assistant&quot;</span><span class="p">],</span>
+                                  <span class="n">template</span><span class="o">=</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="s2">&quot;Template&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+                                  <span class="p">)</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">dataset</span><span class="p">]</span>
+
+<span class="n">n</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span> <span class="o">*</span> <span class="n">train_split</span><span class="p">)</span>
+<span class="bp">self</span><span class="o">.</span><span class="n">train_dataset</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[:</span><span class="n">n</span><span class="p">]</span>
+<span class="bp">self</span><span class="o">.</span><span class="n">val_dataset</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="n">n</span><span class="p">:]</span>
+</code></pre></div>
+<p>Each entry is passed through <code>format_training_prompt</code>, which transforms raw JSON entries into fully formatted text prompts and target responses suitable for tokenization. This function handles insertion of special tokens (<code>&lt;SOT&gt;</code>, <code>&lt;SOU&gt;</code>, <code>&lt;EOU&gt;</code>, <code>&lt;SOA&gt;</code>, <code>&lt;EOA&gt;</code>) and confirms that the final assistant output aligns correctly with the training objective. (More detail about this will be covered in the next section, <code>Prompt Formatting</code>)</p>
+<p>The dataset is then divided into <strong>training</strong> and <strong>validation</strong> sets according to the provided split ratio. For instance, if <code>train_split=0.99</code>, 99% of examples go to training and 1% to validation.</p>
+<hr />
+<p>Finally, we initialize several bookkeeping variables:</p>
+<div class="highlight"><pre><span></span><code><span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span> <span class="o">=</span> <span class="n">batch_size</span>
+<span class="bp">self</span><span class="o">.</span><span class="n">train_epoch</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="bp">self</span><span class="o">.</span><span class="n">val_epoch</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="bp">self</span><span class="o">.</span><span class="n">train_idx</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="bp">self</span><span class="o">.</span><span class="n">val_idx</span> <span class="o">=</span> <span class="mi">0</span>
+
+<span class="c1"># Remove from memory</span>
+<span class="k">del</span> <span class="n">dataset</span>
+</code></pre></div>
+<ul>
+<li><code>train_epoch</code> and <code>val_epoch</code> track the number of completed epochs for each split.</li>
+<li><code>train_idx</code> and <code>val_idx</code> track where we are in the dataset for each epoch.</li>
+<li>The original <code>dataset</code> variable is deleted to conserve memory, as it can be quite large in full-scale fine-tuning.</li>
+</ul>
+<hr />
+<h3 id="get_batch-method"><code>get_batch</code> Method</h3>
+<p>The <strong><code>get_batch</code></strong> method is the main interface for retrieving data batches during training and evaluation.</p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">get_batch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">train</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">increment_val_idx</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="c1"># &quot;increment_val_idx&quot; is set to False when needing to eval a small section</span>
+
+    <span class="k">if</span> <span class="n">train</span><span class="p">:</span>
+        <span class="n">batch</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">train_dataset</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">train_idx</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">train_idx</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">train_idx</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">train_idx</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">train_dataset</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">train_idx</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">train_epoch</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">random</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">train_dataset</span><span class="p">)</span>
+</code></pre></div>
+<p>When <strong><code>train=True</code></strong>, the function slices a batch from <code>self.train_dataset</code> using the current index. After retrieving the batch, it increments the index to point to the next section. If the index reaches the end of the dataset, it resets back to zero, increments the epoch counter, and reshuffles the training data before proceeding to the nexte poch.</p>
+<p>This cyclical behavior ensures that the data pipeline continuously feeds new permutations of the dataset throughout fine-tuning.</p>
+<hr />
+<p>When <strong><code>train=False</code></strong>, the loader instead retrieves data from the validation set:</p>
+<div class="highlight"><pre><span></span><code><span class="k">else</span><span class="p">:</span>
+    <span class="n">batch</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">val_dataset</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">val_idx</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">val_idx</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">increment_val_idx</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">val_idx</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span>
+
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">val_idx</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">val_dataset</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">val_idx</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">val_epoch</span> <span class="o">+=</span> <span class="mi">1</span>
+
+    <span class="k">return</span> <span class="n">batch</span>
+</code></pre></div>
+<p>Here, the <strong><code>increment_val_idx</code></strong> parameter is important. During full validation (when evaluating the entire validation set), this flag remains <strong><code>True</code></strong> so that the loader moves through the data sequentially. However, for <strong>quick validation intervals</strong> during training — which happen often — <code>increment_val_idx</code> is set to <strong><code>False</code></strong>, ensuring the same small validation batch is reused for efficiency, to avoid excess computational cost. </p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../..", "features": ["content.math"], "search": "../../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.92b07e13.min.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

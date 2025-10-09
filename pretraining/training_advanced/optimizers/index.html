@@ -1,0 +1,2093 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../recap/">
+      
+      
+        <link rel="next" href="../loss_function/">
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.18">
+    
+    
+      
+        <title>Optimizer Details - SimpleLLaMA Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.7e37652d.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#optimizers-from-sgd-to-adamw" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="SimpleLLaMA Documentation" class="md-header__button md-logo" aria-label="SimpleLLaMA Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            SimpleLLaMA Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Optimizer Details
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="SimpleLLaMA Documentation" class="md-nav__button md-logo" aria-label="SimpleLLaMA Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    SimpleLLaMA Documentation
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Pretraining
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Pretraining
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Overview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dataset/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Dataset Preparation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_3" id="__nav_2_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Tokenization
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3">
+            <span class="md-nav__icon md-icon"></span>
+            Tokenization
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tokenization/overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Overview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tokenization/algorithms/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Algorithms
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tokenization/examples/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Examples
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tokenization/project/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Project Usage
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_4" id="__nav_2_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Model Architecture
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_4">
+            <span class="md-nav__icon md-icon"></span>
+            Model Architecture
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../model_architecture/overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Overview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../model_architecture/embeddings/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Embeddings
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../model_architecture/attention/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Attention
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../model_architecture/normalization/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Normalization
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../model_architecture/feedforward/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    FeedForward
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../model_architecture/decoder_block/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Layer Block
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../model_architecture/end_to_end/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    End To End
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_5" id="__nav_2_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Training Process (Beginner)
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_5">
+            <span class="md-nav__icon md-icon"></span>
+            Training Process (Beginner)
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../training_beginner/introduction/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Introduction
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../training_beginner/model_config/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Model Configurations
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../training_beginner/dataset_and_batching/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Dataset and Batching
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../training_beginner/scheduler/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Scheduler
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../training_beginner/training_loop/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Training Loop
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2_6" id="__nav_2_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Training Process (Advanced)
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_6_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2_6">
+            <span class="md-nav__icon md-icon"></span>
+            Training Process (Advanced)
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../recap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Basics Recap
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Optimizer Details
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    Optimizer Details
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#sgd-the-fundamental-optimizer" class="md-nav__link">
+    <span class="md-ellipsis">
+      SGD: The Fundamental Optimizer
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sgd-with-momentum" class="md-nav__link">
+    <span class="md-ellipsis">
+      SGD With Momentum
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="SGD With Momentum">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#velocity-update" class="md-nav__link">
+    <span class="md-ellipsis">
+      Velocity Update
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#parameter-update" class="md-nav__link">
+    <span class="md-ellipsis">
+      Parameter Update
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#adam-optimizer" class="md-nav__link">
+    <span class="md-ellipsis">
+      Adam Optimizer
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Adam Optimizer">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#first-moment-momentum" class="md-nav__link">
+    <span class="md-ellipsis">
+      First Moment (Momentum)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#second-moment-variance" class="md-nav__link">
+    <span class="md-ellipsis">
+      Second Moment (Variance)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bias-correction" class="md-nav__link">
+    <span class="md-ellipsis">
+      Bias Correction
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#adamw-optimizer" class="md-nav__link">
+    <span class="md-ellipsis">
+      AdamW Optimizer
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="AdamW Optimizer">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-problem-with-l2-regularization-in-adam" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Problem with L2 Regularization in Adam
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-solution-decoupled-weight-decay" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Solution: Decoupled Weight Decay
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#optimizer-summary-table" class="md-nav__link">
+    <span class="md-ellipsis">
+      Optimizer Summary Table
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../loss_function/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Cross Entropy Loss
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../gradient_accumulation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Gradient Accumulation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ddp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Distributed Data Parallel
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../throughput_optimizations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Throughput Optimizations
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ckpt_and_eval/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Checkpointing and Evaluations
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../final_walkthrough/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Final Walkthrough
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Supervised Fine-Tuning
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Supervised Fine-Tuning
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../sft/overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Overview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../sft/dataset/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Dataset
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../sft/prompt_formatting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Prompt Formatting
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../sft/utils/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Utilities
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../sft/finetuning/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Finetuning Process
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    RLHF
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            RLHF
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../rlhf/overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Overview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../rlhf/methods/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Methods
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Misc
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Misc
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../misc/benchmarking/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Benchmarking
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../misc/inference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Inference
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../misc/notes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Notes
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Custom Training
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            Custom Training
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../custom_training/pretraining/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Pretraining
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../custom_training/sft/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Supervised Fine Tuning
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../custom_training/rlhf/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    RLHF
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#sgd-the-fundamental-optimizer" class="md-nav__link">
+    <span class="md-ellipsis">
+      SGD: The Fundamental Optimizer
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sgd-with-momentum" class="md-nav__link">
+    <span class="md-ellipsis">
+      SGD With Momentum
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="SGD With Momentum">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#velocity-update" class="md-nav__link">
+    <span class="md-ellipsis">
+      Velocity Update
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#parameter-update" class="md-nav__link">
+    <span class="md-ellipsis">
+      Parameter Update
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#adam-optimizer" class="md-nav__link">
+    <span class="md-ellipsis">
+      Adam Optimizer
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Adam Optimizer">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#first-moment-momentum" class="md-nav__link">
+    <span class="md-ellipsis">
+      First Moment (Momentum)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#second-moment-variance" class="md-nav__link">
+    <span class="md-ellipsis">
+      Second Moment (Variance)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bias-correction" class="md-nav__link">
+    <span class="md-ellipsis">
+      Bias Correction
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#adamw-optimizer" class="md-nav__link">
+    <span class="md-ellipsis">
+      AdamW Optimizer
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="AdamW Optimizer">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-problem-with-l2-regularization-in-adam" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Problem with L2 Regularization in Adam
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-solution-decoupled-weight-decay" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Solution: Decoupled Weight Decay
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#optimizer-summary-table" class="md-nav__link">
+    <span class="md-ellipsis">
+      Optimizer Summary Table
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="optimizers-from-sgd-to-adamw">Optimizers: From SGD to AdamW</h1>
+<p><strong>Note:</strong> This section covers four important optimizers used for updating model weights via backpropagation: SGD, SGD with Momentum, Adam, and AdamW. While other optimizers like AdaGrad and RMSProp exist, they fall outside the scope of this guide.</p>
+<p>This section is heavy in mathematical derivation and can be skipped without impacting further sections. It assumes the reader has a fair understanding of backpropagation and gradient computation. If not, the videos <a href="https://www.youtube.com/watch?v=Ilg3gGewQ5U">DL Chapter 3</a> and <a href="https://www.youtube.com/watch?v=tIeHLnjs5U8">DL Chapter 4</a> by 3Blue1Brown are highly recommended.</p>
+<hr />
+<h2 id="sgd-the-fundamental-optimizer">SGD: The Fundamental Optimizer</h2>
+<p>Stochastic Gradient Descent (SGD) is the most basic and historically important optimizer, forming the foundation for more advanced variants.</p>
+<p>The parameter update rule is:</p>
+<div class="arithmatex">\[
+\theta_{t+1} = \theta_t - \eta \cdot \nabla_\theta L(\theta_t)
+\]</div>
+<p><strong>Key Components:</strong>  </p>
+<ul>
+<li><span class="arithmatex">\(\theta_{t+1}\)</span>: The updated parameter.</li>
+<li><span class="arithmatex">\(\theta_t\)</span>: The current parameter.</li>
+<li><span class="arithmatex">\(\eta\)</span>: The learning rate.</li>
+<li><span class="arithmatex">\(\nabla_\theta L(\theta_t)\)</span>: The gradient of the loss function with respect to the parameter <span class="arithmatex">\(\theta\)</span> at timestep <span class="arithmatex">\(t\)</span>.</li>
+</ul>
+<p>The update is performed by subtracting the product of the learning rate and the gradient from the current parameter value. This nudges the parameter value towards a (local) minimum. Over many iterations, this process converges to a final set of parameters for the model. It is simple, yet effective.</p>
+<hr />
+<h2 id="sgd-with-momentum">SGD With Momentum</h2>
+<p>SGD with Momentum is a variant designed to accelerate convergence and reduce oscillations (the "zigzag" behavior) often seen in vanilla SGD.</p>
+<p>It introduces a velocity term, which is a running average of past gradients.</p>
+<h3 id="velocity-update">Velocity Update</h3>
+<div class="arithmatex">\[
+v_t = \beta v_{t-1} + \nabla_\theta L(\theta_t)
+\]</div>
+<h3 id="parameter-update">Parameter Update</h3>
+<div class="arithmatex">\[
+\theta_{t+1} = \theta_t - \eta v_t
+\]</div>
+<p>We introduce a new velocity term, <span class="arithmatex">\(v_t\)</span>, which accumulates the gradient direction. This velocity is composed of the current batch's gradient plus a fraction of the previous timestep's velocity (<span class="arithmatex">\(\beta v_{t-1}\)</span>). The hyperparameter <span class="arithmatex">\(\beta\)</span> is typically set to a value like 0.9.</p>
+<p>The learning rate <span class="arithmatex">\(\eta\)</span> then scales the entire velocity term in the final parameter update. This separation makes the roles clear: the velocity determines the <strong>direction</strong> and the learning rate determines the <strong>step size</strong>.</p>
+<p>The purpose is to 'smooth out' the path taken during descent. The velocity term acts as a weighted sum of past gradients, giving inertia to the optimization process. If recent gradients point in a consistent direction, the velocity builds up, leading to faster progress.</p>
+<p>Let's trace the first few steps, starting at <span class="arithmatex">\(t=1\)</span> (assuming <span class="arithmatex">\(v_0 = 0\)</span>):  </p>
+<ul>
+<li><strong><span class="arithmatex">\(t=1\)</span>:</strong> <span class="arithmatex">\(v_1 = \beta \cdot 0 + g_1 = g_1\)</span> → <span class="arithmatex">\(\theta_2 = \theta_1 - \eta g_1\)</span></li>
+<li><strong><span class="arithmatex">\(t=2\)</span>:</strong> <span class="arithmatex">\(v_2 = \beta v_1 + g_2 = \beta g_1 + g_2\)</span> → <span class="arithmatex">\(\theta_3 = \theta_2 - \eta (\beta g_1 + g_2)\)</span></li>
+<li><strong><span class="arithmatex">\(t=3\)</span>:</strong> <span class="arithmatex">\(v_3 = \beta v_2 + g_3 = \beta^2 g_1 + \beta g_2 + g_3\)</span> → <span class="arithmatex">\(\theta_4 = \theta_3 - \eta (\beta^2 g_1 + \beta g_2 + g_3)\)</span></li>
+</ul>
+<p>As this process continues, the influence of a gradient from step <span class="arithmatex">\(t-i\)</span> is scaled by <span class="arithmatex">\(\beta^i\)</span>. With <span class="arithmatex">\(\beta=0.9\)</span>, the optimizer "remembers" the direction of the last ~30 steps. This leads to a smoother, faster path towards the minimum.</p>
+<p>The general form of the velocity at step <span class="arithmatex">\(t\)</span> can be expressed as:
+$$
+v_t = \sum_{i=1}^{t} \beta^{t-i} \nabla_\theta L(\theta_i)
+$$</p>
+<hr />
+<h2 id="adam-optimizer">Adam Optimizer</h2>
+<p>The Adam (Adaptive Moment Estimation) optimizer, introduced in 2015, builds upon SGD with Momentum by incorporating an adaptive learning rate for each parameter. It uses estimates of both the first moment (the mean of gradients, like momentum) and the second moment (the uncentered variance of gradients) of the gradients.</p>
+<p>Adam introduces a third hyperparameter, <span class="arithmatex">\(\beta_2\)</span>, which controls the decay rate for the second moment (<span class="arithmatex">\(\beta\)</span> in SGD With Momentum is now referred to as <span class="arithmatex">\(\beta_1\)</span>). Let <span class="arithmatex">\(g_t\)</span> be the shorthand for <span class="arithmatex">\(\nabla_\theta L(\theta_t)\)</span>.</p>
+<p>The parameter update rule is:</p>
+<div class="arithmatex">\[
+\theta_{t+1} = \theta_t - \eta \frac{\hat m_t}{\sqrt{\hat v_t} + \epsilon}
+\]</div>
+<p>We update the parameter by subtracting the bias-corrected first moment (<span class="arithmatex">\(\hat m_t\)</span>), normalized by the square root of the bias-corrected second moment (<span class="arithmatex">\(\sqrt{\hat v_t}\)</span>), and scaled by the learning rate <span class="arithmatex">\(\eta\)</span>. A small constant <span class="arithmatex">\(\epsilon\)</span> (e.g., <span class="arithmatex">\(10^{-8}\)</span>) is added to prevent division by zero.</p>
+<h3 id="first-moment-momentum">First Moment (Momentum)</h3>
+<div class="arithmatex">\[
+m_t = \beta_1 m_{t-1} + (1-\beta_1) g_t
+\]</div>
+<p>This is similar to the velocity in SGD with Momentum. The key difference is the use of <span class="arithmatex">\((1-\beta_1)\)</span> as a scaling factor for the current gradient. This design, along with the subsequent bias correction, ensures that the expected value of <span class="arithmatex">\(m_t\)</span> is approximately equal to the expected value of the gradients <span class="arithmatex">\(E[g_t]\)</span>. The purpose is identical: to smooth the gradient signal by incorporating past information.</p>
+<h3 id="second-moment-variance">Second Moment (Variance)</h3>
+<div class="arithmatex">\[
+v_t = \beta_2 v_{t-1} + (1-\beta_2) g_t^2
+\]</div>
+<p>This calculation is analogous to the first moment but uses a different hyperparameter, <span class="arithmatex">\(\beta_2\)</span> (typically set to 0.999), and operates on the squared gradients. The squared value provides a measure of the magnitude of the gradients, irrespective of their sign. A large <span class="arithmatex">\(v_t\)</span> indicates that the parameter has historically had large gradients. This term is used to adaptively scale the learning rate down for such parameters.</p>
+<h3 id="bias-correction">Bias Correction</h3>
+<p>A critical step in Adam is bias correction. At the beginning of training (low <span class="arithmatex">\(t\)</span>), the moving averages <span class="arithmatex">\(m_t\)</span> and <span class="arithmatex">\(v_t\)</span> are initialized to zero and are therefore biased towards zero. Bias correction compensates for this initial bias.</p>
+<div class="arithmatex">\[
+\hat m_t = \frac{m_t}{1 - \beta_1^t}, \quad \hat v_t = \frac{v_t}{1 - \beta_2^t}
+\]</div>
+<p>Let's see why this is necessary at <span class="arithmatex">\(t=1\)</span>:  </p>
+<ul>
+<li><span class="arithmatex">\(m_1 = \beta_1 \cdot 0 + (1-\beta_1) g_1 = (1-0.9) g_1 = 0.1 \cdot g_1\)</span>. This is much smaller than the true gradient <span class="arithmatex">\(g_1\)</span>.</li>
+<li><span class="arithmatex">\(\hat m_1 = \frac{m_1}{1 - 0.9^1} = \frac{m_1}{0.1} = g_1\)</span>. The bias correction scales <span class="arithmatex">\(m_1\)</span> back up to the correct magnitude.</li>
+</ul>
+<p>As <span class="arithmatex">\(t\)</span> increases, <span class="arithmatex">\(\beta^t\)</span> approaches zero, and the denominator <span class="arithmatex">\(1-\beta^t\)</span> approaches 1, making the bias correction factor negligible. This is why Adam is called an <em>adaptive learning rate</em> optimizer: the effective step size for each parameter is <span class="arithmatex">\(\eta / \sqrt{\hat v_t}\)</span>, which adjusts based on the historical magnitude of the parameter's gradients.</p>
+<hr />
+<h2 id="adamw-optimizer">AdamW Optimizer</h2>
+<p>AdamW is a refined version of Adam that is arguably the most widely used optimizer today. The key difference lies in how it handles <strong>Weight Decay</strong>.</p>
+<h3 id="the-problem-with-l2-regularization-in-adam">The Problem with L2 Regularization in Adam</h3>
+<p>Traditionally, L2 regularization is added directly to the loss function:
+$$
+L_{total}(\theta) = L_{original}(\theta) + R(\theta) = L_{original}(\theta) + \frac{\lambda}{2} |\theta|^2
+$$</p>
+<p>The gradient of the regularization term is <span class="arithmatex">\(\nabla_\theta R(\theta) = \lambda \theta\)</span>. Therefore, the gradient used for the update in standard Adam becomes:
+$$
+\nabla L_{total} = \nabla L_{original}(\theta_t) + \lambda \theta_t
+$$</p>
+<p>This intertwining of weight decay with the adaptive gradient mechanism is suboptimal. Because Adam adapts the learning rate per parameter based on <span class="arithmatex">\(v_t\)</span>, the effective strength of the weight decay becomes coupled with the history of the gradients. This coupling can prevent weight decay from acting as a consistent regularizer, often making the hyperparameter <span class="arithmatex">\(\lambda\)</span> harder to tune and leading to worse generalization.</p>
+<h3 id="the-solution-decoupled-weight-decay">The Solution: Decoupled Weight Decay</h3>
+<p>AdamW decouples the weight decay term from the adaptive gradient update. Instead of adding it to the loss, weight decay is applied directly to the weights <em>after</em> the adaptive update.</p>
+<p>The parameter update rule for AdamW is:</p>
+<div class="arithmatex">\[
+\theta_{t+1} = \theta_t - \eta \left( \frac{\hat m_t}{\sqrt{\hat v_t} + \epsilon} \right) - \eta \lambda \theta_t
+\]</div>
+<p><strong>Key Difference:</strong> The term <span class="arithmatex">\(- \eta \lambda \theta_t\)</span> is now separate. It is applied directly to the weights as a straightforward weight decay, independent of the adaptive scaling factor <span class="arithmatex">\(1/(\sqrt{\hat v_t} + \epsilon)\)</span>.</p>
+<p>This decoupling ensures that the weight decay is applied with a strength determined solely by the product <span class="arithmatex">\(\eta \lambda\)</span>, making it a true regularization term that acts consistently on the weights. This approach has been shown to improve generalization performance and makes the tuning of the weight decay hyperparameter <span class="arithmatex">\(\lambda\)</span> more reliable and consistent across different models and datasets. AdamW is often the default choice for training modern deep neural networks, particularly Transformers.</p>
+<h2 id="optimizer-summary-table">Optimizer Summary Table</h2>
+<table>
+<thead>
+<tr>
+<th>Optimizer</th>
+<th>Update Rule (simplified)</th>
+<th>Extra Hyperparams</th>
+<th>Intuition</th>
+<th>Pros</th>
+<th>Cons</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>SGD</strong></td>
+<td><span class="arithmatex">\(\theta_{t+1} = \theta_t - \eta g_t\)</span></td>
+<td>–</td>
+<td>Take a step opposite the gradient.</td>
+<td>Simple, fast, widely understood.</td>
+<td>Can be very noisy, slow convergence.</td>
+</tr>
+<tr>
+<td><strong>SGD + Momentum</strong></td>
+<td><span class="arithmatex">\(v_t = \beta v_{t-1} + g_t\)</span> <br> <span class="arithmatex">\(\theta_{t+1} = \theta_t - \eta v_t\)</span></td>
+<td><span class="arithmatex">\(\beta\)</span> (momentum)</td>
+<td>Averages past gradients to smooth updates (“ball rolling downhill”).</td>
+<td>Faster convergence, reduces zigzagging.</td>
+<td>Still uses global LR, sensitive to hyperparam tuning.</td>
+</tr>
+<tr>
+<td><strong>Adam</strong></td>
+<td><span class="arithmatex">\(m_t = \beta_1 m_{t-1} + (1-\beta_1) g_t\)</span> <br> <span class="arithmatex">\(v_t = \beta_2 v_{t-1} + (1-\beta_2) g_t^2\)</span> <br> <span class="arithmatex">\(\theta_{t+1} = \theta_t - \eta \frac{\hat m_t}{\sqrt{\hat v_t} + \epsilon}\)</span></td>
+<td><span class="arithmatex">\(\beta_1\)</span>, <span class="arithmatex">\(\beta_2\)</span>, <span class="arithmatex">\(\epsilon\)</span></td>
+<td>Combines momentum (trend of gradients) with variance scaling (stability).</td>
+<td>Adaptive per-parameter learning rate; works well out of the box.</td>
+<td>Can overfit, sometimes worse generalization than SGD.</td>
+</tr>
+<tr>
+<td><strong>AdamW</strong></td>
+<td><span class="arithmatex">\(\theta_{t+1} = \theta_t - \eta \frac{\hat m_t}{\sqrt{\hat v_t} + \epsilon} - \eta \lambda \theta_t\)</span></td>
+<td><span class="arithmatex">\(\beta_1\)</span>, <span class="arithmatex">\(\beta_2\)</span>, <span class="arithmatex">\(\epsilon\)</span>, <span class="arithmatex">\(\lambda\)</span></td>
+<td>Same as Adam, but with <strong>decoupled weight decay</strong>.</td>
+<td>Strong generalization; default choice for Transformers and large-scale models.</td>
+<td>More compute/memory than SGD; still sensitive to hyperparams.</td>
+</tr>
+</tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../../..", "features": ["content.math"], "search": "../../../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.92b07e13.min.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>
