@@ -8,7 +8,6 @@
 - [Core Features](#core-features)
 - [Project Roadmap](#project-roadmap)
 - [How To Use](#how-to-use)
-  - [TLDR](#tldr)
 - [Model Architecture](#model-architecture)
   - [Transformer Architecture (Decoder-Only)](#transformer-architecture-decoder-only)
   - [Component Details](#component-details)
@@ -51,7 +50,7 @@ Built with flexibility in mind for research and experimentation purposes.
 
 ## Development Status
 
-This repository is currently under **active development**.  
+This project/readme as a whole is currently under **active development**.  
 Certain parts, like documentation and RLHF modules, are still being finalized, with expected completion around **[Late November, 2025]**.  
 While the pretraining and SFT stages is mostly complete and functional, certain components (e.g., RLHF implementation, extended benchmarks) remains WIP.
 
@@ -96,17 +95,7 @@ Feel free to explore, test, and contribute, but please note that the repository 
 ---
 
 ## How To Use
-<Instructions on how to use the model, including downloading from HF, placing files in correct folders, and modifying the config file>
-<Include directions on how to use with custom CLI and with OpenWebUI (If that's possible, else might need to create it manually?)>
-<Include notes to run absolute runs, E.g. cd into SimpleLLaMA then run from there, like python3 simple_llama/inference/cli.py due to package structure>
-< for example py -m simple_llama.finetune.ft_test1>
-<Not mering lora weights>
-Need to run 'pip install -e .' if want to run without full qualifications
 
-
-### TLDR
-
-<TLDR section for the above, probably just download one of the basic models, and load it in to directly use?>
 
 ---
 
@@ -167,7 +156,6 @@ Need to run 'pip install -e .' if want to run without full qualifications
 - **Final Linear Layer**: Maps the hidden representation back to the vocabulary logits for language modeling.
 
 
-<Should mention the configs for Final/SpecDec model>
 
 ---
 
@@ -359,12 +347,8 @@ The base model is trained from scratch using a causal language modeling objectiv
   - `.generate()` uses top-p/temperature sampling to produce completions from custom prompts.
 
 - **Scaling Law Evaluation**:
-  - <Write down if the training loss curve for this base model matches that of expectation from test runs!>
+  - ...
 
-
-<Note down time taken, type/number of GPU used, and other observations!>
-<Talk about configs used? Like 2048 n_embd, x layers, x head, and such. Also, tokens per udpate step achieved via grad accum>
-<Insert image of training loss>
 
 ---
 
@@ -400,20 +384,10 @@ Approach/Pipeline/Plans- TBD
 
 ## Benchmarks
 
-Evaluate against other HF models using lm-evaluation-harness, along with GPT3-XL model at page 63
-<Mention that some questions are filtered out due to non-ascii chars, formats, etc.,>
-Though largely the same, should take it with a grain of salt.
-
-GPT mentioned: 
-GPT-J, LLaMA-1 7B, LLaMA-1 1.3B, TinyLlama (1.1B), MBZUAI LaMini-GPT
-Models and their score is comparable, Take a look at those stats. Looks pretty promising.
-
 ---
 
 
 ## LoRA Fine-Tuning
-
-< Talk about LoRA>
 
 
 ---
@@ -427,14 +401,10 @@ Models and their score is comparable, Take a look at those stats. Looks pretty p
   - Reuse same tokenizer and embedding dimensions between models.
   - Use cached KV pairs to avoid recomputation during rejection.
 
-<Add other info like training dataset, training loss, how well it fits the scaling law and such>
 
 ---
 
 ## Custom Model Training
-
-<Talk about how to train a custom model using my pipeline?>
-
 
 ---
 
@@ -502,7 +472,6 @@ For small-to-mid scale models, though, MHA remains the practical default (Which 
 (The above was measured using a batch size of 1 and sequence length of 512. Throughput will differ across various configurations/devices)
 
 Overall, it seems like performance boost is mostly inference-oriented due to KV cache memory requirement-reduction by using latent representation of embedding vectors
-<Hmm...add more later on?>
 
 ---
 
