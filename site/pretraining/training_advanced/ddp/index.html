@@ -1,0 +1,2160 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../gradient_accumulation/">
+      
+      
+        <link rel="next" href="../throughput_optimizations/">
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.18">
+    
+    
+      
+        <title>Distributed Data Parallel - SimpleLLaMA Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.7e37652d.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#distributed-data-parallel" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="SimpleLLaMA Documentation" class="md-header__button md-logo" aria-label="SimpleLLaMA Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            SimpleLLaMA Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Distributed Data Parallel
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="SimpleLLaMA Documentation" class="md-nav__button md-logo" aria-label="SimpleLLaMA Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    SimpleLLaMA Documentation
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Pretraining
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Pretraining
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Overview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dataset/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Dataset Preparation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_3" id="__nav_2_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Tokenization
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3">
+            <span class="md-nav__icon md-icon"></span>
+            Tokenization
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tokenization/overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Overview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tokenization/algorithms/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Algorithms
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tokenization/examples/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Examples
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tokenization/project/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Project Usage
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_4" id="__nav_2_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Model Architecture
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_4">
+            <span class="md-nav__icon md-icon"></span>
+            Model Architecture
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../model_architecture/overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Overview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../model_architecture/embeddings/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Embeddings
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../model_architecture/attention/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Attention
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../model_architecture/normalization/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Normalization
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../model_architecture/feedforward/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    FeedForward
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../model_architecture/decoder_block/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Layer Block
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../model_architecture/end_to_end/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    End To End
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_5" id="__nav_2_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Training Process (Beginner)
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_5">
+            <span class="md-nav__icon md-icon"></span>
+            Training Process (Beginner)
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../training_beginner/introduction/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Introduction
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../training_beginner/model_config/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Model Configurations
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../training_beginner/dataset_and_batching/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Dataset and Batching
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../training_beginner/scheduler/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Scheduler
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../training_beginner/training_loop/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Training Loop
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2_6" id="__nav_2_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Training Process (Advanced)
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_6_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2_6">
+            <span class="md-nav__icon md-icon"></span>
+            Training Process (Advanced)
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../recap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Basics Recap
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../optimizers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Optimizer Details
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../loss_function/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Cross Entropy Loss
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../gradient_accumulation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Gradient Accumulation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Distributed Data Parallel
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    Distributed Data Parallel
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#introduction" class="md-nav__link">
+    <span class="md-ellipsis">
+      Introduction
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-ddp-works-the-core-concepts" class="md-nav__link">
+    <span class="md-ellipsis">
+      How DDP Works: The Core Concepts
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="How DDP Works: The Core Concepts">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-process-based-parallelism" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Process-Based Parallelism
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-the-synchronization-process" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. The Synchronization Process
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ddp-implementation-in-our-training-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      DDP Implementation in Our Training Code
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="DDP Implementation in Our Training Code">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#initialization-and-setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      Initialization and Setup
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#launching-ddp-training" class="md-nav__link">
+    <span class="md-ellipsis">
+      Launching DDP Training
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#data-distribution-strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      Data Distribution Strategy
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gradient-accumulation-with-ddp" class="md-nav__link">
+    <span class="md-ellipsis">
+      Gradient Accumulation with DDP
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#model-wrapping-and-compilation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Model Wrapping and Compilation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gradient-synchronization-mechanics" class="md-nav__link">
+    <span class="md-ellipsis">
+      Gradient Synchronization Mechanics
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#theoretical-speedup" class="md-nav__link">
+    <span class="md-ellipsis">
+      Theoretical Speedup
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#integration-with-other-parallelism-strategies" class="md-nav__link">
+    <span class="md-ellipsis">
+      Integration with Other Parallelism Strategies
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conclusion" class="md-nav__link">
+    <span class="md-ellipsis">
+      Conclusion
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../throughput_optimizations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Throughput Optimizations
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ckpt_and_eval/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Checkpointing and Evaluations
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../final_walkthrough/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Final Walkthrough
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Supervised Fine-Tuning
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Supervised Fine-Tuning
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../sft/overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Overview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../sft/dataset/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Dataset
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../sft/prompt_formatting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Prompt Formatting
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../sft/utils/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Utilities
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../sft/finetuning/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Finetuning Process
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    RLHF
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            RLHF
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../rlhf/overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Overview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../rlhf/methods/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Methods
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Misc
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Misc
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../misc/benchmarking/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Benchmarking
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../misc/inference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Inference
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../misc/notes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Notes
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Custom Training
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            Custom Training
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../custom_training/pretraining/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Pretraining
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../custom_training/sft/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Supervised Fine Tuning
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../custom_training/rlhf/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    RLHF
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#introduction" class="md-nav__link">
+    <span class="md-ellipsis">
+      Introduction
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-ddp-works-the-core-concepts" class="md-nav__link">
+    <span class="md-ellipsis">
+      How DDP Works: The Core Concepts
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="How DDP Works: The Core Concepts">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-process-based-parallelism" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Process-Based Parallelism
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-the-synchronization-process" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. The Synchronization Process
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ddp-implementation-in-our-training-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      DDP Implementation in Our Training Code
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="DDP Implementation in Our Training Code">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#initialization-and-setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      Initialization and Setup
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#launching-ddp-training" class="md-nav__link">
+    <span class="md-ellipsis">
+      Launching DDP Training
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#data-distribution-strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      Data Distribution Strategy
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gradient-accumulation-with-ddp" class="md-nav__link">
+    <span class="md-ellipsis">
+      Gradient Accumulation with DDP
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#model-wrapping-and-compilation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Model Wrapping and Compilation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gradient-synchronization-mechanics" class="md-nav__link">
+    <span class="md-ellipsis">
+      Gradient Synchronization Mechanics
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#theoretical-speedup" class="md-nav__link">
+    <span class="md-ellipsis">
+      Theoretical Speedup
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#integration-with-other-parallelism-strategies" class="md-nav__link">
+    <span class="md-ellipsis">
+      Integration with Other Parallelism Strategies
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conclusion" class="md-nav__link">
+    <span class="md-ellipsis">
+      Conclusion
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="distributed-data-parallel">Distributed Data Parallel</h1>
+<h2 id="introduction">Introduction</h2>
+<p>Training modern large language models requires immense computational resources. Even for a small LLM like the one trained in this project, with 1.3B parameters, training on 50B tokens would take many tens of days on a single GPU. Scaling upwards on larger model and bigger dataset sizes, it would become infeasible, and so we need to find a way to expand to multiple GPU usage. </p>
+<p><strong>Distributed Data Parallel (DDP)</strong> is PyTorch's solution for multi-GPU training that allows you to:  </p>
+<ul>
+<li>Distribute the training workload across multiple GPUs</li>
+<li>Scale to much larger batch sizes</li>
+<li>Reduce training time significantly</li>
+<li>Utilize expensive hardware efficiently</li>
+</ul>
+<p>In this guide, we'll explore how DDP works and how it's implemented in the LLM training script.</p>
+<hr />
+<h2 id="how-ddp-works-the-core-concepts">How DDP Works: The Core Concepts</h2>
+<h3 id="1-process-based-parallelism">1. Process-Based Parallelism</h3>
+<p>DDP uses a multi-process approach where each GPU runs its own independent process with a complete copy of the model:</p>
+<div class="highlight"><pre><span></span><code>Process 0 (GPU 0)   Process 1 (GPU 1)   Process 2 (GPU 2)
+     ↓                   ↓                   ↓
+ Model Copy 0       Model Copy 1         Model Copy 2
+     ↓                   ↓                   ↓
+ Data Shard 0       Data Shard 1         Data Shard 2
+</code></pre></div>
+<p>Here, each process has it's own model replica. In each forward pass, they would get their own subset of data, compute gradients independently, and synchronize gradients across all processes.</p>
+<h3 id="2-the-synchronization-process">2. The Synchronization Process</h3>
+<p>The key to DDP is gradient synchronization. Here's what happens each training step:</p>
+<ol>
+<li><strong>Forward Pass</strong>: Each GPU processes its mini-batch independently  </li>
+<li><strong>Backward Pass</strong>: Each GPU computes gradients for its portion  </li>
+<li><strong>All-Reduce</strong>: Gradients are averaged across all GPUs  </li>
+<li><strong>Optimizer Step</strong>: Each GPU updates its model weights identically  </li>
+</ol>
+<p>This ensures all model replicas stay synchronized throughout training.</p>
+<hr />
+<h2 id="ddp-implementation-in-our-training-code">DDP Implementation in Our Training Code</h2>
+<h3 id="initialization-and-setup">Initialization and Setup</h3>
+<p>Let's examine how DDP is initialized in the script:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># DDP Initialization</span>
+<span class="n">ddp</span> <span class="o">=</span> <span class="s2">&quot;RANK&quot;</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span> <span class="ow">and</span> <span class="s2">&quot;WORLD_SIZE&quot;</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span>
+<span class="k">if</span> <span class="n">ddp</span><span class="p">:</span>
+    <span class="k">assert</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">(),</span> <span class="s2">&quot;Should have cuda available if using DDP!&quot;</span>
+    <span class="n">init_process_group</span><span class="p">(</span><span class="n">backend</span><span class="o">=</span><span class="s2">&quot;nccl&quot;</span><span class="p">)</span>  <span class="c1"># Initialize the distributed communication backend</span>
+    <span class="n">ddp_rank</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;RANK&quot;</span><span class="p">])</span>
+    <span class="n">ddp_world_size</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;WORLD_SIZE&quot;</span><span class="p">])</span>
+    <span class="n">device</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;cuda:</span><span class="si">{</span><span class="n">ddp_rank</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">set_device</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+    <span class="n">master_process</span> <span class="o">=</span> <span class="n">ddp_rank</span> <span class="o">==</span> <span class="mi">0</span>
+<span class="k">else</span><span class="p">:</span>  <span class="c1"># Non-Distributed setup</span>
+    <span class="n">ddp_rank</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">ddp_world_size</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">master_process</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">device</span> <span class="o">=</span> <span class="s2">&quot;cuda&quot;</span> <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">()</span> <span class="k">else</span> <span class="s2">&quot;cpu&quot;</span>
+</code></pre></div>
+<p><strong>Key Components:</strong>  </p>
+<ul>
+<li><strong>RANK</strong>: Unique identifier for each process (0, 1, 2, ...)  </li>
+<li><strong>WORLD_SIZE</strong>: Total number of processes (equal to number of GPUs)  </li>
+<li><strong>backend="nccl"</strong>: NVIDIA Collective Communications Library - optimized for GPU-to-GPU communication  </li>
+<li><strong>Master Process</strong>: This is the Rank 0 process that handles logging, checkpointing, and other major functionalities</li>
+</ul>
+<p>Small note about Master Process: 
+When training on a single GPU, that process is the only process running, which is the master process. However when dealing with multiple GPUs, we would need to choose a single process to serve as the 'master process'. Otherwise, when we save model checkpoints, loggings, and such later on, it will be duplicated many times. 
+By convention, master process is the process with a Rank value of 0. </p>
+<h3 id="launching-ddp-training">Launching DDP Training</h3>
+<p>DDP requires a specific launch command that sets up the environment variables:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Launch with 8 GPUs</span>
+torchrun<span class="w"> </span>--standalone<span class="w"> </span>--nproc_per_node<span class="o">=</span><span class="m">8</span><span class="w"> </span>train.py
+
+<span class="c1"># Alternative older syntax</span>
+python<span class="w"> </span>-m<span class="w"> </span>torch.distributed.launch<span class="w"> </span>--nproc_per_node<span class="o">=</span><span class="m">8</span><span class="w"> </span>train.py
+</code></pre></div>
+<p>The <code>torchrun</code> command automatically sets:  </p>
+<ul>
+<li><strong>RANK</strong> - process rank (0 to 7)  </li>
+<li><strong>WORLD_SIZE</strong> - total processes (8)  </li>
+<li><strong>LOCAL_RANK</strong> - local GPU index  </li>
+</ul>
+<h3 id="data-distribution-strategy">Data Distribution Strategy</h3>
+<p><strong>Batch Distribution</strong><br />
+In DDP, we distribute various batches to different GPUs. 
+Recall the example in the previous section about gradient accumulation. 
+Assuming we have <code>batch_size=4</code>, <code>seq_len=2048</code>, <code>tokens_per_update=2**19</code>, then we would need 64 forward passes before we take a single optimizer step.  </p>
+<p>However if we now parallize this operation across 4 GPUs, in each forward pass, we would process 4 subsets at once, reducing the total number of forward passes by a factor of <code>num_gpus</code>, in this case, from 64 forwards passes per optimizer step to 16 forward passes per optimizer step (since each forward pass now is equivalent to 4 forward pass on a single GPU)</p>
+<p>Our dataset loader handles this distribution:</p>
+<div class="highlight"><pre><span></span><code><span class="n">dataset_loader</span> <span class="o">=</span> <span class="n">DatasetLoader</span><span class="p">(</span>
+    <span class="n">batch</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span> 
+    <span class="n">seq_len</span><span class="o">=</span><span class="n">max_seq_len</span><span class="p">,</span> 
+    <span class="n">process_rank</span><span class="o">=</span><span class="n">ddp_rank</span><span class="p">,</span>
+    <span class="n">num_processes</span><span class="o">=</span><span class="n">ddp_world_size</span><span class="p">,</span> 
+    <span class="n">dataset_dir</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">dataset_dir</span><span class="p">,</span> 
+    <span class="n">device</span><span class="o">=</span><span class="n">device</span>
+<span class="p">)</span>
+</code></pre></div>
+<p>Each process gets a different shard of data, ensuring no overlap between GPUs.</p>
+<h3 id="gradient-accumulation-with-ddp">Gradient Accumulation with DDP</h3>
+<p>Gradient accumulation requires special handling in DDP. We need to ensure the accumulation steps are properly synchronized:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Need to make sure gradient accumulation step is evenly divisible by # GPUs</span>
+<span class="k">assert</span> <span class="n">grad_accum_steps</span> <span class="o">%</span> <span class="n">ddp_world_size</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span> <span class="p">(</span>
+    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">grad_accum_steps</span><span class="si">=}</span><span class="s2"> % </span><span class="si">{</span><span class="n">ddp_world_size</span><span class="si">=}</span><span class="s2"> != 0</span><span class="se">\n</span><span class="s2">&quot;</span>
+    <span class="sa">f</span><span class="s2">&quot;Please adjust &#39;tokens_per_update&#39; in config file accordingly!&quot;</span>
+<span class="p">)</span>
+
+<span class="c1"># Adjust accumulation steps per process</span>
+<span class="n">grad_accum_steps</span> <span class="o">=</span> <span class="n">grad_accum_steps</span> <span class="o">//</span> <span class="n">ddp_world_size</span>
+</code></pre></div>
+<p>This matters because each process accumulates gradients independently. We need to ensure the total accumulation across all processes matches our desired effective batch size.</p>
+<h3 id="model-wrapping-and-compilation">Model Wrapping and Compilation</h3>
+<p><strong>DDP Model Setup</strong><br />
+The model needs to be wrapped with DDP after moving it to the appropriate device:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Basic DDP wrapping</span>
+<span class="k">if</span> <span class="n">ddp</span><span class="p">:</span>
+    <span class="n">model_handle</span> <span class="o">=</span> <span class="n">DDP</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">device_ids</span><span class="o">=</span><span class="p">[</span><span class="n">ddp_rank</span><span class="p">])</span>
+</code></pre></div>
+<p><strong>Advanced: DDP with Model Compilation</strong><br />
+Our code handles the complex interaction between DDP and <code>torch.compile</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Compiling the model via torch.compile reduces the training time</span>
+<span class="c1"># Though may not be compatible with certain GPUs. If so, turn &quot;compile_model&quot; in config to False</span>
+<span class="k">if</span> <span class="n">enable_compilation</span> <span class="ow">and</span> <span class="n">ddp</span><span class="p">:</span>
+    <span class="c1"># model_handle = DDP(torch.compile(model), device_ids=[ddp_rank]) REMOVE</span>
+
+    <span class="c1"># Interestingly enough, DDP docs recommends applying ddp wrapper before compiling</span>
+    <span class="c1"># Karpathy&#39;s implementation is the other way around, compile -&gt; ddp wrapper</span>
+    <span class="n">model_handle</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">DDP</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">device_ids</span><span class="o">=</span><span class="p">[</span><span class="n">ddp_rank</span><span class="p">]))</span>
+<span class="k">elif</span> <span class="n">enable_compilation</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">ddp</span><span class="p">:</span>
+    <span class="n">model_handle</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+<span class="k">elif</span> <span class="n">ddp</span><span class="p">:</span>
+    <span class="n">model_handle</span> <span class="o">=</span> <span class="n">DDP</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">device_ids</span><span class="o">=</span><span class="p">[</span><span class="n">ddp_rank</span><span class="p">])</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">model_handle</span> <span class="o">=</span> <span class="n">model</span>  <span class="c1"># Plain case, not recommended for actual usage</span>
+</code></pre></div>
+<p><strong>Important:</strong> The order matters! As mentioned in the comments, the DDP documentations from <a href="https://docs.pytorch.org/tutorials/intermediate/ddp_tutorial.html">PyTorch</a> said that the recommended order is apply DDP first, then compile the model. However others have also done it the other way around. Seems like people are split between the two? Here, I just follow the docs recommendation. </p>
+<p>(Further details about model compilation will be detailed in the <code>Throughput Optimizations</code> page)</p>
+<h3 id="gradient-synchronization-mechanics">Gradient Synchronization Mechanics</h3>
+<p><strong>The All-Reduce Operation</strong><br />
+DDP uses an all-reduce operation to synchronize gradients. Here's what happens:
+During each backward pass, all GPUs compute their local gradients based on the given batch of data.<br />
+When we are about to update the parameter values in the mode, applying All-reduce averages gradients across GPUs<br />
+The result is that every GPU has identical averaged gradients and the model is kept in sync.</p>
+<p><strong>Efficient Synchronization with Gradient Accumulation</strong><br />
+For gradient accumulation, we need to control when synchronization happens:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Only synchronize if at the step right before stepping optimizer</span>
+<span class="k">if</span> <span class="n">ddp</span><span class="p">:</span>
+    <span class="n">model_handle</span><span class="o">.</span><span class="n">require_backward_grad_sync</span> <span class="o">=</span> <span class="p">(</span><span class="n">step</span> <span class="o">%</span> <span class="n">grad_accum_steps</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+
+<span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+
+<span class="k">if</span> <span class="n">step</span> <span class="o">%</span> <span class="n">grad_accum_steps</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+    <span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">(</span><span class="n">set_to_none</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</code></pre></div>
+<p>This ensures we only perform the expensive all-reduce operation when we're actually ready to update weights.</p>
+<hr />
+<h3 id="theoretical-speedup">Theoretical Speedup</h3>
+<p>The ideal speedup with DDP is nearly linear:  </p>
+<ul>
+<li>2 GPUs: ~1.9x speedup  </li>
+<li>4 GPUs: ~3.8x speedup  </li>
+<li>8 GPUs: ~7.5x speedup  </li>
+</ul>
+<p>Not fully linear due to additional All-Reduce operations and various overheads, though not too much.</p>
+<hr />
+<h3 id="integration-with-other-parallelism-strategies">Integration with Other Parallelism Strategies</h3>
+<p>DDP can be combined with other parallelism methods:</p>
+<ul>
+<li>
+<p><strong>Pipeline Parallelism</strong><br />
+  Split model layers across GPUs<br />
+  DDP handles data parallelism within each stage  </p>
+</li>
+<li>
+<p><strong>Tensor Parallelism</strong><br />
+  Split individual layers across GPUs<br />
+  Often used with DDP for extreme scaling  </p>
+</li>
+</ul>
+<p>Our Current Approach: We're using pure data parallelism, which is sufficient for models that fit on a single GPU. As models grow larger, you might need to combine DDP with these other strategies.</p>
+<hr />
+<h2 id="conclusion">Conclusion</h2>
+<p>DDP is a powerful tool that makes multi-GPU training remarkably straightforward. This implementation demonstrates:</p>
+<ul>
+<li>Proper initialization with environment variables  </li>
+<li>Model wrapping and compilation order  </li>
+<li>Gradient accumulation with controlled synchronization  </li>
+<li>Master-process coordinations</li>
+</ul>
+<p>The key insight is that DDP allows us to think about training in terms of global batch sizes while automatically handling the distribution across multiple GPUs. This abstraction makes it possible to scale training without rewriting the entire training loop.</p>
+<p>As models continue to scale, understanding DDP will be essential for efficient resource utilization and achieving state-of-the-art results.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../../..", "features": ["content.math"], "search": "../../../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.92b07e13.min.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>
