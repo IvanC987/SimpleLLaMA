@@ -4,7 +4,7 @@
 ## Table of Contents
 
 - [Overview](#overview)
-- [Disclaimer](#disclaimer)
+- [Development Status](#development-status)
 - [Core Features](#core-features)
 - [Project Roadmap](#project-roadmap)
 - [How To Use](#how-to-use)
@@ -49,17 +49,13 @@ Built with flexibility in mind for research and experimentation purposes.
 
 ---
 
-## Disclaimer
+## Development Status
 
-SimpleLLaMA is a language model that's trained without any refusal dataset or alignment constraints. 
-As such, the resulting models may generate outputs that are inappropriate, offensive, or otherwise unsafe in certain contexts if prompted by the user.
+This repository is currently under **active development**.  
+Certain parts, like documentation and RLHF modules, are still being finalized, with expected completion around **[Late November, 2025]**.  
+While the pretraining and SFT stages is mostly complete and functional, certain components (e.g., RLHF implementation, extended benchmarks) remains WIP.
 
-- These weights are intended for research and educational purposes only.
-- Model access is gated on Hugging Face under an access agreement requiring acceptance of these risks.
-- The base code in this repository is MIT-licensed, but **model weights are hosted separately** and subject to Hugging Face's terms of use and the access gate.
-
-Use responsibly. The author is not liable for downstream misuse or harm caused by these models.
-
+Feel free to explore, test, and contribute, but please note that the repository may change significantly before its final release.
 
 ---
 
@@ -408,6 +404,10 @@ Evaluate against other HF models using lm-evaluation-harness, along with GPT3-XL
 <Mention that some questions are filtered out due to non-ascii chars, formats, etc.,>
 Though largely the same, should take it with a grain of salt.
 
+GPT mentioned: 
+GPT-J, LLaMA-1 7B, LLaMA-1 1.3B, TinyLlama (1.1B), MBZUAI LaMini-GPT
+Models and their score is comparable, Take a look at those stats. Looks pretty promising.
+
 ---
 
 
@@ -500,6 +500,9 @@ However, the performance gap does seem to narrow as model size increases, sugges
 For small-to-mid scale models, though, MHA remains the practical default (Which is the one used in this project)
 
 (The above was measured using a batch size of 1 and sequence length of 512. Throughput will differ across various configurations/devices)
+
+Overall, it seems like performance boost is mostly inference-oriented due to KV cache memory requirement-reduction by using latent representation of embedding vectors
+<Hmm...add more later on?>
 
 ---
 
