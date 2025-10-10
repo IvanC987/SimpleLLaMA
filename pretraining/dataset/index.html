@@ -367,26 +367,44 @@
     </span>
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#additional-addons" class="md-nav__link">
-    <span class="md-ellipsis">
-      Additional Addons:!!!!!!!!!!!!!!!!!
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#make-sure-to-mention-this-is-trained-on-ascii-only" class="md-nav__link">
-    <span class="md-ellipsis">
-      Make sure to mention this is trained on ascii only!
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Make sure to mention this is trained on ascii only!">
+    <nav class="md-nav" aria-label="Dataset Preparation">
       <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-why-the-dataset-matters" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Why the Dataset Matters
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-dataset-used" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Dataset Used
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-finewebedu-subset" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. FineWebEdu Subset
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-this-project" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. This Project
+    </span>
+  </a>
+  
+</li>
         
           <li class="md-nav__item">
   <a href="#dataset-gathering-sharding" class="md-nav__link">
@@ -1706,26 +1724,44 @@
     </span>
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#additional-addons" class="md-nav__link">
-    <span class="md-ellipsis">
-      Additional Addons:!!!!!!!!!!!!!!!!!
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#make-sure-to-mention-this-is-trained-on-ascii-only" class="md-nav__link">
-    <span class="md-ellipsis">
-      Make sure to mention this is trained on ascii only!
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Make sure to mention this is trained on ascii only!">
+    <nav class="md-nav" aria-label="Dataset Preparation">
       <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-why-the-dataset-matters" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Why the Dataset Matters
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-dataset-used" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Dataset Used
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-finewebedu-subset" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. FineWebEdu Subset
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-this-project" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. This Project
+    </span>
+  </a>
+  
+</li>
         
           <li class="md-nav__item">
   <a href="#dataset-gathering-sharding" class="md-nav__link">
@@ -1799,42 +1835,42 @@
 
 
 
+  <h1>Dataset Preparation</h1>
+
 <h2 id="dataset-preparation">Dataset Preparation</h2>
-<ol>
-<li>Why the Dataset Matters</li>
-</ol>
+<h3 id="1-why-the-dataset-matters">1. Why the Dataset Matters</h3>
 <p>The dataset is one of the most important factors in pretraining. But what exactly do we mean by “data” here?</p>
 <p>In this context, it’s textual information gathered from the internet — things like blog posts, articles, books, and discussion sites (Reddit being one of the most popular). All of this text is combined into a huge “corpus,” which developers then clean and process.</p>
 <p>It’s not just about having a massive amount of data. Quality matters more than quantity. There’s a saying: garbage in, garbage out. If a model is trained on tons of low-quality text (bad grammar, extreme biases, incoherent scraps from random social media posts), then the model will happily learn to imitate that bad text.</p>
 <p>Of course, “high-quality text” doesn’t have a strict definition. But generally, removing bias-heavy content, incorrect information, and extreme or repetitive junk makes the dataset more useful for training.</p>
-<ol>
-<li>Sources of Data</li>
-</ol>
-<p>There are a few well-known public datasets often used in LLM training:</p>
-<p>CommonCrawl – A massive raw dump of the internet, updated monthly. Very messy and unprocessed.</p>
-<p>C4 – Colossal Cleaned Common Crawl, a cleaned-up version of CommonCrawl curated by Google.</p>
-<p>The Pile – Curated by EleutherAI, it’s a big mix of sources like arXiv, Wikipedia, GitHub, StackExchange, and more.</p>
-<p>For this project, I’ll be using FineWeb, specifically the FineWebEdu subset.</p>
-<ol>
-<li>What is FineWeb?</li>
-</ol>
+<h3 id="2-dataset-used">2. Dataset Used</h3>
+<p>There are a few well-known public datasets often used in LLM training:  </p>
+<ul>
+<li>CommonCrawl – A massive raw dump of the internet, updated monthly. Very messy and unprocessed.</li>
+<li>C4 – Colossal Cleaned Common Crawl, a cleaned-up version of CommonCrawl curated by Google.</li>
+<li>The Pile – Curated by EleutherAI, it’s a big mix of sources like arXiv, Wikipedia, GitHub, StackExchange, and more.</li>
+<li>FineWeb – A cleaned dataset created by Hugging Face, focusing on education-oriented web text dataset derived from CommonCrawl</li>
+</ul>
+<p>For this project, the FineWebEdu dataset will be used, which is a subset of FineWeb that's further filtered and processed.</p>
 <p>FineWeb is a large-scale dataset derived from CommonCrawl, but extensively filtered. The result is a 15 trillion token corpus of much higher quality text.</p>
 <p><img alt="FineWeb Pipeline" src="../../images/fineweb-recipe.png" /></p>
-<p>As shown above, the FineWeb team applied several filters:</p>
-<p>URL filtering – remove adult/unsafe sites.</p>
-<p>Text extraction – clean raw HTML into usable text.</p>
-<p>Language filtering – use a fastText classifier to keep only English text with score ≥ 0.65.</p>
-<p>LM filtering – use a smaller language model to toss out very low-quality passages.</p>
-<p>MinHash deduplication – remove near-duplicate documents.</p>
-<p>C4 filters – apply the same cleaning rules used in Google’s C4 dataset.</p>
-<p>Custom filters – e.g., require punctuation, remove pages with lots of tiny lines.</p>
-<p>PII removal – scrub out personally identifiable information.</p>
-<ol>
-<li>FineWebEdu Subset</li>
-</ol>
+<p>As shown above, the FineWeb team applied several filters:  </p>
+<ul>
+<li>URL filtering – remove adult/unsafe sites.</li>
+<li>Text extraction – clean raw HTML into usable text.</li>
+<li>Language filtering – use a fastText classifier to keep only English text with score ≥ 0.65.</li>
+<li>LM filtering – use a smaller language model to toss out very low-quality passages.</li>
+<li>MinHash deduplication – remove near-duplicate documents.</li>
+<li>C4 filters – apply the same cleaning rules used in Google’s C4 dataset.</li>
+<li>Custom filters – e.g., require punctuation, remove pages with lots of tiny lines.</li>
+<li>PII removal – scrub out personally identifiable information.</li>
+</ul>
+<h3 id="3-finewebedu-subset">3. FineWebEdu Subset</h3>
 <p>FineWebEdu goes even further. It selects content with an educational focus, resulting in two smaller but more useful subsets:</p>
-<p>1.3 trillion tokens – very high educational quality.</p>
-<p>5.4 trillion tokens – high educational quality.</p>
+<ul>
+<li>1.3 trillion tokens – very high educational quality.</li>
+<li>5.4 trillion tokens – high educational quality.</li>
+</ul>
 <p>How was this done? The FineWeb authors actually fine-tuned a LLaMA-3 70B model to act as a text quality rater. The model was trained to assign each passage a score from 0 to 5, where higher means more “educational.”</p>
 <p>Threshold = 3 → keep only text scoring ≥ 3 → results in the 1.3T token dataset.</p>
 <p>Threshold = 2 → keep only text scoring ≥ 2 → results in the 5.4T token dataset.</p>
@@ -1842,32 +1878,32 @@
 <p>There’s a great Hugging Face writeup if you want to dive deeper:
 <a href="https://huggingface.co/spaces/HuggingFaceFW/blogpost-fineweb-v1">FineWeb Blogpost</a></p>
 <p>(Note: FineWeb token counts are reported using the GPT-2 tokenizer. More about tokens and tokenization in the next section.)</p>
-<ol>
-<li>This Project</li>
-</ol>
-<p>For this project, I’ll be using FineWebEdu as the main pretraining dataset.</p>
+<h3 id="4-this-project">4. This Project</h3>
+<p>For this project, I’ll be using FineWebEdu as the main pretraining dataset, focusing on ACSII only text. </p>
 <p>A general rule of thumb for dataset sizing: you want a parameter-to-token ratio of at least 1:20 (20 tokens for every model parameter). Once you get to very high ratios (like 1:100), you start seeing diminishing returns.</p>
-<h1 id="additional-addons">Additional Addons:!!!!!!!!!!!!!!!!!</h1>
-<h1 id="make-sure-to-mention-this-is-trained-on-ascii-only">Make sure to mention this is trained on ascii only!</h1>
 <h3 id="dataset-gathering-sharding">Dataset Gathering &amp; Sharding</h3>
 <p>The first step is to collect and prepare the dataset. Since this tokenizer will be used to tokenize the <strong>FineWebEdu</strong> dataset we gathered earlier, it would also be used to train the tokenizer (generally, it's better to train the tokenizer on the same distribution as the pretraining data for LLM).<br />
 But even then, the raw dataset is too large to work with as a single file, so we break it into smaller <strong>shards</strong>.</p>
 <h4 id="why-sharding">Why Sharding?</h4>
 <ul>
-<li>Large text corpora can easily exceed hundreds of gigabytes.  </li>
+<li>Large text corpora can easily exceed hundreds of gigabytes.</li>
 <li>Training requires fast streaming of tokens — you don’t want to load the entire dataset into memory.  </li>
 <li>By splitting into smaller shards (e.g., ~100MB each), we can load them efficiently and resume from checkpoints if needed.  </li>
 </ul>
 <h4 id="short-medium-long-buckets">Short / Medium / Long Buckets</h4>
-<p>The script doesn’t just shard randomly — it separates text into three “buckets” based on length:
-- <strong>Short</strong>: under ~7,500 characters.<br />
-- <strong>Medium</strong>: 7,500–12,000 characters.<br />
-- <strong>Long</strong>: over 12,000 characters.  </p>
+<p>The script doesn’t just shard randomly — it separates text into three “buckets” based on length:  </p>
+<ul>
+<li><strong>Short</strong>: under ~7,500 characters.  </li>
+<li><strong>Medium</strong>: 7,500–12,000 characters.  </li>
+<li><strong>Long</strong>: over 12,000 characters.  </li>
+</ul>
 <p>Why? Because training efficiency changes with sequence length. Training on shorter examples first lets the model pick up basic structure faster, while longer sequences come later when it has learned more.  </p>
 <h4 id="intentional-leakage">Intentional “Leakage”</h4>
-<p>The script also allows some examples to “leak” into bigger buckets. For instance:<br />
-- ~15% of short samples are redirected into medium.<br />
-- ~10% of short samples are redirected into long.  </p>
+<p>The script also allows some examples to “leak” into bigger buckets. For instance:  </p>
+<ul>
+<li>~15% of short samples are redirected into medium.  </li>
+<li>~10% of short samples are redirected into long.  </li>
+</ul>
 <p>This prevents the model from overfitting to only very long text near the end of training. In practice, real-world queries are often much shorter, so keeping a blend of lengths makes the model more robust.  </p>
 <h4 id="example-snippet-simplified">Example Snippet (Simplified)</h4>
 <p>Here’s a stripped-down version of the gather script:  </p>
@@ -1886,10 +1922,12 @@ But even then, the raw dataset is too large to work with as a single file, so we
 
     <span class="n">shard_text</span><span class="p">[</span><span class="n">bucket</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&lt;SOS&gt;</span><span class="si">{</span><span class="n">ex</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&lt;EOS&gt;&quot;</span><span class="p">)</span>
 </code></pre></div>
-<p>Notice a couple of important details:
-- All text is wrapped with <code>&lt;SOS&gt;</code> (start of sequence) and <code>&lt;EOS&gt;</code> (end of sequence).<br />
-- This guarantees the tokenizer and model know exactly where an example begins and ends.<br />
-- Filtering to ASCII-only ensures consistency and avoids tricky edge cases with multilingual characters (important for compute-constrained projects).  </p>
+<p>Notice a couple of important details:  </p>
+<ul>
+<li>All text is wrapped with <code>&lt;SOS&gt;</code> (start of sequence) and <code>&lt;EOS&gt;</code> (end of sequence).  </li>
+<li>This guarantees the tokenizer and model know exactly where an example begins and ends.  </li>
+<li>Filtering to ASCII-only ensures consistency and avoids tricky edge cases with multilingual characters (important for compute-constrained projects).  </li>
+</ul>
 <p>By the end of this step, the dataset is organized into neatly sharded text files, ready to be fed into the tokenizer training process.</p>
 
 
