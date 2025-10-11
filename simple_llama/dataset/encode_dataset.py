@@ -5,18 +5,19 @@ import numpy as np
 from tokenizers import Tokenizer, decoders
 
 
-
-tokenizer = Tokenizer.from_file("bpe_8k.json")
-tokenizer.model.unk_token = "<UNK>"
-tokenizer.decoder = decoders.ByteLevel()
-
-
 src_dir = "medium_200"
 dst_dir = "medium_200_tokens"
 os.makedirs(dst_dir, exist_ok=True)
 
 
-text_filepaths = [os.path.join(src_dir, p) for p in os.listdir(src_dir)][126:]
+bpe_json_path = "bpe_8k.json"
+
+tokenizer = Tokenizer.from_file(bpe_json_path)
+tokenizer.model.unk_token = "<UNK>"
+tokenizer.decoder = decoders.ByteLevel()
+
+
+text_filepaths = [os.path.join(src_dir, p) for p in os.listdir(src_dir)]
 
 print("Now starting...")
 start = time.time()
