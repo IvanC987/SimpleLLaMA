@@ -13,7 +13,7 @@ from simple_llama.pretraining.config import TrainingConfig
 from simple_llama.pretraining.utils import check_log_file_existence
 from simple_llama.finetune.full_sft.sft_config import SFTConfigs
 from simple_llama.finetune.json_dataset_loader import JSONDatasetLoader
-from simple_llama.finetune.utils import tokenize_and_pad_data, eval_model, sft_prompts
+from simple_llama.finetune.utils import align_and_pad_data, eval_model, sft_prompts
 from simple_llama.finetune.format_llm_prompt import format_inference_prompt
 
 # torch.serialization.add_safe_globals({TrainingConfig})
@@ -50,6 +50,7 @@ enable_compilation = sft_configs.enable_compilation
 batch_size = sft_configs.batch_size
 
 eval_interval = sft_configs.eval_interval
+eval_num_samples = sft_configs.eval_num_samples
 
 warmup_iterations = sft_configs.warmup_iterations
 max_lr = sft_configs.max_lr
@@ -99,22 +100,6 @@ print("\n")
 # Initializing/Loading objects
 # ------------------------
 
-# Instantiate dataset_loader obj
-dataset_loader = JSONDatasetLoader(json_filepath=ft_json_path, batch_size=batch_size, train_split=train_split)
-
-# Load in pretrained tokenizer
-tokenizer = Tokenizer.from_file(sft_configs.tokenizer_path)
-tokenizer.model.unk_token = "<UNK>"  # Set unknown token to <UNK>
-tokenizer.decoder = decoders.ByteLevel()  # For byte-level decoding
-
-
-train_iterations = (len(dataset_loader.train_dataset)//batch_size) * epochs
-optimization_steps = train_iterations // grad_accum_steps  # Number of times to step the optimizer
-
-print(f"{train_iterations=}")
-print(f"{optimization_steps=}")
-
-
 ckpt = torch.load(sft_configs.model_path, map_location=device)
 training_config: TrainingConfig = ckpt["config"]
 
@@ -126,6 +111,23 @@ training_config.dropout = sft_configs.dropout
 training_config.use_flash_attention = sft_configs.use_flash_attention
 # training_config.enable_compilation = sft_configs.enable_compilation
 # ---------------------------------------------
+
+
+# Load in pretrained tokenizer
+tokenizer = Tokenizer.from_file(sft_configs.tokenizer_path)
+tokenizer.model.unk_token = "<UNK>"  # Set unknown token to <UNK>
+tokenizer.decoder = decoders.ByteLevel()  # For byte-level decoding
+
+# Instantiate dataset_loader obj
+dataset_loader = JSONDatasetLoader(tokenizer=tokenizer, json_filepath=ft_json_path, batch_size=batch_size,
+                                   train_split=train_split, max_seq_len=max_seq_len, device=device)
+
+train_iterations = (dataset_loader.num_train_examples//batch_size) * epochs
+optimization_steps = train_iterations // grad_accum_steps  # Number of times to step the optimizer
+
+print(f"{train_iterations=}")
+print(f"{optimization_steps=}")
+
 
 model = LLaMaTransformer(config=training_config, tokenizer=tokenizer, device=device).to(device)
 model.train()
@@ -177,7 +179,7 @@ norm = float("inf")  # A temp place holder for actual norm
 step = 1  # Step here is an approximate since this is now epoch-based rather than token-based iterations
 
 # This autocasts certain parts of the layers (mostly matmul portion) within the model to bf16 for faster training
-use_amp = torch.cuda.is_available() and device == "cuda" and torch.cuda.is_bf16_supported()
+use_amp = torch.cuda.is_available() and torch.cuda.is_bf16_supported()
 print(f"Using auto mixed precision: {use_amp}")
 
 for epoch in range(epochs):
@@ -189,21 +191,17 @@ for epoch in range(epochs):
     print("=" * 20 + "\n")
 
     while dataset_loader.train_epoch == current_train_epoch:
-        # batch is a list of tuples, each with 2 strings being (x, y) respectively
+        # batch is a list of tuples, each being (x, y) token pairs
         # y is guaranteed by the 'format_training_prompt' function in 'format_llm_prompt.py' to be the ending suffix of x
-        # E.g.
-        # x:  "<SOT>Be concise.<EOT>\n\n<SOU>What's 2+2?<EOU>\n<SOA>4<EOA>",
-        # y:  "4<EOA>"
         batch = dataset_loader.get_batch(train=True)
 
         # Encode and pad the x-y strings
-        x, y = tokenize_and_pad_data(batch=batch,
-                                     tokenizer=tokenizer,
-                                     pad_id=pad_id,
-                                     max_seq_len=max_seq_len,
-                                     dynamic=dynamic_padding,
-                                     device=device
-                                     )
+        x, y = align_and_pad_data(batch=batch,
+                                  pad_id=pad_id,
+                                  max_seq_len=max_seq_len,
+                                  dynamic=dynamic_padding,
+                                  device=device
+                                  )
 
         with torch.autocast(device_type=device, dtype=torch.bfloat16 if use_amp else torch.float32):
             if enable_compilation:
@@ -230,12 +228,13 @@ for epoch in range(epochs):
 
 
         # Save/print metrics while evaluating model prompt generation ability
-        # No need for val loss, due to how dataset is created
         if step % eval_interval == 0:
-            # Eval model, use max_seq_len for first evaluation
-            single_val_loss = eval_model(model=model, criterion=criterion, tokenizer=tokenizer,
-                                         dataset_loader=dataset_loader, use_amp=use_amp, full_eval=False, pad_id=pad_id,
-                                         max_seq_len=max_seq_len, dynamic=dynamic_padding, device=device)
+            # Eval model using first 'eval_num_samples' samples from the validation dataset
+            model.eval()
+            single_val_loss = eval_model(model=model, criterion=criterion, dataset_loader=dataset_loader,
+                                         eval_num_samples=eval_num_samples, use_amp=use_amp, full_eval=False,
+                                         pad_id=pad_id, max_seq_len=max_seq_len, dynamic=dynamic_padding, device=device)
+            model.train()
 
             if torch.cuda.is_available() and device == "cuda":
                 torch.cuda.synchronize()  # More accurate measurement for `elapsed` since cuda kernels are async
@@ -248,7 +247,7 @@ for epoch in range(epochs):
                               round((step / train_iterations) * 100, 2),  # Progress
                               round(train_loss_value, 4),  # Training loss value
                               round(math.e ** train_loss_value, 2),  # Train Perplexity
-                              round(single_val_loss, 4),  # Validation Loss (Single Batch)
+                              round(single_val_loss, 4),  # Validation Loss (Small Batch)
                               round(math.e ** single_val_loss, 2),  # Val Perplexity
                               round(current_lr, 4),  # Learning Rate
                               round(norm.item(), 4),  # L2 norm of the gradients
@@ -264,7 +263,7 @@ for epoch in range(epochs):
                   f"Training Progress: {(step / train_iterations) * 100:.2f}%   |   "
                   f"Training Loss: {train_loss_value:.4f}   |   "
                   f"Perplexity (Training): {math.e ** train_loss_value:.2f}   |   "
-                  f"Validation Loss (Single Example): {single_val_loss:.4f}   |   "
+                  f"Validation Loss (Interval Subset): {single_val_loss:.4f}   |   "
                   f"Perplexity (Validation): {math.e ** single_val_loss:.2f}   |   "
                   f"Learning Rate: {current_lr:.5f}   |   "
                   f"Norm: {norm.item():.4f}   |   "
@@ -305,9 +304,11 @@ for epoch in range(epochs):
         torch.save(save_ckpt, f"{ckpt_dir}/sft_{epoch+1}E_{avg_loss}L_{max_seq_len}MSQ.pth")
 
     # Evaluate the full validation epoch
-    full_val_loss = eval_model(model=model, criterion=criterion, tokenizer=tokenizer,
-                               dataset_loader=dataset_loader, use_amp=use_amp, full_eval=True, pad_id=pad_id,
-                               max_seq_len=max_seq_len, dynamic=dynamic_padding, device=device)
+    model.eval()
+    full_val_loss = eval_model(model=model, criterion=criterion, dataset_loader=dataset_loader,
+                               eval_num_samples=eval_num_samples, use_amp=use_amp, full_eval=True,
+                               pad_id=pad_id, max_seq_len=max_seq_len, dynamic=dynamic_padding, device=device)
+    model.train()
 
     print("\n" + "=" * 20)
     print(f"Validation Loss: {full_val_loss:.4f}")

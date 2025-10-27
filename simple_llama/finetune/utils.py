@@ -7,20 +7,19 @@ from simple_llama.pretraining.llama_transformer import LLaMaTransformer
 from simple_llama.finetune.json_dataset_loader import JSONDatasetLoader
 
 
-def tokenize_and_pad_data(batch: list[tuple], tokenizer: Tokenizer, pad_id: int, max_seq_len: int, dynamic: bool, device: str):
+def align_and_pad_data(batch: list[tuple], pad_id: int, max_seq_len: int, dynamic: bool, device: str):
     """
-    Tokenizes and pads a batch of (x, y) training pairs for SFT.
+    Pads a batch of tokenized (x, y) training pairs for supervised fine-tuning (SFT).
 
     Each element in `batch` is a tuple:
-        - x: full prompt including template, user queries, and assistant responses
-        - y: only the final assistant response to supervise with loss
+        - x: tokenized full prompt (template + user query + assistant response)
+        - y: tokenized suffix response to supervise loss on
 
-    The x sequence is right-truncated to `max_seq_len`.
-    The y sequence is left-padded so it aligns with the end of x.
-    Left-padded values in y are filled with `pad_id` and are ignored in loss via `ignore_index`.
+    The x sequence is right-padded (or truncated) to `max_seq_len`.
+    The y sequence is left-padded so its tokens align with the end of x.
+    Left-padded tokens use `pad_id` and are ignored during loss computation.
 
-    :param batch: List of (x, y) string tuples where y is the suffix of x
-    :param tokenizer: HuggingFace-compatible tokenizer
+    :param batch: List of (x, y) tensor tuples where y is the token suffix of x
     :param pad_id: Token ID used for padding (also used as ignore_index in loss)
     :param max_seq_len: Maximum sequence length for input sequences
     :param dynamic: If True, sequences are padded to longest in batch; else to `max_seq_len`
@@ -30,37 +29,16 @@ def tokenize_and_pad_data(batch: list[tuple], tokenizer: Tokenizer, pad_id: int,
 
     assert len(batch) != 0, "Given batch data should not be empty!"
 
-    x_data, y_data = [], []
-    max_len = 0  # Maximum tensor len
-    exceed_len = 0
-    for example in batch:
-        x, y = example  # Unpack values
-
-        # Tokenize x-y pair
-        x = tokenizer.encode(x).ids
-        y = tokenizer.encode(y).ids
-
-        if len(x) > max_seq_len:  # max_seq_len is inclusive of context, so x shouldn't be >= that
-            exceed_len += 1
-            continue
-
-        max_len = max(max_len, len(x))
-        x_data.append(torch.tensor(x, dtype=torch.long, device=device))
-
-        y = torch.tensor(y, dtype=torch.long, device=device)
+    x_data = [e[0] for e in batch]
+    y_data = []
+    max_len = max(len(e) for e in x_data)  # Maximum tensor len
+    for x, y in batch:
         num_left_pad = len(x) - len(y) - 1  # Need an additional right pad later on for left-shift
 
-        if num_left_pad < 0:
-            warnings.warn(f"Target response longer than input window. Skipping.")
-            continue
+        assert num_left_pad > 0, "Shouldn't occur"
 
         y_left_pad = torch.full((num_left_pad,), pad_id, device=device)
         y_data.append(torch.cat((y_left_pad, y), dim=-1))
-
-    # return x_data, y_data
-    assert len(x_data) != 0, f"All examples has been skipped due to all chat conversations exceeding {max_seq_len=}"
-    if exceed_len/len(batch) >= 0.1:
-        warnings.warn(f"{100 * exceed_len/len(batch):.2f}% of examples in this batch has been skipped due to assistant responses exceeding {max_seq_len=}")
 
     max_len = max_len if dynamic else max_seq_len
 
@@ -83,25 +61,29 @@ def tokenize_and_pad_data(batch: list[tuple], tokenizer: Tokenizer, pad_id: int,
 @torch.no_grad()
 def eval_model(model: LLaMaTransformer,
                criterion: CrossEntropyLoss,
-               tokenizer: Tokenizer,
                dataset_loader: JSONDatasetLoader,
+               eval_num_samples: int,
                use_amp: bool,
                full_eval: bool,
                pad_id: int,
                max_seq_len: int,
                dynamic: bool,
                device: str) -> float:
+    """
+    Evaluates the model on validation data.
+    Performs either a full validation pass (entire val set)
+    or a smaller fixed-sample evaluation for training intervals.
+    """
 
-
+    model.eval()
     if full_eval:  # Meaning we want to iterate over the entire validation epoch
         current_val_epoch = dataset_loader.val_epoch
         losses = []
         while current_val_epoch == dataset_loader.val_epoch:
-            batch = dataset_loader.get_batch(train=False, increment_val_idx=True)
+            batch = dataset_loader.get_batch(train=False)
 
             # Tokenize and transform into padded tensors
-            x, y = tokenize_and_pad_data(batch=batch, tokenizer=tokenizer, pad_id=pad_id, max_seq_len=max_seq_len,
-                                         dynamic=dynamic, device=device)
+            x, y = align_and_pad_data(batch=batch, pad_id=pad_id, max_seq_len=max_seq_len, dynamic=dynamic, device=device)
 
             with torch.autocast(device_type=device, dtype=torch.bfloat16 if use_amp else torch.float32):
                 pred = model(x)
@@ -111,33 +93,42 @@ def eval_model(model: LLaMaTransformer,
 
             losses.append(loss.item())
 
+        model.train()
         return sum(losses)/len(losses)
 
-    else:  # Just want a single evaluation
-        batch = dataset_loader.get_batch(train=False, increment_val_idx=False)
+    else:  # Just want a simple evaluation
+        batch = dataset_loader.get_eval_batch(eval_num_samples)
 
         # Tokenize and transform into padded tensors
-        x, y = tokenize_and_pad_data(batch=batch, tokenizer=tokenizer, pad_id=pad_id, max_seq_len=max_seq_len,
-                                     dynamic=dynamic, device=device)
+        x, y = align_and_pad_data(batch=batch, pad_id=pad_id, max_seq_len=max_seq_len, dynamic=dynamic, device=device)
 
-        with torch.autocast(device_type=device, dtype=torch.bfloat16 if use_amp else torch.float32):
-            pred = model(x)
-            B, T, C = pred.shape
-            loss = criterion(pred.reshape(B * T, C), y.reshape(B * T))
+        final_losses = []
+        batch_size = dataset_loader.batch_size
+        for i in range(0, len(x), batch_size):
+            x_chunk = x[i: i+batch_size]
+            y_chunk = y[i: i+batch_size]
+            with torch.autocast(device_type=device, dtype=torch.bfloat16 if use_amp else torch.float32):
+                pred = model(x_chunk)
+                B, T, C = pred.shape
+                loss = criterion(pred.reshape(B * T, C), y_chunk.reshape(B * T))
 
-        return loss.item()
+            final_losses.append(loss.item())
+
+        model.train()
+        return sum(final_losses)/len(final_losses)
+
 
 
 sft_prompts = [
     {
-        "Template": ["Greet the user with 'Good morning!', then answer the user query."],
+        "Template": ["CUSTOM"],
         "User": [
             "What is gravity?"
         ],
         "Assistant": []
     },
     {
-        "Template": ["Be extremely long and verbose in your response to user query. The longer and more detailed it is, the better."],
+        "Template": ["CUSTOM"],
         "User": [
             "How does photosynthesis work?"
         ],
@@ -146,21 +137,21 @@ sft_prompts = [
     {
         "Template": ["CUSTOM"],
         "User": [
-            "Give me two synonyms for 'quick'."
+            "List three uses of artificial intelligence in daily life."
         ],
         "Assistant": []
     },
     {
         "Template": ["CUSTOM"],
         "User": [
-            "Write a sentence using the word 'freedom'."
+            "What's the capital of Japan?"
         ],
         "Assistant": []
     },
     {
         "Template": ["CUSTOM"],
         "User": [
-            "Summarize this text in one sentence, then give the emotional tone:\n\n'The team worked late into the night, frustrated by endless revisions, but determined to meet the deadline.'"
+            "Describe what a computer virus is."
         ],
         "Assistant": []
     },
@@ -174,13 +165,6 @@ sft_prompts = [
     {
         "Template": ["CUSTOM"],
         "User": [
-            "What's the square root of 49?"
-        ],
-        "Assistant": []
-    },
-    {
-        "Template": ["CUSTOM"],
-        "User": [
             "How tall is Mount Everest?"
         ],
         "Assistant": []
@@ -188,35 +172,35 @@ sft_prompts = [
     {
         "Template": ["CUSTOM"],
         "User": [
-            "What is a virus?\nIt's a tiny infectious agent that can replicate only inside living cells."
+            "Correct the grammar: She go to school yesterday."
         ],
         "Assistant": []
     },
     {
         "Template": ["CUSTOM"],
         "User": [
-            "The Sahara is the largest hot desert in the world, covering parts of 11 countries in North Africa. What is the largest hot desert?"
+            "Who was the first person to walk on the Moon?"
         ],
         "Assistant": []
     },
     {
         "Template": ["CUSTOM"],
         "User": [
-            "What does 'eclipse' mean in astronomy?"
+            "Generate a creative title for a story about robots learning emotions."
         ],
         "Assistant": []
     },
     {
         "Template": ["CUSTOM"],
         "User": [
-            "Explain what a glacier is and how it forms."
+            "In one sentence, answer: What is water's chemical formula?"
         ],
         "Assistant": []
     },
     {
         "Template": ["CUSTOM"],
         "User": [
-            "Name three elements that are gases at room temperature."
+            "Write a polite email asking for a project deadline extension."
         ],
         "Assistant": []
     },
@@ -237,13 +221,6 @@ sft_prompts = [
     {
         "Template": ["CUSTOM"],
         "User": [
-            "How many legs do spiders have?"
-        ],
-        "Assistant": []
-    },
-    {
-        "Template": ["CUSTOM"],
-        "User": [
             "What is the tallest building in the world?\nAlso, where is it located?"
         ],
         "Assistant": []
@@ -251,7 +228,7 @@ sft_prompts = [
     {
         "Template": ["CUSTOM"],
         "User": [
-            "Name two fruits, then tell me which one has more vitamin C."
+            "Why might someone want to recycle plastic?"
         ],
         "Assistant": []
     }

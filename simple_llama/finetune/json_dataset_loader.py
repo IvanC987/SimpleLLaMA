@@ -4,6 +4,7 @@ import random
 import torch
 import shutil
 from tokenizers import Tokenizer
+from tqdm import tqdm
 
 from simple_llama.pretraining.utils import root_path
 from simple_llama.finetune.format_llm_prompt import format_training_prompt
@@ -12,7 +13,7 @@ from simple_llama.finetune.format_llm_prompt import format_training_prompt
 
 class JSONDatasetLoader:
     def __init__(self, tokenizer: Tokenizer, json_filepath: str, batch_size: int,
-                 train_split: float, max_seq_len: int, shard_size=25_000):
+                 train_split: float, max_seq_len: int, device: str, shard_size=25_000):
         """
         Initializes the JSONDatasetLoader, tokenizes and shards the dataset into
         compressed tensor files for efficient loading during training and evaluation.
@@ -22,6 +23,7 @@ class JSONDatasetLoader:
         :param batch_size: Number of samples per training batch.
         :param train_split: Fraction of dataset used for training (0 < train_split <= 1).
         :param max_seq_len: Maximum token length for each (x, y) pair; longer examples are discarded.
+        :param device: Which device to move tensors to
         :param shard_size: Number of samples per saved shard file before rolling over.
         """
 
@@ -36,7 +38,7 @@ class JSONDatasetLoader:
         os.makedirs(save_dir_path)
 
         dataset = self._load_dataset_from_json(json_filepath)
-        self.train_paths, self.val_paths, saved_ratio = self._create_shards(dataset, tokenizer, max_seq_len, train_split, shard_size, save_dir_path)
+        self.train_paths, self.val_paths, self.num_train_examples, saved_ratio = self._create_shards(dataset, tokenizer, max_seq_len, train_split, shard_size, save_dir_path)
 
         print("Dataset Info:")
         print("=" * 20)
@@ -49,6 +51,8 @@ class JSONDatasetLoader:
 
 
         self.batch_size = batch_size
+        self.device = device
+
         self.train_epoch = 0
         self.val_epoch = 0
 
@@ -122,7 +126,8 @@ class JSONDatasetLoader:
             sequences = []
             offsets = []
 
-            for i in range(len(ds)):
+            print(f"Now creating and saving shards for {save_split_path=}")
+            for i in tqdm(range(len(ds))):
                 x, y = ds[i]
 
                 # Tokenize x-y pair
@@ -168,6 +173,7 @@ class JSONDatasetLoader:
 
         return ([os.path.join(train_dir, p) for p in os.listdir(train_dir)],
                 [os.path.join(val_dir, p) for p in os.listdir(val_dir)],
+                saved_train_count,
                 (saved_train_count + saved_val_count) / len(dataset))
 
 
@@ -181,8 +187,8 @@ class JSONDatasetLoader:
         """
 
         def _deserialize_shard(given_data):
-            sequences = given_data["sequences"]
-            offsets = given_data["offsets"]
+            sequences = given_data["sequences"].to(self.device).to(torch.long)
+            offsets = given_data["offsets"].to(self.device)
 
             result = []  # Should be in the expected format, each sample to be a tuple of (x, y) pairs, where y is the suffix tokens of x
 
@@ -203,21 +209,23 @@ class JSONDatasetLoader:
 
         # Used to load in and return the shard
         if train:
+            if self.train_file_idx == len(self.train_paths):
+                self.train_file_idx = 0
+                self.train_epoch += 1
+
             # Note that data is the dict we saved before, {"sequences": sequences, "offsets": offsets}
             data = torch.load(self.train_paths[self.train_file_idx])
 
-            # Update and reset accordingly
             self.train_file_idx += 1
-            if self.train_file_idx == len(self.train_paths):
-                self.train_file_idx = 0
 
             return _deserialize_shard(data)
         else:
-            data = torch.load(self.val_paths[self.val_file_idx])
-
-            self.val_file_idx += 1
             if self.val_file_idx == len(self.val_paths):
                 self.val_file_idx = 0
+                self.val_epoch += 1
+
+            data = torch.load(self.val_paths[self.val_file_idx])
+            self.val_file_idx += 1
 
             return _deserialize_shard(data)
 
@@ -230,15 +238,14 @@ class JSONDatasetLoader:
 
             if self.train_idx + self.batch_size >= len(self.train_shard):
                 self.train_idx = 0
-                self.train_epoch += 1
-                random.shuffle(self.train_shard)
+                self._read_shard(train=True)
         else:
             batch = self.val_shard[self.val_idx: self.val_idx + self.batch_size]
             self.val_idx += self.batch_size
 
             if self.val_idx + self.batch_size >= len(self.val_shard):
                 self.val_idx = 0
-                self.val_epoch += 1
+                self._read_shard(train=False)
 
         return batch
 

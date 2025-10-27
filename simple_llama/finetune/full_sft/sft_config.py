@@ -23,7 +23,7 @@ class SFTConfigs:
     grad_accum_steps: int = 16      # Step optimizer every( batch_size * grad_accum_steps) samples
 
     # === Model Architecture ===
-    dropout: float = 0.1             # Dropout rate
+    dropout: float = 0.1                # Dropout rate
 
     # === Performance Features ===
     use_flash_attention: bool = True    # Enables FlashAttention if supported
@@ -31,8 +31,8 @@ class SFTConfigs:
 
     # === Training Schedule ===
     warmup_iterations: int = 100        # Warmup steps for LR scheduler
-    max_lr: float = 1e-4                # Peak LR after warmup
-    min_lr: float = 1e-5                # Minimum LR at end of cosine decay
+    max_lr: float = 1e-5                # Peak LR after warmup
+    min_lr: float = 1e-6                # Minimum LR at end of cosine decay
     beta1: float = 0.9                  # AdamW beta1
     beta2: float = 0.95                 # AdamW beta2
     weight_decay: float = 0.01          # L2 regularization weight
@@ -40,10 +40,11 @@ class SFTConfigs:
 
     # === Evaluation ===
     dynamic_padding: bool = True        # Each batch is padded based on the longest example. False will pad to max_seq_len
-    eval_interval: int = 1              # Evaluate every N optimizer steps
+    eval_interval: int = 8              # Evaluate every N optimizer steps
+    eval_num_samples: int = 256         # How many samples to gather from validation set for a quick test
     model_gen_multiplier: float = 1.5   # Multiplier for exponential generation interval
 
     # === Training Epochs ===
-    epochs: int = 5                    # Number of epochs to train for
+    epochs: int = 3                    # Number of epochs to train for
     ckpt_epochs: int = 1               # How many epochs to train before saving a checkpoint. Not used to resume, just inference.
 
