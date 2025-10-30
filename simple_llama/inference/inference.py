@@ -2,7 +2,6 @@ import os
 import sys
 import random
 import time
-import json
 import warnings
 import numpy as np
 import torch
@@ -13,16 +12,9 @@ from simple_llama.finetune.format_llm_prompt import format_inference_prompt
 from simple_llama.inference.inference_config import InferenceConfig
 from simple_llama.inference.inference_transformer import LLaMaTransformer
 
-# Uncomment the following if torch error pops up. Commented due to versioning incompatibility
-# from torch.serialization import add_safe_globals
-# from simple_llama.pretraining.config import TrainingConfig
-# add_safe_globals([TrainingConfig])
+from simple_llama.pretraining.config import TrainingConfig
+torch.serialization.add_safe_globals({TrainingConfig})
 
-
-"""
-Need to adjust for speculative decoding and kv cache addition later on!
-Add in faster top-p sampling later on and prefix current with legacy
-"""
 
 
 def set_seed(seed):
@@ -93,21 +85,21 @@ def greedy_sampling(prob_tensor: torch.Tensor):
     return idx.item()
 
 
-def get_user_query(command_list: list[str]):
-    lines = []
-    print("\n\n>>> ", end="")
-
-    while True:
-        user = input()
-
-        if (user.strip().lower() in command_list or user.strip().lower().startswith("/set")) and len(lines) == 0:
-            return user.strip().lower(), True
-        elif user.lower() != "eof":
-            lines.append(user)
-        else:
-            break
-
-    return "\n".join(lines), False
+# def get_user_query(command_list: list[str]):
+#     lines = []
+#     print("\n\n>>> ", end="")
+#
+#     while True:
+#         user = input()
+#
+#         if (user.strip().lower() in command_list or user.strip().lower().startswith("/set")) and len(lines) == 0:
+#             return user.strip().lower(), True
+#         elif user.lower() != "eof":
+#             lines.append(user)
+#         else:
+#             break
+#
+#     return "\n".join(lines), False
 
 
 def execute_general_commands(command: str):
@@ -127,12 +119,6 @@ def execute_general_commands(command: str):
         history[0] = []
         history[1] = []
         print("[INFO] Chat history has been cleared.")
-    elif command == "/export":
-        if len(history[0]) != len(history[1]):  # Don't think this will happen? Will add the check to see
-            warnings.warn("Failed to save. History length mismatch.")
-            return
-        with open(os.path.join(inf_cfg.history_dir, inf_cfg.save_history_filename), "w") as f:
-            json.dump(history, f)
     elif command == "/configs":
         print("\n======= Inference Configuration =======")
         for k, v in vars(inf_cfg).items():
@@ -172,7 +158,6 @@ def execute_general_commands(command: str):
         print("/clear      - Clear the terminal screen")
         print("/history    - Print chat history")
         print("/forget     - Clears chat history")
-        print("/export     - Export and save current history as a JSON file, using config.save_history_filename")
         print("/configs    - Print current model configuration")
         print("/prompt     - Print an example prompt of how it is formatted")
         print("/set        - Adjust configuration at runtime (type '/set' for usage)")
@@ -214,21 +199,6 @@ def execute_set_commands(command: str):
     except Exception as e:
         print(f"Exception {e=}\nInvalid command given: {command=}")
         return False
-
-
-def load_history(load_from_history: bool, filepath: str):
-    """
-    Assumes it follows the strict path of simple_llama/inference/history/file.json
-    """
-
-    if load_from_history:
-        with open(filepath, "r") as f:
-            loaded_data = json.load(f)
-
-        assert len(loaded_data[0]) == len(loaded_data[1]), "Loaded history mismatch"
-        return loaded_data
-    else:
-        return [[], []]
 
 
 if __name__ == "__main__":
@@ -279,28 +249,25 @@ if __name__ == "__main__":
     stop_token = stop_token[0]
 
     # List of valid commands
-    valid_commands = ["/clear", "/history", "/forget", "/export", "/configs", "/prompt", "/set", "/exit", "/help"]
+    valid_commands = ["/clear", "/history", "/forget", "/configs", "/prompt", "/set", "/exit", "/help"]
 
-    # First list contains all user queries, second will contain all assistant responses
-    history = load_history(inf_cfg.load_history, os.path.join(inf_cfg.history_dir, inf_cfg.load_history_filename))
+    history = [[], []]
     while True:
 
         try:
-            query, query_is_command = get_user_query(command_list=valid_commands)
+            # query, query_is_command = get_user_query(command_list=valid_commands)
+            query = input("\n>>> ")
 
-            # Remember to add /export to save chat history and load it in later on!
-            if query_is_command:
-                if query in valid_commands:
-                    execute_general_commands(query)
-                    continue
-                elif query.startswith("/set"):
-                    split = query.split(" ")  # Should have exactly 1 arg, e.g. '/set top_p=0.8'
-                    if len(split) == 2:
-                        is_command = execute_set_commands(split[1])
-                        if is_command:  # If not a valid command, treat it as model input
-                            continue
-                else:
-                    raise ValueError("Should reach here")
+            if query.lower() in valid_commands:
+                execute_general_commands(query)
+                continue
+            else:
+                split = query.lower().split(" ")  # Should have exactly 1 arg, e.g. '/set top_p=0.8'
+                if len(split) == 2:
+                    is_command = execute_set_commands(split[1])
+                    if is_command:  # If not a valid command, treat it as model input
+                        continue
+
 
             if inf_cfg.pretrain_model:  # Just prepend is <SOS> token, is stateless
                 prompt = f"<SOS>{query}"
@@ -314,7 +281,7 @@ if __name__ == "__main__":
             tokens_generated = 0
             current_model_response = []  # Stores streamed responses
             start_time = time.time()
-            with torch.no_grad():
+            with torch.inference_mode():
                 model.clear_kv_cache()  # Clear KV Cache before generating
 
                 for _ in range(inf_cfg.max_new_tokens):
@@ -353,8 +320,9 @@ if __name__ == "__main__":
                 print("*" * 20 + "\n\n")
 
             # Save both together for atomicity
-            history[0].append(query)
-            history[1].append("".join(current_model_response))
+            if not inf_cfg.clear_history:
+                history[0].append(query)
+                history[1].append("".join(current_model_response))
         except KeyboardInterrupt:
             pass
         except Exception as e:
