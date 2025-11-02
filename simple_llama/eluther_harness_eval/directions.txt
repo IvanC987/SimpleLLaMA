@@ -1,0 +1,55 @@
+To integrate this model into lm_eval for testing:
+==================================================
+
+1. On the same level as the cloned SimpleLLaMA, clone the lm-evaluation-harness repository:
+
+   git clone --depth 1 https://github.com/EleutherAI/lm-evaluation-harness.git
+   cd lm-evaluation-harness
+   pip install -e .
+
+2. Go to the `lm_eval/models` folder and put the `my_custom_lm.py` file in that directory.
+
+3. In the same `lm_eval/models` folder, open the `__init__.py` file and add:
+
+   'my_custom_lm'
+
+   to the list of imports.
+
+4. Go to the `pretraining` folder and copy over the ``config.py` file into `lm_eval/models`.
+
+5. In the `eluther_harness_eval` directory, use the `extract_state_dict.py` script to extract the model state dict/configs which is needed by lm-eval
+
+    Pass in the model filepath, something like `python3 extract_state_dict.py -i ../pretraining/checkpoints/<filename>`
+
+6. Would also need to pip install `torchvision` and `hf_transfer` on top of requirements.txt to run evaluations
+
+--------------------------------------------------
+
+To run evaluation (from the `simple_llama` folder level), use:
+
+   lm_eval --model my_custom_llm \
+           --model_args tokenizer_path=dataset/bpe_8k.json,config_path=<config_path>,checkpoint_path=<checkpoint_path>,pretrain_model=True \
+           --tasks hellaswag \
+           --batch_size 32 \
+           --device cuda:0
+
+Adjusting arguments as needed:
+   `tokenizer_path` should remain at `dataset/bpe_8k.json` unless moved
+   `config_path` should point to the saved config, which is printed out by the `extract_state_dict.py` file. Something like `eluther_harness_eval/save_dir/model_50B_2146L_4096MSQ_config.pth`
+   `checkpoint_path` is the same. Refers to the path of the saved state_dict file. E.g. `eluther_harness_eval/save_dir/model_50B_2146L_4096MSQ_sd.pth`
+   `pretrain_model` should be `True` if testing it on pretrained model, else `False` if on finetuned version. Though difference doesn't seem to be that large across the evaluated tasks
+
+Users can also take a look into `eluther_harness_eval/save_dir` folder for saved files
+
+Users can evaluate on a wide variety of tasks, here [hellaswag, piqa, arc_easy, arc_challenge] is used, can add/remove as needed
+E.g. if you would like to evaluate across multiple tasks, can replace `--tasks hellaswag \` with something like `--tasks hellaswag,piqa,arc_easy,arc_challenge \`
+
+--------------------------------------------------
+
+To run evaluation for other models for comparison:
+
+   lm_eval --model hf \
+           --model_args pretrained=EleutherAI/pythia-1.4b-v0,use_auth_token=True \
+           --tasks hellaswag \
+           --batch_size 32 \
+           --device cuda:0

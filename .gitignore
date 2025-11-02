@@ -4,6 +4,8 @@ __pycache__
 docs/gather_md.py
 docs/concat.md
 
+simple_llama.egg-info
+
 simple_llama/__pycache__
 
 # Skipping Misc/Test files and dataset folders (too large to push)
@@ -14,9 +16,6 @@ simple_llama/dataset/temp.py
 
 # Possiblly adding in KD later on from models like llama3 3/7B? Maybe...
 simple_llama/distillation
-
-# Adding in benchmarking using lm_eval
-simple_llama/eluther_harness_eval
 
 # Release later on
 simple_llama/final_models
@@ -29,6 +28,8 @@ simple_llama/finetune/ft_test1.py
 
 # Excluding test file
 simple_llama/inference/test_inf.py
+
+simple_llama/mid
 
 # Will add RL Folder later on when nearing completion
 simple_llama/reinforcement_learning
