@@ -82,4 +82,45 @@ For an in-depth look into the architecture, experiments, and training methodolog
 
 ## License
 
-This project is released under the MIT License. See [LICENSE](./LICENSE) for details.
+This project is licensed under the **MIT License**.  
+Feel free to use, extend, or adapt it for research or application purposes.
+
+---
+
+## Author
+
+**Ivan Cao**  
+Senior CS Student | University of Mississippi  
+Open to collaboration and research questions.  
+GitHub: [https://github.com/IvanC987/](https://github.com/IvanC987/)
+
+---
+
+## Acknowledgements
+
+This project was inspired by LLaMA, DeepSeek, and various other open source Large Language Models
+
+Papers: 
+- [LLaMA: Open and Efficient Foundation Language Models (Meta)](https://arxiv.org/abs/2302.13971)
+- [DeepSeek-V3 Technical Report](https://arxiv.org/abs/2412.19437)
+- [Training Compute-Optimal Large Language Models](https://arxiv.org/abs/2203.15556)
+- [LoRA: Low-Rank Adaptation of Large Language Models](https://arxiv.org/abs/2106.09685)
+- [Accelerating Large Language Model Decoding with Speculative Sampling](https://arxiv.org/abs/2302.01318)
+- [RoFormer: Enhanced Transformer with Rotary Position Embedding](https://arxiv.org/abs/2104.09864)
+
+Videos:
+- [Umar Jamil's 'Coding LLaMA 2 from scratch in PyTorch' Video](https://www.youtube.com/watch?v=oM4VmoabDAI)
+- [Dr. Karpathy's 'Let's reproduce GPT-2 (124M)' Video](https://www.youtube.com/watch?v=l8pRSuU81PU)
+
+Datasets:
+- [FineWeb-Edu](https://huggingface.co/datasets/HuggingFaceFW/fineweb-edu), derived from FineWeb and released under the Open Data Commons Attribution (ODC-By) license.  
+  See: [“The FineWeb Datasets: Decanting the Web for the Finest Text Data at Scale”](https://arxiv.org/abs/2406.17557).
+
+Portions of the model architecture are adapted from:
+- [hkproj/pytorch-llama](https://github.com/hkproj/pytorch-llama) by Umar Jamil (MIT License)
+
+
+Much of the implementation also borrows design clarity from these excellent open-source efforts.
+
+---
+
