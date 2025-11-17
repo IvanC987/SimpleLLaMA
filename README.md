@@ -61,20 +61,19 @@ If you wish to run custom pretraining, fine-tuning, or reinforcement learning, p
 
 For an in-depth look into the architecture, experiments, and training methodology, visit the full documentation:
 
-**📘 Documentation:** [https://ivanc987.github.io/SimpleLLaMA/](https://ivanc987.github.io/SimpleLLaMA/)  
-**📄 Technical Report:** [Technical_Report.md](./TECHNICAL_REPORT.md)
+**Documentation:** [https://ivanc987.github.io/SimpleLLaMA/](https://ivanc987.github.io/SimpleLLaMA/)  
+**Technical Report:** [Technical_Report.md](./TECHNICAL_REPORT.md)
 
 ---
 
 ## Benchmarks
 
-| Dataset         | Metric | Score  |
-|-----------------|---------|--------------|
-| MMLU            | Accuracy | XX.X% |
-| ARC (Challenge) | Accuracy | XX.X% |
-| ARC (Easy)      | Accuracy | XX.X% |
-| HellaSwag       | Accuracy | XX.X% |
-| PIQA            | Accuracy | XX.X% |
+| Dataset         | Metric              | Score  |
+|-----------------|---------------------|--------|
+| ARC (Challenge) | Normalized Accuracy | 27.39% |
+| ARC (Easy)      | Normalized Accuracy | 53.96% |
+| HellaSwag       | Normalized Accuracy | 40.62% |
+| PIQA            | Normalized Accuracy | 66.92% |
 
 *(See the `Misc/Benchmarking` section in documentations for more details)*
 
@@ -114,7 +113,15 @@ Videos:
 
 Datasets:
 - [FineWeb-Edu](https://huggingface.co/datasets/HuggingFaceFW/fineweb-edu), derived from FineWeb and released under the Open Data Commons Attribution (ODC-By) license.  
-  See: [“The FineWeb Datasets: Decanting the Web for the Finest Text Data at Scale”](https://arxiv.org/abs/2406.17557).
+  See: ["The FineWeb Datasets: Decanting the Web for the Finest Text Data at Scale"](https://arxiv.org/abs/2406.17557).
+- [lmsys/lmsys-chat-1m](https://huggingface.co/datasets/lmsys/lmsys-chat-1m), a large-scale corpus of user–LLM chat interactions collected across 25 models, used for supervised fine-tuning of dialogue and instruction-following models.
+  See ["LMSYS-Chat-1M: A Large-Scale Real-World LLM Conversation Dataset"](https://arxiv.org/pdf/2309.11998)
+- [anon8231489123/ShareGPT_Vicuna_unfiltered](https://huggingface.co/datasets/anon8231489123/ShareGPT_Vicuna_unfiltered), an unfiltered subset of ShareGPT/Vicuna-style conversation data (~53K examples) commonly used for instruction fine-tuning.
+  See ["FastChat"](https://github.com/lm-sys/FastChat/)
+- [HuggingFaceTB/smol-smoltalk](https://huggingface.co/datasets/HuggingFaceTB/smol-smoltalk), a compact, high-quality conversational dataset (~460K examples) designed for efficient supervised fine-tuning of small models.
+  See ["SmolLM2: When Smol Goes Big -- Data-Centric Training of a Small Language Model"](https://arxiv.org/pdf/2502.02737)
+- [PKU-Alignment/PKU-SafeRLHF](https://huggingface.co/datasets/PKU-Alignment/PKU-SafeRLHF), a human preference dataset emphasizing safety, helpfulness, and harmlessness, used for Direct Preference Optimization (DPO) and RLHF alignment training.
+  See ["PKU-SafeRLHF: Towards Multi-Level Safety Alignment for LLMs with Human Preference"](https://arxiv.org/pdf/2406.15513)
 
 Portions of the model architecture are adapted from:
 - [hkproj/pytorch-llama](https://github.com/hkproj/pytorch-llama) by Umar Jamil (MIT License)
