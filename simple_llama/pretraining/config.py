@@ -11,15 +11,15 @@ class TrainingConfig:
     log_file: str = root_path("simple_llama", "pretraining", "training_progress.txt")  # File to log training progress
 
     # === Batch & Sequence ===
-    batch_size: int = 4             # Minibatch size
+    batch_size: int = 16             # Minibatch size
     max_seq_len: int = 2048         # Maximum sequence length per sample
     tokens_per_update: int = 2**19  # ~512K tokens per optimizer update
 
     # === Model Architecture ===
-    n_embd: int = 2048               # Embedding dimension
-    n_heads: int = 32                # Number of attention heads
-    n_layers: int = 24               # Number of transformer layers
-    multiple_of: int = 256           # Feedforward dim multiple for efficient matmul
+    n_embd: int = 1024               # Embedding dimension
+    n_heads: int = 16                # Number of attention heads
+    n_layers: int = 20               # Number of transformer layers
+    multiple_of: int = 128           # Feedforward dim multiple for efficient matmul
     eps: float = 1e-5                # Epsilon value to prevent div-by-zero in normalization layers
     theta: int = 10_000              # Theta for RoPE rotation frequency
     dropout: float = 0.0             # Dropout rate; typically 0.0 for pretraining
@@ -46,9 +46,9 @@ class TrainingConfig:
     enable_compilation: bool = True     # Enables torch.compile if possible
 
     # === Training Schedule ===
-    warmup_iterations: int = 500        # Warmup steps for LR scheduler
+    warmup_iterations: int = 2000        # Warmup steps for LR scheduler
     max_lr: float = 1e-4                # Peak LR after warmup
-    min_lr: float = 1e-5                # Minimum LR at end of cosine decay
+    min_lr: float = 1e-6                # Minimum LR at end of cosine decay
     beta1: float = 0.9                  # AdamW beta1
     beta2: float = 0.95                 # AdamW beta2
     weight_decay: float = 0.1           # L2 regularization weight
@@ -58,9 +58,9 @@ class TrainingConfig:
     model_gen_multiplier: float = 1.5   # Multiplier for exponential generation interval
 
     # === Training Tokens ===
-    training_tokens: int = int(45e9)    # Total tokens to train on
+    training_tokens: int = int(5500e6)  # Total tokens to train on
     load_ckpt: bool = False             # If resuming from checkpoint
-    token_ckpt: int = int(1e9)          # Save model every X tokens
+    token_ckpt: int = int(500e6)        # Save model every X tokens
     use_prev_scheduler: bool = True     # Resume scheduler state from checkpoint
 
     # === Derived ===

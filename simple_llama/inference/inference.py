@@ -52,7 +52,7 @@ def top_p_sampling(prob_tensor: torch.Tensor, p: float):
 
     cumulative_prob, idx = 0, 0
     prob_and_idx = []  # A 2d list of [probability, token_idx]
-    while cumulative_prob < p:
+    while cumulative_prob < p and idx < len(sorted_indices):
         token_prob = prob_tensor[sorted_indices[idx]]  # The probability of the token at index 'idx'
         prob_and_idx.append([token_prob, sorted_indices[idx]])
         cumulative_prob += token_prob
@@ -219,9 +219,6 @@ if __name__ == "__main__":
     assert isinstance(inf_cfg.top_k, int) and inf_cfg.top_k > 0
     assert isinstance(inf_cfg.max_new_tokens, int) and inf_cfg.max_new_tokens > 0
     assert inf_cfg.sampling_method in ["greedy", "top_k", "top_p"]
-
-    # Create the history folder, where users can save chat history if desired
-    os.makedirs(inf_cfg.history_dir, exist_ok=True)
 
     set_seed(inf_cfg.seed)
 

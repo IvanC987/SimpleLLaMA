@@ -15,6 +15,8 @@ from simple_llama.pretraining.lr_scheduler import Scheduler
 from simple_llama.pretraining.utils import load_checkpoint, few_shot_prompts, check_log_file_existence
 from simple_llama.pretraining.config import TrainingConfig
 
+# torch.serialization.add_safe_globals({TrainingConfig})
+
 
 # To run, use `torchrun --standalone --nproc_per_node=8 train.py`
 # Set global variables for DDP

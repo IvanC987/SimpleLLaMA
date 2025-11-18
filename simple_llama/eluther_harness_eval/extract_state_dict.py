@@ -7,6 +7,7 @@ torch.serialization.add_safe_globals({TrainingConfig})
 
 """
 Used to extract out the model's state dict to a standalone .pt file, which is needed by lm-eval
+Usage example: `python3 extract_state_dict.py -i ../pretraining/checkpoints/model_1000M_3974L_2048MSQ.pth`
 """
 
 
@@ -16,7 +17,7 @@ def extract_state_dict(input_path: str):
     checkpoint = torch.load(input_path, map_location="cpu")
     state_dict = checkpoint["model_state_dict"]
 
-    # E.g. ./checkpoints/model_50B_2146L_4096MSQ.pth -> model_50B_2146L_4096MSQ.pth
+    # E.g. ../pretraining/checkpoints/model_50B_2146L_4096MSQ.pth -> model_50B_2146L_4096MSQ.pth
     intermediate = input_path.split("/")[-1]
     # E.g. model_50B_2146L_4096MSQ.pth -> ['model_50B_2146L_4096MSQ', '.pth'] Assumes it only has a single '.', which is fine if user didn't modify anything
     intermediate = intermediate.split(".")
@@ -33,7 +34,7 @@ def extract_state_dict(input_path: str):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("-i", type=str, help="path to .pth file, E.g. './checkpoints/model_50B_2146L_4096MSQ.pth'")
+    parser.add_argument("-i", type=str, help="path to .pth file, E.g. '../pretraining/checkpoints/model_50B_2146L_4096MSQ.pth'")
 
     input_path = parser.parse_args().i
 
