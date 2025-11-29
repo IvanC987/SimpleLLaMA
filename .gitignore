@@ -4,6 +4,8 @@ __pycache__
 docs/gather_md.py
 docs/concat.md
 
+site/
+
 simple_llama.egg-info
 
 simple_llama/__pycache__
@@ -31,8 +33,8 @@ simple_llama/inference/test_inf.py
 
 simple_llama/mid
 
-# Will add RL Folder later on when nearing completion
-simple_llama/reinforcement_learning
+simple_llama/reinforcement_learning/rl_dataset
+simple_llama/reinforcement_learning/notes.txt
 
 # Personal Folder
 simple_llama/rollback
