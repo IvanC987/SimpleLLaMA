@@ -5,7 +5,7 @@ from simple_llama.pretraining.utils import root_path
 @dataclass
 class TrainingConfig:
     # === Paths and Dataset ===
-    dataset_dir: str = root_path("simple_llama", "dataset", "short")       # Path to tokenized training data
+    dataset_dir: str = root_path("simple_llama", "dataset", "experiment_set")          # Path to tokenized training data
     tokenizer_path: str = root_path("simple_llama", "dataset", "bpe_8k.json")          # Path to tokenizer model
     ckpt_dir: str = root_path("simple_llama", "pretraining", "checkpoints")   # Directory to store checkpoints
     log_file: str = root_path("simple_llama", "pretraining", "training_progress.txt")  # File to log training progress
