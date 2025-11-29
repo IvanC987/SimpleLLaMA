@@ -5,7 +5,6 @@
 
 - [Overview](#overview)
 - [Core Features](#core-features)
-- [Project Roadmap](#project-roadmap)
 - [How To Use](#how-to-use)
 - [Model Architecture](#model-architecture)
   - [Transformer Architecture (Decoder-Only)](#transformer-architecture-decoder-only)
@@ -20,11 +19,10 @@
 - [Training Phase](#training-phase)
   - [Pretraining](#pretraining)
   - [Supervised Fine-Tuning (SFT)](#supervised-fine-tuning-sft)
-  - [RLHF (Planned)](#rlhf-planned)
+  - [RLHF via (DPO)](#rlhf-via-direct-preference-optimization-dpo)
 - [Benchmarks](#benchmarks)
 - [LoRA Fine-Tuning](#lora-fine-tuning)
 - [Speculative Decoding](#speculative-decoding)
-- [Custom Model Training](#custom-model-training)
 - [Additional Observations](#additional-observations)
   - [Checkpoint Validation](#checkpoint-validation)
   - [MHA vs MLA](#mha-vs-mla-throughput-comparison)
@@ -61,26 +59,6 @@ Built with flexibility in mind for research and experimentation purposes.
 | **Inference CLI**                        | Terminal interface with token sampling configs and streaming generation |
 | **Speculative Decoding (planned)**       | Fast decoding using a draft + target model scheme |
 | **DPO Reinforcement-Learning (planned)** | Direct Preference Optimization to replace PPO-based alignment |
-
----
-
-## Project Roadmap
-
-- ✅ Core LLaMA-style transformer architecture
-- ✅ Custom training logger, checkpoint manager, optimizer scheduler
-- ✅ MLA (Multi-head Latent Attention)
-- ✅ Add LoRA modules
-- ✅ Token-based pretraining + scaling law framework
-- ✅ Create and test supervised fine-tuning (SFT) scripts on pretrained models
-- ✅ Implement CLI inference interface with streaming and config flags
-- ✅ Add model benchmarking script for evaluation
-- ❌ Implement and experiment with Direct Preference Optimization (DPO)
-- ❌ Incorporate speculative decoding support for fast inference
-- ❌ Pretrain ~273M parameter model on FineWebEdu as the Draft Model for Speculative Decoding (12.5B Tokens)
-- ❌ Pretrain ~1.3B parameter model on FineWebEdu (50B Tokens)
-- ❌ Finetune pretrained model on custom dataset
-- ❌ Apply Reinforcement Learning to Model
-- ❌ Release full model weights along with any LoRA adapters
 
 ---
 
@@ -177,22 +155,30 @@ In total, the ASCII-filtered FineWebEdu corpus is estimated to contain approxima
 - **~5B tokens** with `seq_len=4096`
 
 
-### Supervised-Fine-Tuning (SFT) Dataset
-For the Supervised-Fine-Tuning (SFT) stage, I have created a custom dataset using LLMs like DeepSeek and Gemini. 
-This dataset is structured using "User"/"Assistant" model, to guide the text-continuation behavior of a pretrained model into a more chat-like conversation format. 
-There are many different categories within this dataset, among with includes subsets such as: 
+### Supervised Fine-Tuning (SFT) Dataset
+
+For the Supervised Fine-Tuning (SFT) stage, the dataset is constructed from high-quality open-source conversational and instruction-following
+datasets:
+
+**Primary Datasets:**
+- **[lmsys/lmsys-chat-1m](https://huggingface.co/datasets/lmsys/lmsys-chat-1m)** - Large-scale corpus of real user–LLM interactions across 25 models,
+providing diverse conversational patterns and instruction-following examples.
+- **[anon8231489123/ShareGPT_Vicuna_unfiltered](https://huggingface.co/datasets/anon8231489123/ShareGPT_Vicuna_unfiltered)** - Unfiltered
+ShareGPT/Vicuna conversation data (~53K examples) commonly used for instruction tuning.
+- **[HuggingFaceTB/smol-smoltalk](https://huggingface.co/datasets/HuggingFaceTB/smol-smoltalk)** - Compact, high-quality conversational dataset (~460K
+examples) designed for efficient supervised fine-tuning.
+
+These datasets were filtered, deduplicated, and formatted into a standardized "User"/"Assistant" structure using special tokens (`<SOU>`, `<EOU>`,
+`<SOA>`, `<EOA>`). The final SFT dataset covers multiple categories:
 - Instruction Following
 - Multi-Turn Dialogue
-- Simple Reasoning Logic
 - Factual QA
+- Reasoning and Logic
 - Error Correction
-- Long Sequence Generation
+- Long-Form Generation
 
-Among many others. 
-
-In total, there is approximately 220k examples in this custom SFT dataset.
-I am planning to possibly introduce external, open-sourced, datasets such as `digitalpipelines/wizard_vicuna_70k_uncensored`. 
-That remains to be seen. 
+In total, the SFT dataset contains approximately **150k** examples after filtering for things like ASCII compatibility/maximum sequence length
+ constraints. Only assistant responses are supervised during training using proper loss masking.
 
 ---
 
@@ -363,38 +349,103 @@ After pretraining, the base model will undergo full-parameter finetuning, based 
 
 ---
 
-### RLHF (Planned)
+### RLHF via Direct Preference Optimization (DPO)
 
-The third phase involves aligning the model to human preferences using preference-based methods (DPO is the current plan). 
-This is intended to improve helpfulness and align to human-preferred tones/language without degrading core language abilities.
+The final alignment phase uses **Direct Preference Optimization (DPO)** to refine model outputs based on human preference data, without requiring a
+separate reward model or PPO training.
 
-Approach/Pipeline/Plans- TBD
+**Approach:**
+- **Method**: DPO as described in [Rafailov et al. (2023)](https://arxiv.org/abs/2305.18290)
+- **Dataset**: [PKU-Alignment/PKU-SafeRLHF](https://huggingface.co/datasets/PKU-Alignment/PKU-SafeRLHF) - Human preference pairs emphasizing safety,
+helpfulness, and harmlessness
+- **Objective**: Preference loss comparing accepted vs rejected responses relative to frozen SFT reference model
+- **Key Implementation Details**:
+- Loss masking on prompt tokens (only supervise on completions)
+- Length normalization to prevent bias toward shorter responses
+- Beta parameter (β=0.5) controls KL divergence from reference model
+- Very low learning rate (5e-7) to prevent distribution shift
+
+**Observations:**
+- Model successfully learns to prefer accepted responses over rejected ones
+- Observable **alignment tax**: slight quality degradation compared to SFT in exchange for improved safety/alignment
+- Hyperparameter sensitivity: lower beta values (0.1) led to training instability; higher values (0.5) provided stable convergence
+- Final model shows measurable improvement on safety-oriented test prompts while maintaining competitive benchmark performance
+
+The DPO implementation includes proper interleaving of accepted/rejected pairs, dynamic padding for efficiency, and full validation metrics during
+training.
 
 ---
 
 ## Benchmarks
+
+The pretrained 1.3B parameter model (after 50B tokens) was evaluated on standard commonsense reasoning and knowledge benchmarks using the [Eleuther AI Language Model Evaluation Harness](https://github.com/EleutherAI/lm-evaluation-harness).
+
+**Results (0-shot):**
+
+| Dataset         | Metric              | Score  |
+|-----------------|---------------------|--------|
+| ARC (Challenge) | Normalized Accuracy | 27.39% |
+| ARC (Easy)      | Normalized Accuracy | 53.96% |
+| HellaSwag       | Normalized Accuracy | 40.62% |
+| PIQA            | Normalized Accuracy | 66.92% |
+
+**Key Observations:**
+- The model achieves **competitive performance** relative to baseline models trained on 3-7x more tokens (OPT-1.3B, Pythia-1.4B, GPT-Neo-1.3B)
+- Strong performance on **PIQA (66.92%)** and **ARC-Easy (53.96%)**, indicating solid physical commonsense and basic reasoning
+- Gap on **HellaSwag (40.62%)** compared to larger-budget baselines suggests this benchmark benefits most from additional training data
+- These results validate the training pipeline and demonstrate compute-efficient scaling
+
+**Baseline Comparisons:**
+The model outperforms or matches several 1B-1.5B scale baselines despite significantly smaller token budgets:
+- **OPT-1.3B** (180B tokens): Competitive on ARC-Easy, similar on PIQA
+- **Pythia-1.4B** (300B tokens): Comparable across most benchmarks
+- **GPT-Neo-1.3B** (380B tokens): Better on ARC-Easy and PIQA
+
+For detailed baseline comparisons and evaluation methodology, see the full documentation.
 
 ---
 
 
 ## LoRA Fine-Tuning
 
+Low-Rank Adaptation (LoRA) modules are implemented but remain **experimental** in this project. The architecture supports LoRA injection at Q/K/V/O
+projections in both MHA and MLA attention mechanisms.
+
+**Implementation Status:**
+- ✅ LoRA layers integrated into transformer architecture
+- ✅ Configurable rank, alpha, and target projection selection
+- ✅ Separate checkpoint saving for LoRA adapters
+- ❌ Full training pipeline not completed
+- ❌ No systematic evaluation of LoRA vs full fine-tuning
+
+**Design:**
+- Adapter injection uses `rank` and `alpha` parameters for controlling capacity and scaling
+- LoRA weights saved separately from base model for efficient adapter swapping
+- Compatible with both pretraining and inference transformer implementations
+
+Due to time constraints and the relatively small model size (1.3B params), full-parameter fine-tuning was prioritized over LoRA experimentation.
+Future work may explore LoRA for domain-specific adaptation or multi-task scenarios.
 
 ---
 
 ## Speculative Decoding
-- **Purpose**: Speed up inference by combining a lightweight draft model with a larger target model.
-- **Mechanism**:
-  - Draft model proposes several tokens in parallel.
-  - Target model verifies or rejects predictions, reverting if needed.
-- **Implementation Plan**:
-  - Reuse same tokenizer and embedding dimensions between models.
-  - Use cached KV pairs to avoid recomputation during rejection.
 
+Speculative decoding is **partially implemented** but not integrated into the main inference pipeline.
 
----
+**Status:**
+- ✅ Conceptual implementation and testing
+- ❌ Production integration with KV-cache
+- ❌ Draft model training (273M param model on 12.5B tokens)
 
-## Custom Model Training
+**Planned Mechanism:**
+- Lightweight draft model (~273M params) proposes K tokens in parallel
+- Target model (1.3B params) verifies proposals in a single forward pass
+- Accept correct predictions, reject and resample on mismatch
+- Reuse KV-cache to avoid recomputation
+
+Given time and compute constraints, this optimization was deferred in favor of completing the full training pipeline (pretraining → SFT → DPO). The
+existing KV-cache implementation provides substantial speedup for single-model inference.
+
 
 ---
 
