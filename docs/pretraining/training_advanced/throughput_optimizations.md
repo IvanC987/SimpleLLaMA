@@ -37,7 +37,7 @@ print(f"FP16 range: ~10^4 (much smaller - risk of overflow)")
 
 The key is that LLM training is more sensitive to range than precision. Gradient values can span many orders of magnitude, making BF16's preserved range crucial.
 
-Do note that although this would reduce memory usage substantially, but would not directly halve the memory usage, a few layers/activations in the model are kept in FP32 due to precision sensitivity, along with optimizer state dicts which stays in FP32. 
+Do note that although this would reduce memory usage substantially, but would not directly halve the memory usage, a few layers/activations in the model are kept in FP32 due to precision sensitivity, along with optimizer state which remains in FP32. 
 
 ---
 

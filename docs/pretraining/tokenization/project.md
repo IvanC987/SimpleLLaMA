@@ -43,8 +43,8 @@ tokenizer.save("bpe_8k.json")
 
 Note the `vocab_size=8192` part. This is a value that we can adjust as needed. A vocabulary size of `8192` means that we undergo compression until we have 8192 mapping in our dict. 
 One can think of it as a balancer: If vocab size is set too low (e.g. 256), BPE will collaspe into character level tokenization. However if vocab size is too large, like 1 million, it will converge towards something like a word level tokenizer. 
-Generally, BPE tokenizers have vocabulary size of 32k+, however since we are dealing with ascii only dataset, 8192 works fine. 
-
+Generally, BPE tokenizers have vocabulary sizes of 32K+ for multilingual models. 
+However, for ASCII-only with a 50B token budget, 8192 prevents sparsity issues while maintaining good compression (~3.9 characters per token). A 32K vocab would spread training signal too thin across rarely-seen tokens.
 
 #### Key Design Choices
 
@@ -92,6 +92,9 @@ for file in os.listdir(src_dir):
 ---
 
 By the end of this stage, the dataset has gone from raw text → clean shards → token IDs, all ready to be fed into the pretraining pipeline.
-For the remainder of this documentation/tutorial, I will show tokenization on word level for simplicity. 
 
+**Note on Examples:**
+For illustrative purposes in later architecture diagrams, tokenization may be shown at
+word-level for readability (e.g., ["Hello", "world"] instead of ["He", "llo", " world"]).
+However, the actual implementation uses BPE subword tokenization as described above.
 

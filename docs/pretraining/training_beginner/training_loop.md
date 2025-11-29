@@ -424,8 +424,7 @@ Step: 3072 steps   |   Training Progress: 0.22%   |   Training Loss: 4.4724   | 
 ```
 
 Focusing on the training loss curve, we can see that it declines rapidly before slowly starts to plateau a bit. 
-Most metrics is quite simple (Should add some explanation about norms/perplexity?)  
-
+Perplexity and Norm metric will be covered in the Advanced Guide section
 
 Here is an example generation output by the model at the very start, after just 256 steps:
 

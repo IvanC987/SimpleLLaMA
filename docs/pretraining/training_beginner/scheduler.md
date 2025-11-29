@@ -1,4 +1,4 @@
-The learning rate (LR) is one of the most important hyperparameters in training deep neural networks, where it's used to adjusts the learning rate dynamically during training, instead of keeping it fixed.
+The learning rate (LR) is one of the most important hyperparameters in training deep neural networks. A learning rate scheduler adjusts the LR dynamically during training, instead of keeping it fixed at a constant value.
 
 This project includes a custom `Scheduler` class that implements warmup and three different scheduling strategies: **cosine decay**, **linear decay**, and **constant LR**.
 

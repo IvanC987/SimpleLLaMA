@@ -55,7 +55,7 @@ This SFT documentation section provides a comprehensive guide to transforming th
 
 ### The SFT Training Objective
 
-Unlike pretraining where we train on a massive text corpora, SFT is more about behavior tuning, using a much smaller dataset, composed to 3 main components:  
+Unlike pretraining where we train on a massive text corpus, SFT is more about behavior tuning, using a much smaller dataset, composed to 3 main components:  
 
 - System Instructions
 - User Query
@@ -91,9 +91,9 @@ SFT leverages the **foundational knowledge** acquired during pretraining and **r
 
 ## Performance Expectations
 
-For this 1.3B parameter model: (Need to come back and update this later on after going through full process)
+For this 1.3B parameter model:
 
-- **Training Time**: ~12 hours (vs months for pretraining)  
-- **Dataset Size**: 200,000 high-quality examples  
-- **Convergence**: Usually within 3-5 epochs  
-- **Quality Improvement**: Dramatic improvement in instruction following with relatively little training
+- **Training Time**: Several hours on single GPU (vs months for pretraining)
+- **Dataset Size**: Filtered from lmsys-chat-1m, ShareGPT, and smol-smoltalk
+- **Convergence**: Typically 3-5 epochs
+- **Quality Improvement**: Significant improvement in instruction-following and conversational coherence

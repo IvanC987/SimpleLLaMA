@@ -62,6 +62,9 @@ For this project, I’ll be using FineWebEdu as the main pretraining dataset, fo
 
 A general rule of thumb for dataset sizing: you want a parameter-to-token ratio of at least 1:20 (20 tokens for every model parameter). Once you get to very high ratios (like 1:100), you start seeing diminishing returns.
 
+For this project, a 1:40 ratio (1.3B parameters on 50B tokens) was used, which is slightly above the Chinchilla-optimal ~1:20. 
+This intentionally chosen because many large-scale models deliberately train with much higher token-to-parameter ratios to improve generalization.
+
 ### Dataset Gathering & Sharding
 
 The first step is to collect and prepare the dataset. Since this tokenizer will be used to tokenize the **FineWebEdu** dataset we gathered earlier, it would also be used to train the tokenizer (generally, it's better to train the tokenizer on the same distribution as the pretraining data for LLM).  

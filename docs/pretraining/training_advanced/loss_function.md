@@ -41,7 +41,7 @@ $$
 P = p(y_1)p(y_2 \mid y_1)p(y_3 \mid y_1,y_2)...
 $$
 
-This product can become *extremely small*. Even if each predicted correct token has a very high probability like ~0.8, for a mere 250 tokens, \\(0.8^{100} \\approx 6 * 10^{-25}\\). That’s practically a value of zero.  
+This product can become *extremely small*. Even if each predicted correct token has a very high probability like ~0.8, for a mere 250 tokens, \\(0.8^{250} \\approx 6 * 10^{-25}\\). That’s practically a value of zero.  
 
 Taking the log turns the product into a sum:
 

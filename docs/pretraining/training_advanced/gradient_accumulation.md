@@ -24,15 +24,18 @@ Let's examine a concrete example:
 - Hidden dimension = 2048 (value used in this project)
 
 Each forward/backward pass processes:
-$$
-\text{tokens per batch} = 4 \times 2048 = 8,192 \text{ tokens}
-$$
+$\text{tokens per batch} = 4 \times 2048 = 8,192 \text{ tokens}$
 
-The memory required for the model/optimizer parameters and gradients alone is almost 10.5GB, not to mention the activations which dominates the total memory usage. If we tried to increase this to the desired effective batch size of ~524,288 tokens, we'd need:
+The memory required for the model/optimizer parameters and gradients alone is around 10.4GB, not to mention the activations which dominates the total memory usage. 
 
-$$
-\text{Required multiplier} = \frac{524,288}{8,192} = 64\times \text{ more tokens}
-$$
+- Model parameters: 1.3B × 2 bytes (FP16) = 2.6GB
+- Adam optimizer states: 2× model size = 5.2GB
+- Gradients: same as model = 2.6GB
+- **Total: ~10.4GB** (before activations)
+
+If we tried to increase this to the desired effective batch size of ~524,288 tokens, we'd need:
+
+$\text{Required multiplier} = \frac{524,288}{8,192} = 64\times \text{ more tokens}$
 
 Attempting to push to 64× larger effective batch size would imply an enormous jump in memory demand. In practice, activations already dominate memory usage at modest batch sizes, often consuming several times more memory than parameters and optimizer states combined. Scaling this up directly would push requirements well beyond what any single GPU can handle — potentially into the hundreds of gigabytes range. This is why gradient accumulation (and activation checkpointing, which will not be covered here) is essential, used to reduce memory requirements.
 

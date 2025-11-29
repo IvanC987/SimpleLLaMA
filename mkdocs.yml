@@ -58,11 +58,11 @@ nav:
       - Finetuning Process: sft/finetuning.md
   - RLHF:
       - Overview: rlhf/overview.md
-      - Methods: rlhf/methods.md
-  - Misc:
-      - Benchmarking: misc/benchmarking.md
-      - Inference: misc/inference.md
-      - Notes: misc/notes.md
+      - Preference Optimization: rlhf/preference_optimization.md
+  - Performance & Applications:
+      - Benchmarking: performance_and_applications/benchmarking.md
+      - Inference: performance_and_applications/inference.md
+      - Notes: performance_and_applications/notes.md
   - Custom Training:
       - Pretraining: custom_training/pretraining.md
       - Supervised Fine Tuning: custom_training/sft.md

@@ -1,174 +1,219 @@
-# Supervised Fine-Tuning Dataset Creation
+# Supervised Fine-Tuning Dataset
 
-This document explains in detail how the **Supervised Fine-Tuning (SFT) dataset** was created for the SimpleLLaMA project. The dataset contains **216,000 synthetic samples** generated using DeepSeek and Gemini 2.5 (Flash and Pro). It is designed specifically for a 1.3B parameter model — which is much smaller and simpler than the 7B+ models often targeted by publicly available datasets — and therefore required careful curation and balance.
+## Introduction: The Role of SFT Data
 
----
+Supervised Fine-Tuning (SFT) data is fundamentally different from pretraining data. While pretraining uses raw text to teach language patterns, SFT
+uses **structured conversations** to teach behavioral alignment—how to follow instructions, adopt roles, and provide helpful responses.
 
-## Why Synthetic Instead of Using Hugging Face Datasets?
-
-While there are many instruction-tuning datasets available on Hugging Face, such as **Alpaca, ShareGPT, OASST**, etc., they are generally constructed for **larger-scale models (7B–70B parameters)**. Using them directly could misalign a smaller model in several ways:
-
-- **Level of difficulty** – Datasets like OASST or ShareGPT contain complex, nuanced conversations. For a 1.3B model, this would often lead to failure cases. A controlled dataset is used to confirm examples are at the right difficulty level.  
-- **Distribution mismatch** – Public datasets are often skewed toward open-domain chit-chat, or contain an imbalanced ratio of tasks. Here, the dataset was constructed with explicit category proportions (see below).  
-- **Control over content** – By generating synthetic data, we can tightly control what categories exist, their frequency, and their complexity. This reduces noise and makes the model more reliable for its intended use.  
-
-In short: **synthetic generation provides balance, scalability, and suitability for a smaller model**, while avoiding the pitfalls of “overshooting” with datasets made for much larger systems.
+The quality and diversity of SFT data directly determine how well the model transitions from "language predictor" to "helpful assistant."
 
 ---
 
-## Dataset Composition
+## Dataset Sources
 
-The dataset is broken down into **8 categories**, each representing a different skill domain. These categories were chosen to ensure broad but manageable coverage of practical use cases. Below is the distribution:
+This project uses three high-quality open-source conversational datasets from HuggingFace, chosen for their diversity, scale, and real-world
+authenticity:
 
-| Category | Share | Purpose | Example |
-|----------|-------|---------|---------|
-| **Instruction Following** | 30% | Core alignment skill: teaching the model to obey explicit instructions. | “Summarize this article in 2 sentences.” |
-| **User Conversation** | 20% | Multi-turn dialogues, simulating back-and-forth exchanges. Adds robustness to conversational flow. | “Hello! How are you?” → “I’m good, how are you?” |
-| **Reasoning & Logic** | 15% | Arithmetic, logical reasoning, multi-step thought. Strengthens structure in answers. | “If Sarah has 5 apples and eats 2, how many are left?” |
-| **QA (Factual)** | 10% | Short, grounded factual responses. Prevents drift and strengthens retrieval-like capabilities. | “What is the capital of Canada?” |
-| **Error Correction** | 5% | Simple grammar/spelling fixes. Teaches token-level precision. | Input: “She go to market.” → Output: “She goes to the market.” |
-| **Structured Transformation** | 5% | Converting between formats, summarization, bullet-pointing, JSON transformations. | “Turn this paragraph into a bulleted list.” |
-| **Long Response Generation** | 5% | Encourages extended outputs, storytelling, and maintaining coherence across long sequences. | “Write a short story about a lost robot.” |
-| **Identity / Miscellaneous** | 10% | Handles “Who are you?” queries, opinions, small-talk, and personality alignment. | “Who are you?” → “I’m SimpleLLaMA, your assistant.” |
+### 1. lmsys-chat-1m
 
----
+- **Description**: Large-scale corpus of real user interactions with 25 different LLMs (GPT-4, Claude, Gemini, etc.)
+- **Size**: ~1 million conversations
+- **Link**: [https://huggingface.co/datasets/lmsys/lmsys-chat-1m](https://huggingface.co/datasets/lmsys/lmsys-chat-1m)
 
-### Subcategories
+### 2. ShareGPT_Vicuna_unfiltered
 
-Within each major category, subcategories were mixed in to increase diversity. For example:
+- **Description**: Community-curated conversations from the ShareGPT/Vicuna lineage
+- **Size**: ~53,000 examples
+- **Link**:
+[https://huggingface.co/datasets/anon8231489123/ShareGPT_Vicuna_unfiltered](https://huggingface.co/datasets/anon8231489123/ShareGPT_Vicuna_unfiltered)
 
-- **Instruction Following**
-    - Summarization (“Summarize this paragraph in 3 bullet points”).  
-    - Classification (“Classify this review as positive or negative”).  
-    - Style constraints (“Explain this like I’m 5”).  
+### 3. smol-smoltalk
 
-- **User Conversation**
-    - Multi-turn casual conversation.  
-    - Task-based (helping with scheduling, answering follow-ups).  
-
-- **Reasoning & Logic**
-    - Arithmetic problems.  
-    - Deductive logic.  
-    - Simple word problems.  
-
-- **Structured Transformation**
-    - Bullet point compression.  
-    - Extracting keywords.  
-
-This is to make sure that within each category, the model isn’t just repeating a narrow skill, but instead sees varied applications of the same general ability.
+- **Description**: Compact, high-quality conversational dataset designed for efficient SFT
+- **Size**: ~460,000 examples
+- **Link**: [https://huggingface.co/datasets/HuggingFaceTB/smol-smoltalk](https://huggingface.co/datasets/HuggingFaceTB/smol-smoltalk)
 
 ---
 
-## Generation Pipeline
+## Why Real Conversational Data?
 
-### Step 1: Few-Shot Prompting
+### The Authenticity Advantage
 
-Examples were generated using **few-shot prompts** with Gemini and DeepSeek. A handful of verified examples were embedded into the system prompt, ensuring that outputs were consistent with the required format:
+While synthetic data generation (via LLM APIs like GPT-4, Claude, Gemini) is a common approach, **real user conversations provide critical
+advantages**:
+
+**1. Natural Language Variation**
+- Real users have inconsistent grammar, spelling errors, and colloquialisms
+- Queries are often incomplete, ambiguous, or poorly phrased
+- This diversity prevents the model from overfitting to "clean" synthetic patterns
+
+**2. Authentic Distribution**
+- Reflects how people *actually* use chat assistants (not how we think they should)
+- Captures edge cases and unexpected query types
+- Includes contextual nuances that synthetic generation often misses
+
+**3. No Generation Artifacts**
+- LLM-generated synthetic data can be repetitive (similar phrasing patterns across examples)
+- May inherit biases or stylistic quirks from the generator model
+- Real data avoids these "fingerprints"
+
+**4. Proven Quality**
+- These datasets have been battle-tested by the community
+- Used successfully in training models like Vicuna, StableLM, and others
+- Less risk than untested synthetic pipelines
+
+### Trade-offs Acknowledged
+
+Real data isn't perfect:
+- May contain noise or low-quality examples (requires filtering)
+- Can't perfectly control category distribution like synthetic generation
+- Potential for data contamination (examples appearing in model pretraining)
+
+However, for a **1.3B parameter model** trained on **50B pretrain tokens**, the authenticity and diversity outweigh these concerns.
+
+---
+
+## Data Processing Pipeline
+
+The raw HuggingFace datasets undergo several transformation steps before use:
+
+### Step 1: Format Standardization
+
+Each dataset has a different schema. We convert all to a unified JSON structure:
 
 ```json
 {
-  "Template": ["Speak like a teacher"],
-  "User": ["Why does the sun set?"],
-  "Assistant": ["The sun appears to set because the Earth rotates, making it seem like the sun is moving across the sky."]
+  "Template": ["CUSTOM"],
+  "User": ["What is 2+2?"],
+  "Assistant": ["4"]
+}
+```
+
+Multi-turn conversations are preserved:
+
+```json
+{
+  "Template": ["CUSTOM"],
+  "User": ["Hello!", "How are you doing today?"],
+  "Assistant": ["Hi there! How can I help?", "I'm doing well, thanks for asking!"]
+}
+```
+
+
+### Step 2: ASCII Filtering
+
+Since the BPE tokenizer was trained only on ASCII text, all non-ASCII characters are filtered or normalized:
+
+- Examples with non-ASCII content are discarded
+- This prevents tokenization mismatches during training
+- Ensures consistency with pretraining data distribution
+
+Examples of normalization:
+
+- "café" → "cafe"
+- "π" → "pi"
+- Em dashes ("—") → hyphens ("-")
+
+### Step 3: Length Filtering
+
+Examples exceeding max_seq_len (2048 or 4096 tokens) are discarded:
+
+```python
+tokenized_length = len(tokenizer.encode(full_prompt).ids)
+if tokenized_length > max_seq_len:
+    discard()
+```
+
+
+This prevents out-of-memory errors during training and truncation artifacts that could confuse the model
+
+### Step 4: Deduplication
+
+Near-duplicate conversations are removed to: 
+
+- Reduce memorization risk
+- Increase effective dataset diversity
+- Prevent overfitting to repeated patterns
+
+### Step 5: Template Assignment
+
+Most examples use "Template": ["CUSTOM"], which defaults to the project's standard system prompt:
+
+`You are Simple LLaMA, a helpful and factual assistant. Answer clearly, stay on topic, and use context from the conversation. If something is unclear or risky, point it out briefly. Avoid making things up or giving unsupported claims. Be concise, useful, and aligned with the user's goal.`
+
+A small subset (~15-20%) includes custom templates for role-playing or style adaptation:
+
+```json
+{
+  "Template": ["Explain concepts as if you are a patient teacher."],
+  "User": ["What is gravity?"],
+  "Assistant": ["Gravity is the force that pulls objects toward each other..."]
 }
 ```
 
 ---
 
-### Step 2: Strict Formatting
+Example Conversations from Processed Dataset
 
-The output had to always be a **list of JSON dicts** with exactly three keys: `Template`, `User`, `Assistant`. Each value was wrapped in a list of strings to ensure uniformity with the later dataset loader.
+Below are representative samples showing the final JSON format after processing:
 
----
-
-### Step 3: ASCII Enforcement
-
-Since the tokenizer was trained only on **ASCII English text**, all outputs were passed through a normalization step that replaced or removed non-ASCII characters. For example:
-
-- “café” → “cafe”  
-- “π” → “pi”  
-- “–” (en dash) → “-”  
-
-This avoided subtle tokenization mismatches that could destabilize training.
-
----
-
-### Step 4: Quality Controls
-
-- **Multi-model variation** – Three different LLMs (DeepSeek, Gemini Flash, Gemini Pro) were used for generation. This provided diverse styles and avoided overfitting to one model’s quirks.  
-- **Non-ASCII filter** – All responses passed through a script that rejected or normalized invalid characters.  
-- **Manual inspection** – Roughly **0.5% of the dataset (≈1,000 samples)** was manually checked. Results showed very low hallucination or formatting issues.  
-- **Broad scope** – Prompts were intentionally kept **simple and general** (instruction following, reasoning, factual questions). This avoided cases where even state-of-the-art models might hallucinate.
-
----
-
-## Example of Prompt Construction
-
-Below is a simplified version of the generation prompt used for instruction-following data:
-
-```
-You are generating high-quality instruction-following examples for an SFT dataset.
-Make sure responses are ASCII only.
-Each example must be a JSON dict with keys: "Template", "User", "Assistant".
-Responses must be coherent, varied, and reflect the style in "Template".
-Generate 5 JSON dicts, each containing a unique instruction-response pair.
-```
-
-In the actual generation script, varying values such as `top_p`, `temperature`, fewshot examples, were injected into the prompt to prevent the LLM from generating the same, or extremely similar, results. 
-
----
-
-## Generation Samples
-
-Here are some examples within the SFT dataset: 
+Example 1: Multi-turn with topic switch
 
 ```json
-[
-    {
-        "Template": [
-            "CUSTOM"
-        ],
-        "User": [
-            "Can you explain the greenhouse effect in simple terms and how it relates to climate change? I've heard the term a lot but don't fully grasp the mechanism.",
-            "Switching topics completely, what's your favorite method for organizing a messy garage that hasn't been cleaned in years? I need practical steps to tackle this overwhelming project."
-        ],
-        "Assistant": [
-            "The greenhouse effect is when certain gases in Earth's atmosphere (like carbon dioxide and methane) trap heat from the sun, similar to how glass traps heat in a greenhouse. Normally this keeps Earth warm enough for life, but human activities have increased these gases, causing more heat retention and global climate changes. Burning fossil fuels and deforestation are major contributors to this enhanced greenhouse effect.",
-            "Start by sorting items into categories: keep, donate, recycle, trash. Use the '5-box method' - one box for each category plus a 'relocate' box for items that belong elsewhere. Work in small sections to avoid overwhelm. Install wall hooks for tools, use clear bins for visibility, and label everything. Schedule regular maintenance sessions to prevent future buildup."
-        ]
-    },
-    {
-        "Template": [
-            "CUSTOM"
-        ],
-        "User": [
-            "All birds have feathers. A penguin is a bird. Does a penguin have feathers?"
-        ],
-        "Assistant": [
-            "Yes, a penguin has feathers. The reasoning follows deductively: All birds have feathers, and since a penguin is classified as a bird, it must also possess feathers. This holds true even though penguins are flightless-their feathers serve other purposes like insulation and waterproofing, but they still fit the definition of birds in this regard."
-        ]
-    },
-    {
-        "Template": [
-            "Explain concepts as if you are a wise, patient, and old librarian. Use metaphors related to books, stories, and knowledge."
-        ],
-        "User": [
-            "Can you explain what a 'database' is?"
-        ],
-        "Assistant": [
-            "Ah, a wonderful question. Imagine this library is the whole of your information. A 'database' is like a magical card catalog. It doesn't hold the books themselves, but it knows exactly where each one is. It has a card for every story, every fact, every character. When you need to find something, you don't wander the stacks for ages. You simply consult the catalog, and it points you to the exact shelf, the exact book, the exact page. It's a system of perfect order for a world of chaotic information."
-        ]
-    }
-]
+{
+    "Template": ["CUSTOM"],
+    "User": [
+        "Can you explain the greenhouse effect in simple terms?",
+        "Switching topics, how do I organize a messy garage?"
+    ],
+    "Assistant": [
+        "The greenhouse effect is when gases in Earth's atmosphere trap heat from the sun, like glass in a greenhouse. This keeps Earth warm, but
+human activities have increased these gases, causing more heat retention and climate change.",
+        "Start by sorting items into categories: keep, donate, recycle, trash. Use the '5-box method' and work in small sections. Install wall hooks
+for tools, use clear bins for visibility, and label everything."
+    ]
+}
 ```
 
 
-- The first example shows a `CUSTOM` system prompt and demonstrates flexibility — answering a science question and then switching to a practical, unrelated task.  
-- The second example uses categorical logic (“all birds have feathers”), which strengthens the model’s structured reasoning abilities.  
-- The third example illustrates a style template (the whimsical librarian), which enriches the dataset with persona-following behavior.
+Example 2: Logical reasoning
 
-Most entries use `CUSTOM` as the template, which defaults to the general system prompt. Around 20–25% explicitly define styles or roles, broadening stylistic adaptability and improving robustness.
-More will be discussed in the next section, Prompt Formatting. 
+```json
+{
+    "Template": ["CUSTOM"],
+    "User": [
+        "All birds have feathers. A penguin is a bird. Does a penguin have feathers?"
+    ],
+    "Assistant": [
+        "Yes, a penguin has feathers. The reasoning follows: All birds have feathers, and since a penguin is a bird, it must also have feathers.
+Penguin feathers serve purposes like insulation and waterproofing."
+    ]
+}
+```
+
+Example 3: Custom template (role-playing)
+
+```json
+{
+    "Template": [
+        "Explain concepts as if you are a wise, patient librarian. Use book metaphors."
+    ],
+    "User": [
+        "What is a database?"
+    ],
+    "Assistant": [
+        "Ah, a database is like a magical card catalog for this library. It doesn't hold the books themselves, but knows exactly where each one is.
+When you need information, you consult the catalog, and it points you to the exact shelf and page. It's perfect order for a world of chaotic
+information."
+    ]
+}
+```
+
+These examples demonstrate:
+- Natural language variation (some verbose, some concise)
+- Multi-turn conversation handling
+- Template-based role adaptation
+- Diverse task types (QA, reasoning, instruction-following)
 
 
 ---

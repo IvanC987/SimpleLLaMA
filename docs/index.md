@@ -15,7 +15,8 @@ flowchart LR
 - [Pretraining](pretraining/overview.md)
 - [Supervised Fine-Tuning](sft/overview.md)
 - [Reinforcement Learning / Alignment](rlhf/overview.md)
-- [Miscellaneous (Benchmarking, Inference, Notes)](misc/benchmarking.md)
+- [Performance & Applications (Benchmarking, Inference, Notes)](performance_and_applications/benchmarking.md)
+- [Custom Training](custom_training/pretraining.md)
 
 
 Disclaimer- This documentation is created with the best of my abilities. Further proof reads were done manually, followed by review of a LLM to verify accuracy. That said, there many still be some slightly inaccuracies present. 
