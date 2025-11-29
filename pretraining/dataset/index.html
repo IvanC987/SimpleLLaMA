@@ -1442,12 +1442,12 @@
   
   
     <li class="md-nav__item">
-      <a href="../../rlhf/methods/" class="md-nav__link">
+      <a href="../../rlhf/preference_optimization/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
-    Methods
+    Preference Optimization
     
   </span>
   
@@ -1488,7 +1488,7 @@
   
   
   <span class="md-ellipsis">
-    Misc
+    Performance & Applications
     
   </span>
   
@@ -1499,7 +1499,7 @@
         <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_5">
             <span class="md-nav__icon md-icon"></span>
-            Misc
+            Performance & Applications
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -1510,7 +1510,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../misc/benchmarking/" class="md-nav__link">
+      <a href="../../performance_and_applications/benchmarking/" class="md-nav__link">
         
   
   
@@ -1533,7 +1533,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../misc/inference/" class="md-nav__link">
+      <a href="../../performance_and_applications/inference/" class="md-nav__link">
         
   
   
@@ -1556,7 +1556,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../misc/notes/" class="md-nav__link">
+      <a href="../../performance_and_applications/notes/" class="md-nav__link">
         
   
   
@@ -1881,6 +1881,8 @@
 <h3 id="4-this-project">4. This Project</h3>
 <p>For this project, I’ll be using FineWebEdu as the main pretraining dataset, focusing on ACSII only text. </p>
 <p>A general rule of thumb for dataset sizing: you want a parameter-to-token ratio of at least 1:20 (20 tokens for every model parameter). Once you get to very high ratios (like 1:100), you start seeing diminishing returns.</p>
+<p>For this project, a 1:40 ratio (1.3B parameters on 50B tokens) was used, which is slightly above the Chinchilla-optimal ~1:20. 
+This intentionally chosen because many large-scale models deliberately train with much higher token-to-parameter ratios to improve generalization.</p>
 <h3 id="dataset-gathering-sharding">Dataset Gathering &amp; Sharding</h3>
 <p>The first step is to collect and prepare the dataset. Since this tokenizer will be used to tokenize the <strong>FineWebEdu</strong> dataset we gathered earlier, it would also be used to train the tokenizer (generally, it's better to train the tokenizer on the same distribution as the pretraining data for LLM).<br />
 But even then, the raw dataset is too large to work with as a single file, so we break it into smaller <strong>shards</strong>.</p>

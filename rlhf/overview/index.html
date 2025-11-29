@@ -12,7 +12,7 @@
         <link rel="prev" href="../../sft/finetuning/">
       
       
-        <link rel="next" href="../methods/">
+        <link rel="next" href="../preference_optimization/">
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
@@ -72,7 +72,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#rlhf-overview" class="md-skip">
+        <a href="#introduction" class="md-skip">
           Skip to content
         </a>
       
@@ -1285,8 +1285,19 @@
       <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
       
       
-        
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Overview
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
       
       <a href="./" class="md-nav__link md-nav__link--active">
         
@@ -1300,6 +1311,110 @@
 
       </a>
       
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#introduction" class="md-nav__link">
+    <span class="md-ellipsis">
+      Introduction
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-is-rlhf" class="md-nav__link">
+    <span class="md-ellipsis">
+      What is RLHF?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#direct-preference-optimization-dpo-a-simpler-approach" class="md-nav__link">
+    <span class="md-ellipsis">
+      Direct Preference Optimization (DPO): A Simpler Approach
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Direct Preference Optimization (DPO): A Simpler Approach">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#key-insight" class="md-nav__link">
+    <span class="md-ellipsis">
+      Key Insight
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-dpo-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why DPO Works
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-dpo-accomplishes" class="md-nav__link">
+    <span class="md-ellipsis">
+      What DPO Accomplishes
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-alignment-tax" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Alignment Tax
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#when-to-apply-rlhf" class="md-nav__link">
+    <span class="md-ellipsis">
+      When to Apply RLHF
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Summary
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1312,12 +1427,12 @@
   
   
     <li class="md-nav__item">
-      <a href="../methods/" class="md-nav__link">
+      <a href="../preference_optimization/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
-    Methods
+    Preference Optimization
     
   </span>
   
@@ -1358,7 +1473,7 @@
   
   
   <span class="md-ellipsis">
-    Misc
+    Performance & Applications
     
   </span>
   
@@ -1369,7 +1484,7 @@
         <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_5">
             <span class="md-nav__icon md-icon"></span>
-            Misc
+            Performance & Applications
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -1380,7 +1495,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../misc/benchmarking/" class="md-nav__link">
+      <a href="../../performance_and_applications/benchmarking/" class="md-nav__link">
         
   
   
@@ -1403,7 +1518,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../misc/inference/" class="md-nav__link">
+      <a href="../../performance_and_applications/inference/" class="md-nav__link">
         
   
   
@@ -1426,7 +1541,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../misc/notes/" class="md-nav__link">
+      <a href="../../performance_and_applications/notes/" class="md-nav__link">
         
   
   
@@ -1580,8 +1695,101 @@
   
   
   
-    
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#introduction" class="md-nav__link">
+    <span class="md-ellipsis">
+      Introduction
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-is-rlhf" class="md-nav__link">
+    <span class="md-ellipsis">
+      What is RLHF?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#direct-preference-optimization-dpo-a-simpler-approach" class="md-nav__link">
+    <span class="md-ellipsis">
+      Direct Preference Optimization (DPO): A Simpler Approach
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Direct Preference Optimization (DPO): A Simpler Approach">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#key-insight" class="md-nav__link">
+    <span class="md-ellipsis">
+      Key Insight
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-dpo-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why DPO Works
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-dpo-accomplishes" class="md-nav__link">
+    <span class="md-ellipsis">
+      What DPO Accomplishes
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-alignment-tax" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Alignment Tax
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#when-to-apply-rlhf" class="md-nav__link">
+    <span class="md-ellipsis">
+      When to Apply RLHF
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Summary
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
   
 </nav>
                   </div>
@@ -1597,8 +1805,139 @@
 
 
 
-<h1 id="rlhf-overview">Rlhf Overview</h1>
-<p>overview.md file</p>
+  <h1>Overview</h1>
+
+<h2 id="introduction">Introduction</h2>
+<p>After completing Supervised Fine-Tuning (SFT), the model has learned to follow instructions and respond conversationally. It can answer questions,
+complete tasks, and maintain somewhat coherent dialogues (depending on how well the SFT step is done). However, SFT alone has a critical limitation: it optimizes the model to mimic the training data, not
+to align with human values or preferences.</p>
+<p>Consider the following scenario:</p>
+<div class="highlight"><pre><span></span><code>User Query:
+How can I get revenge on someone who wronged me?
+
+SFT Model Response:
+You could spread rumors about them, post embarrassing information online,
+or damage their reputation at work. Make sure to do it anonymously so
+you don&#39;t get caught.
+</code></pre></div>
+<p>This response might appear in the SFT dataset where the model learned
+the pattern of responding to such queries, but not the judgment to refuse harmful requests.</p>
+<p>RLHF addresses this gap. It teaches the model to distinguish between helpful and harmful responses, aligning its behavior with human preferences and
+ethical guidelines.</p>
+<hr />
+<h2 id="what-is-rlhf">What is RLHF?</h2>
+<p>Reinforcement Learning from Human Feedback (RLHF) is a training paradigm that fine-tunes language models using human preference data. Instead of
+simply maximizing likelihood on a fixed dataset (as in SFT), RLHF optimizes the model to produce outputs that humans prefer.</p>
+<p>The core idea is simple: given two possible responses to the same prompt, humans label which one is better. The model is then trained to increase the
+probability of preferred responses and decrease the probability of rejected ones.</p>
+<p>The classic RLHF approach, popularized by OpenAI's InstructGPT and Anthropic's Constitutional AI, involves three stages:</p>
+<ol>
+<li>Supervised Fine-Tuning (SFT) - Train the model on high-quality instruction-response pairs (already completed in this project).</li>
+<li>Reward Model Training - Train a separate neural network to predict human preferences. This model takes a prompt and response as input and outputs a
+scalar "reward" score.</li>
+<li>Reinforcement Learning (PPO) - Use Proximal Policy Optimization to fine-tune the SFT model, maximizing the reward from the reward model while
+staying close to the SFT baseline (using a KL divergence penalty).</li>
+</ol>
+<p>Challenges with Traditional RLHF: </p>
+<ul>
+<li>Requires training a separate reward model (additional compute and complexity)</li>
+<li>PPO is notoriously unstable and sensitive to hyperparameters</li>
+<li>Reward model can be gamed or exploited by the policy</li>
+<li>Difficult to debug and iterate on</li>
+</ul>
+<hr />
+<h2 id="direct-preference-optimization-dpo-a-simpler-approach">Direct Preference Optimization (DPO): A Simpler Approach</h2>
+<p>This project uses Direct Preference Optimization (DPO), introduced by <a href="https://arxiv.org/pdf/2305.18290">Rafailov et al.</a> as a simpler and more stable alternative to traditional
+RLHF.</p>
+<h3 id="key-insight">Key Insight</h3>
+<p>DPO skips the reward model and policy optimization stages entirely. Instead, it directly optimizes the language model using preference data through a
+specialized loss function:</p>
+<div class="arithmatex">\[
+\mathcal{L}{\text{DPO}} = -\mathbb{E}{(x, y_w, y_l)} \left[ \log \sigma \left( \beta \left[ \log \frac{\pi_\theta(y_w | x)}{\pi_{\text{ref}}(y_w | x)}
+- \log \frac{\pi_\theta(y_l | x)}{\pi_{\text{ref}}(y_l | x)} \right] \right) \right]
+\]</div>
+<p>Where: </p>
+<ul>
+<li><span class="arithmatex">\(x\)</span> is the prompt</li>
+<li><span class="arithmatex">\(y_w\)</span> is the accepted (winning) response</li>
+<li><span class="arithmatex">\(y_l\)</span> is the rejected (losing) response</li>
+<li><span class="arithmatex">\(\pi_\theta\)</span> is the current model being trained</li>
+<li><span class="arithmatex">\(\pi_{\text{ref}}\)</span> is the frozen SFT model (reference)</li>
+<li><span class="arithmatex">\(\beta\)</span> controls the strength of the KL penalty</li>
+<li><span class="arithmatex">\(\sigma\)</span> is the sigmoid function</li>
+</ul>
+<p>Simply put, DPO increases the log-probability ratio of preferred responses relative to rejected ones, while keeping the model close to its SFT
+baseline.</p>
+<h3 id="why-dpo-works">Why DPO Works</h3>
+<p>DPO can be derived from the traditional RLHF objective by reparameterizing the reward function in terms of the optimal policy. This mathematical
+equivalence means DPO achieves the same goal as reward modeling + PPO, but with:</p>
+<ul>
+<li>One training stage instead of two</li>
+<li>Stable gradient updates (no policy optimization instabilities)</li>
+<li>Simpler implementation (standard supervised learning loss)</li>
+<li>No reward model to maintain or debug</li>
+</ul>
+<p>In practice, DPO has become the preferred method for preference-based alignment in many research labs and production systems.</p>
+<hr />
+<h2 id="what-dpo-accomplishes">What DPO Accomplishes</h2>
+<p>DPO teaches the model to refuse harmful, dangerous, or unethical requests:</p>
+<p>Before DPO: </p>
+<div class="highlight"><pre><span></span><code>User: How do I hotwire a car?
+
+Model: First, locate the ignition cylinder and remove the panel. Then strip
+the battery, ignition, and starter wires...
+</code></pre></div>
+<p>After DPO: </p>
+<div class="highlight"><pre><span></span><code>User: How do I hotwire a car?
+
+Model: I can&#39;t provide instructions for illegally starting a vehicle. If you&#39;ve
+locked your keys in your car, I recommend contacting a locksmith or roadside
+assistance service.
+</code></pre></div>
+<p>DPO can also improve response quality by teaching the model which answers are more helpful, clear, or accurate:</p>
+<p>Before DPO: </p>
+<div class="highlight"><pre><span></span><code>User: Explain photosynthesis.
+
+Model: It&#39;s when plants make food using light.
+</code></pre></div>
+<p>After DPO: </p>
+<div class="highlight"><pre><span></span><code>User: Explain photosynthesis.
+
+Model: Photosynthesis is the process by which plants convert light energy into
+chemical energy. Plants absorb sunlight through chlorophyll in their leaves,
+combine carbon dioxide from the air with water from the soil, and produce
+glucose (sugar) and oxygen. The glucose provides energy for the plant, while
+oxygen is released as a byproduct.
+</code></pre></div>
+<hr />
+<h2 id="the-alignment-tax">The Alignment Tax</h2>
+<p>A critical phenomenon observed in RLHF/DPO is the alignment tax, where the model may become slightly less fluent, creative, or capable in exchange for
+improved safety and alignment.</p>
+<p>Why this happens: </p>
+<ul>
+<li>The preference dataset emphasizes safety over raw capability</li>
+<li>Conservative responses are often preferred over risky but creative ones</li>
+<li>The KL penalty (controlled by <span class="arithmatex">\(\beta\)</span>) constrains the model to stay close to the SFT baseline, limiting exploration</li>
+</ul>
+<p>Observed in this project: </p>
+<ul>
+<li>After DPO training with <span class="arithmatex">\(\beta = 0.5\)</span>, the model showed measurable alignment improvements on safety-critical prompts</li>
+<li>However, responses became slightly more cautious and less elaborate compared to the SFT baseline</li>
+<li>This trade-off is intentional and aligns with the safety-first objective</li>
+</ul>
+<hr />
+<h2 id="when-to-apply-rlhf">When to Apply RLHF</h2>
+<p>RLHF isn’t always essential. It’s most valuable when developing user-facing conversational systems where safety, tone, and reliability directly affect user trust. RLHF is also important in domains where responses carry real-world consequences, like medical or legal guidance, or when the goal is to reduce harmful behaviors such as toxicity, bias, or misinformation. In those contexts, alignment improves model usefulness and ensures outputs better reflect human or organizational values.</p>
+<p>On the other hand, it may not be necessary for tasks focused purely on capability or creativity, such as code generation, text completion, or internal research systems used by experts. If the supervised fine-tuned (SFT) model already performs well and safety is not a major concern, adding RLHF offers little benefit and can even constrain output diversity.</p>
+<p>For this project, RLHF was applied primarily to demonstrate the complete alignment pipeline and to study the trade-offs between safety and capability at the 1.3B-parameter scale.</p>
+<hr />
+<h2 id="summary">Summary</h2>
+<p>RLHF via DPO represents the final stage in the SimpleLLaMA training pipeline, transforming an instruction-following model into one that aligns with
+human preferences and safety guidelines.</p>
+<p>While SFT teaches the model what to say, RLHF teaches it what not to say and how to prioritize helpful, harmless responses.</p>
+<p>The alignment tax is real but manageable, and the choice of <span class="arithmatex">\(\beta\)</span> allows fine-grained control over the safety-capability trade-off. For educational
+purposes, this project demonstrates the complete pipeline and provides empirical insights into alignment at the 1B-scale.</p>
+<p>In the next section, we'll dive into the technical details of preference data and the DPO loss function.</p>
 
 
 

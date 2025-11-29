@@ -1433,12 +1433,12 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../rlhf/methods/" class="md-nav__link">
+      <a href="../../../rlhf/preference_optimization/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
-    Methods
+    Preference Optimization
     
   </span>
   
@@ -1479,7 +1479,7 @@
   
   
   <span class="md-ellipsis">
-    Misc
+    Performance & Applications
     
   </span>
   
@@ -1490,7 +1490,7 @@
         <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_5">
             <span class="md-nav__icon md-icon"></span>
-            Misc
+            Performance & Applications
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -1501,7 +1501,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../misc/benchmarking/" class="md-nav__link">
+      <a href="../../../performance_and_applications/benchmarking/" class="md-nav__link">
         
   
   
@@ -1524,7 +1524,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../misc/inference/" class="md-nav__link">
+      <a href="../../../performance_and_applications/inference/" class="md-nav__link">
         
   
   
@@ -1547,7 +1547,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../misc/notes/" class="md-nav__link">
+      <a href="../../../performance_and_applications/notes/" class="md-nav__link">
         
   
   
@@ -1833,13 +1833,16 @@
 <li>Hidden dimension = 2048 (value used in this project)</li>
 </ul>
 <p>Each forward/backward pass processes:
-$$
-\text{tokens per batch} = 4 \times 2048 = 8,192 \text{ tokens}
-$$</p>
-<p>The memory required for the model/optimizer parameters and gradients alone is almost 10.5GB, not to mention the activations which dominates the total memory usage. If we tried to increase this to the desired effective batch size of ~524,288 tokens, we'd need:</p>
-<div class="arithmatex">\[
-\text{Required multiplier} = \frac{524,288}{8,192} = 64\times \text{ more tokens}
-\]</div>
+<span class="arithmatex">\(\text{tokens per batch} = 4 \times 2048 = 8,192 \text{ tokens}\)</span></p>
+<p>The memory required for the model/optimizer parameters and gradients alone is around 10.4GB, not to mention the activations which dominates the total memory usage. </p>
+<ul>
+<li>Model parameters: 1.3B × 2 bytes (FP16) = 2.6GB</li>
+<li>Adam optimizer states: 2× model size = 5.2GB</li>
+<li>Gradients: same as model = 2.6GB</li>
+<li><strong>Total: ~10.4GB</strong> (before activations)</li>
+</ul>
+<p>If we tried to increase this to the desired effective batch size of ~524,288 tokens, we'd need:</p>
+<p><span class="arithmatex">\(\text{Required multiplier} = \frac{524,288}{8,192} = 64\times \text{ more tokens}\)</span></p>
 <p>Attempting to push to 64× larger effective batch size would imply an enormous jump in memory demand. In practice, activations already dominate memory usage at modest batch sizes, often consuming several times more memory than parameters and optimizer states combined. Scaling this up directly would push requirements well beyond what any single GPU can handle — potentially into the hundreds of gigabytes range. This is why gradient accumulation (and activation checkpointing, which will not be covered here) is essential, used to reduce memory requirements.</p>
 <hr />
 <h2 id="gradient-accumulation-simulating-large-batches-with-limited-memory">Gradient Accumulation: Simulating Large Batches with Limited Memory</h2>

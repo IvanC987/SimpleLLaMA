@@ -9,7 +9,7 @@
       
       
       
-        <link rel="prev" href="../../misc/notes/">
+        <link rel="prev" href="../../performance_and_applications/notes/">
       
       
         <link rel="next" href="../sft/">
@@ -72,7 +72,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#pretraining-walkthrough" class="md-skip">
+        <a href="#initial-setup" class="md-skip">
           Skip to content
         </a>
       
@@ -1300,12 +1300,12 @@
   
   
     <li class="md-nav__item">
-      <a href="../../rlhf/methods/" class="md-nav__link">
+      <a href="../../rlhf/preference_optimization/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
-    Methods
+    Preference Optimization
     
   </span>
   
@@ -1346,7 +1346,7 @@
   
   
   <span class="md-ellipsis">
-    Misc
+    Performance & Applications
     
   </span>
   
@@ -1357,7 +1357,7 @@
         <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_5">
             <span class="md-nav__icon md-icon"></span>
-            Misc
+            Performance & Applications
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -1368,7 +1368,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../misc/benchmarking/" class="md-nav__link">
+      <a href="../../performance_and_applications/benchmarking/" class="md-nav__link">
         
   
   
@@ -1391,7 +1391,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../misc/inference/" class="md-nav__link">
+      <a href="../../performance_and_applications/inference/" class="md-nav__link">
         
   
   
@@ -1414,7 +1414,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../misc/notes/" class="md-nav__link">
+      <a href="../../performance_and_applications/notes/" class="md-nav__link">
         
   
   
@@ -1553,9 +1553,9 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#dependencies" class="md-nav__link">
+  <a href="#repository-setup" class="md-nav__link">
     <span class="md-ellipsis">
-      Dependencies
+      Repository Setup
     </span>
   </a>
   
@@ -1577,18 +1577,144 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#option-1-provided-dataset" class="md-nav__link">
+  <a href="#option-1-provided-dataset-quick-start" class="md-nav__link">
     <span class="md-ellipsis">
-      Option 1- Provided Dataset
+      Option 1 - Provided Dataset (Quick Start)
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#option-2-using-a-chosen-dataset" class="md-nav__link">
+  <a href="#option-2-using-a-custom-dataset" class="md-nav__link">
     <span class="md-ellipsis">
-      Option 2- Using a chosen dataset
+      Option 2 - Using a Custom Dataset
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Option 2 - Using a Custom Dataset">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-1-install-dependencies-for-data-collection" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 1: Install Dependencies for Data Collection
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-download-dataset-texts" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 2: Download Dataset Texts
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-3-train-a-custom-bpe-tokenizer-optional" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 3: Train a Custom BPE Tokenizer (Optional)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-4-encode-dataset-into-numpy-format" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 4: Encode Dataset into NumPy Format
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Configuration
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Configuration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-configuration-setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Configuration Setup
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-adjusting-model-hyperparameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Adjusting Model Hyperparameters
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-optional-compatibility-adjustments" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Optional Compatibility Adjustments
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-running-the-training-script" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Running the Training Script
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Running the Training Script">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#example-console-output" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example Console Output
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#checkpointing-and-logs" class="md-nav__link">
+    <span class="md-ellipsis">
+      Checkpointing and Logs
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Summary
     </span>
   </a>
   
@@ -1707,9 +1833,9 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#dependencies" class="md-nav__link">
+  <a href="#repository-setup" class="md-nav__link">
     <span class="md-ellipsis">
-      Dependencies
+      Repository Setup
     </span>
   </a>
   
@@ -1731,18 +1857,144 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#option-1-provided-dataset" class="md-nav__link">
+  <a href="#option-1-provided-dataset-quick-start" class="md-nav__link">
     <span class="md-ellipsis">
-      Option 1- Provided Dataset
+      Option 1 - Provided Dataset (Quick Start)
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#option-2-using-a-chosen-dataset" class="md-nav__link">
+  <a href="#option-2-using-a-custom-dataset" class="md-nav__link">
     <span class="md-ellipsis">
-      Option 2- Using a chosen dataset
+      Option 2 - Using a Custom Dataset
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Option 2 - Using a Custom Dataset">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-1-install-dependencies-for-data-collection" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 1: Install Dependencies for Data Collection
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-download-dataset-texts" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 2: Download Dataset Texts
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-3-train-a-custom-bpe-tokenizer-optional" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 3: Train a Custom BPE Tokenizer (Optional)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-4-encode-dataset-into-numpy-format" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 4: Encode Dataset into NumPy Format
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Configuration
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Configuration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-configuration-setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Configuration Setup
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-adjusting-model-hyperparameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Adjusting Model Hyperparameters
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-optional-compatibility-adjustments" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Optional Compatibility Adjustments
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-running-the-training-script" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Running the Training Script
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Running the Training Script">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#example-console-output" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example Console Output
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#checkpointing-and-logs" class="md-nav__link">
+    <span class="md-ellipsis">
+      Checkpointing and Logs
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Summary
     </span>
   </a>
   
@@ -1769,67 +2021,195 @@
 
 
 
-<p>Add note about:</p>
-<p>torch.serialization.add_safe_globals({TrainingConfig})</p>
-<p>Traceback (most recent call last):
-  File "/workspace/SL_Package/simple_llama/finetune/full_sft/finetune.py", line 116, in <module>
-    ckpt = torch.load(sft_configs.model_path, map_location=device)
-  File "/usr/local/lib/python3.10/dist-packages/torch/serialization.py", line 1470, in load
-    raise pickle.UnpicklingError(_get_wo_message(str(e))) from None
-_pickle.UnpicklingError: Weights only load failed. This file can still be loaded, to do so you have two options, do those steps only if you trust the source of the checkpoint.
-        (1) In PyTorch 2.6, we changed the default value of the <code>weights_only</code> argument in <code>torch.load</code> from <code>False</code> to <code>True</code>. Re-running <code>torch.load</code> with <code>weights_only</code> set to <code>False</code> will likely succeed, but it can result in arbitrary code execution. Do it only if you got the file from a trusted source.
-        (2) Alternatively, to load with <code>weights_only=True</code> please check the recommended steps in the following error message.
-        WeightsUnpickler error: Unsupported global: GLOBAL simple_llama.pretraining.config.TrainingConfig was not an allowed global by default. Please use <code>torch.serialization.add_safe_globals([TrainingConfig])</code> or the <code>torch.serialization.safe_globals([TrainingConfig])</code> context manager to allowlist this global if you trust this class/function.</p>
-<p>Check the documentation of torch.load to learn more about types accepted by default with weights_only https://pytorch.org/docs/stable/generated/torch.load.html.</p>
-<h1 id="pretraining-walkthrough">Pretraining Walkthrough</h1>
+<h1 id="initial-setup">Initial Setup</h1>
 <p>This section provides a <strong>complete, hands-on walkthrough</strong> for running the pretraining process of the SimpleLLaMA model.<br />
-Unlike the earlier sections that explained the architecture, dataset, and optimization theory, this chapter focuses on <strong>how to actually execute</strong> the training pipeline — from environment setup to monitoring and resuming runs.</p>
+Unlike earlier sections that focused on architecture, datasets, and optimization theory, this chapter explains <strong>how to actually execute</strong> the training pipeline - from setup to preparing your dataset for large-scale language model pretraining.</p>
 <hr />
 <h2 id="1-prerequisites">1. Prerequisites</h2>
-<p>Before running the pretraining pipeline, confirm that the following requirements are met:</p>
+<p>Before beginning, confirm that your system meets the basic requirements and that the environment is properly configured.</p>
 <h3 id="hardware-requirements">Hardware Requirements</h3>
 <ul>
-<li>A NVIDIA GPU for faster computation, (cpu would work, but limited to at most millions to tens of millions of parameters), any VRAM would work, even 4GB, but larger the vram, the larger model that can be trained</li>
-<li>For larger models or higher batch sizes, <strong>multi-GPU setups</strong> are recommended.</li>
-<li>Ensure adequate system RAM and disk space for datasets and checkpoints (again, this depends on user setups and size of model to train but at the very minimum should allocate around 10GB of diskspace and a few GB of RAM)</li>
+<li><strong>GPU (Recommended):</strong> An NVIDIA GPU is strongly recommended for efficient training.<br />
+  While CPU training is possible, it is limited to very small models (millions to tens of millions of parameters).  </li>
+<li><strong>VRAM:</strong> Any amount technically works (as low as 4GB for small toy models), but higher VRAM allows for larger model sizes and batch configurations.  </li>
+<li><strong>Multi-GPU Setup:</strong> For models beyond several hundred million parameters, multi-GPU training is highly encouraged.  </li>
+<li><strong>System Memory &amp; Disk Space:</strong> Generally reserving a minimum of <strong>10 GB disk space</strong> and a few GB of RAM is encouraged. Increase proportionally with dataset and model scale.</li>
 </ul>
-<p>Pull repo from <a href="">here (placeholder for now)</a></p>
-<h3 id="dependencies">Dependencies</h3>
-<p>Install the dependencies via <code>requirements.txt</code>:
-<div class="highlight"><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>requirements.txt
+<p>It is also recommended to complete everything within a virtual environment, though not strictly required. </p>
+<hr />
+<h3 id="repository-setup">Repository Setup</h3>
+<p>Clone the repository and install dependencies using <code>requirements.txt</code>:</p>
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/IvanC987/SimpleLLaMA
+<span class="nb">cd</span><span class="w"> </span>SimpleLLaMA
+pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>requirements.txt
+pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span>.
 </code></pre></div>
-or manually:
-<div class="highlight"><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span><span class="nv">tokenizers</span><span class="o">==</span><span class="m">0</span>.21.1<span class="w"> </span><span class="nv">torch</span><span class="o">==</span><span class="m">2</span>.6.0<span class="w"> </span><span class="nv">matplotlib</span><span class="o">==</span><span class="m">3</span>.10.6<span class="w"> </span><span class="nv">numpy</span><span class="o">==</span><span class="m">2</span>.2.6
-</code></pre></div></p>
-<p>Then, within SimpleLLaMA folder, you should see the <code>setup.py</code> file, at that level, run <code>pip install -e .</code>
-That will add a symbolic link from this package to the <code>site-packages/</code> folder, where -e allows editable install for development. </p>
+<p>The <code>-e</code> flag performs an <em>editable install</em>, meaning any local code changes in this directory will immediately reflect when you import <code>simple_llama</code> as a Python module. This is particularly useful for debugging, experimentation, and incremental development.</p>
+<hr />
 <h2 id="2-dataset-preparation">2. Dataset Preparation</h2>
-<p>Refer to the <code>Dataset Preparation</code> page back in <code>Pretraining</code> section for details about the dataset.  </p>
-<p>There are 2 main options: </p>
-<ol>
-<li>For a minimal test run, users can use the provided .npy file that contains 25M tokens, used in conjunction with provided <code>bpe_8k.json</code> tokenizer file</li>
-<li>Users can manually pull and create their own dataset from various sources (C4, ThePile, RedPajama, FineWeb, etc.)</li>
-</ol>
-<h3 id="option-1-provided-dataset">Option 1- Provided Dataset</h3>
-<p>If you desire to just use the provided dataset for simple test/experimental runs, there isn't anything for you to change/modify, proceed to the next section</p>
-<h3 id="option-2-using-a-chosen-dataset">Option 2- Using a chosen dataset</h3>
-<p>If you wish to use a chosen dataset, you would need to first need to collect it. </p>
-<p>Here I will show the process to get the FineWebEdu dataset, which is the one I used for this project. </p>
-<p>First, use the <code>simple_llama\dataset\gather_dataset.py</code> file to collect the dataset (If you want to use another dataset, modify it accordingly or perhaps create one of your own)</p>
-<p>Next, in the terminal run </p>
-<p><code>python3 gather_dataset.py --split &lt;dataset_split&gt;</code></p>
-<p>Where you would replace the split with something like <code>CC-MAIN-2013-20</code>, any valid subset from FineWebEdu, which can be easily checked on the Huggingface website.</p>
-<p>What the script does is follows:  </p>
-<ul>
-<li>Define a shardsize </li>
-</ul>
-<p>In this line: </p>
-<blockquote>
-<div class="codehilite"><pre><span></span><code><span class="w">    </span><span class="n">shard_text</span><span class="o">[</span><span class="n">bucket_index</span><span class="o">]</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">f</span><span class="ss">&quot;&lt;SOS&gt;{ex[&#39;text&#39;]}&lt;EOS&gt;&quot;</span><span class="p">)</span>
+<p>Refer to the <strong>“Dataset Preparation”</strong> page under the <em>Pretraining</em> section for detailed coverage of the tokenization pipeline and dataset structure.<br />
+Here, we will summarize the two main options available for dataset preparation.</p>
+<h3 id="option-1-provided-dataset-quick-start">Option 1 - Provided Dataset (Quick Start)</h3>
+<p>If you simply want to test the pretraining pipeline without constructing your own dataset, use the provided <strong>25M-token</strong> dataset.<br />
+It comes pre-encoded using the included <code>bpe_8k.json</code> tokenizer.  </p>
+<p>This dataset is lightweight enough for small-scale experiments and validation runs.<br />
+If you’re using this option, <strong>no further dataset modification is required</strong> - proceed directly to the next stage.</p>
+<hr />
+<h3 id="option-2-using-a-custom-dataset">Option 2 - Using a Custom Dataset</h3>
+<p>If you wish to train on a dataset of your own choosing, follow these steps.<br />
+Below is an example workflow for preparing the <strong>FineWebEdu</strong> dataset - the one used in this project.</p>
+<h4 id="step-1-install-dependencies-for-data-collection">Step 1: Install Dependencies for Data Collection</h4>
+<div class="highlight"><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span><span class="nv">datasets</span><span class="o">==</span><span class="m">4</span>.2.0<span class="w"> </span><span class="nv">hf_transfer</span><span class="o">==</span><span class="m">0</span>.1.9
 </code></pre></div>
+<h4 id="step-2-download-dataset-texts">Step 2: Download Dataset Texts</h4>
+<p>Use the script located at:
+<div class="highlight"><pre><span></span><code>simple_llama/dataset/gather_dataset.py
+</code></pre></div>
+This script will pull and shard text data from a chosen dataset (e.g., FineWebEdu, The Pile, RedPajama, etc.).</p>
+<p>Make sure to cd into <code>simple_llama/dataset</code> and run it as follows:</p>
+<div class="highlight"><pre><span></span><code>python3<span class="w"> </span>gather_dataset.py<span class="w"> </span>--split<span class="w"> </span>&lt;dataset_split&gt;
+</code></pre></div>
+<p>Replace <code>&lt;dataset_split&gt;</code> with a valid dataset name, such as <code>CC-MAIN-2013-20</code>.<br />
+The full list of available splits can be found on the dataset’s Hugging Face page.</p>
+<p>By default, this script will create a new folder named after the dataset split, containing text shards of roughly <strong>100 MB each</strong>.<br />
+Each entry will automatically include <code>&lt;SOS&gt;</code> (start of sequence) and <code>&lt;EOS&gt;</code> (end of sequence) tokens for later tokenization consistency.</p>
+<p>If you plan on training a <strong>custom tokenizer</strong> with different special tokens, modify this behavior in the following line of the script:<br />
+<a href="https://github.com/IvanC987/SimpleLLaMA/blob/main/simple_llama/dataset/gather_dataset.py#L60">Line 60 – <code>gather_dataset.py</code></a></p>
+<hr />
+<h4 id="step-3-train-a-custom-bpe-tokenizer-optional">Step 3: Train a Custom BPE Tokenizer (Optional)</h4>
+<p>The file <code>simple_llama/dataset/train_bpe.py</code> provides a template for training a Byte Pair Encoding (BPE) tokenizer using the Hugging Face <code>tokenizers</code> library.</p>
+<p>Within the script, specify the folder containing the text shards and output filename, then run:</p>
+<div class="highlight"><pre><span></span><code>python3<span class="w"> </span>train_bpe.py
+</code></pre></div>
+<p>This will create a tokenizer model (saved as json file), which maps text to subword tokens.<br />
+The vocabulary size and special tokens can be adjusted as desired.</p>
+<hr />
+<h4 id="step-4-encode-dataset-into-numpy-format">Step 4: Encode Dataset into NumPy Format</h4>
+<p>Finally, convert the text dataset into a numerical representation using the <code>simple_llama/dataset/encode_dataset.py</code> script, ensuring that the tokenizer path, source and destination folder is specified correctly. </p>
+<p>Then run:</p>
+<div class="highlight"><pre><span></span><code>python3<span class="w"> </span>encode_dataset.py
+</code></pre></div>
+<p>This will generate <code>.npy</code> files, each corresponding to one text shard, containing integer token IDs.<br />
+The script automatically applies chunking and truncation to ensure all samples conform to the target sequence length.</p>
+<p>After this step, you should have a folder of <code>.npy</code> files ready for the pretraining script to consume.<br />
+The resulting folder structure should look like this:</p>
+<div class="highlight"><pre><span></span><code>dataset/
+├── CC-MAIN-2013-20/
+│   ├── shard_000.txt
+│   ├── shard_001.txt
+│   ├── ...
+├── CC-MAIN-2013-20_tokens/
+│   ├── shard_000.npy
+│   ├── shard_001.npy
+│   ├── ...
+├── bpe_8k.json
+├── encode_dataset.py
+├── gather_dataset.py
+├── train_bpe.py
+├── ...
+</code></pre></div>
+<hr />
+<h2 id="3-configuration">3. Configuration</h2>
+<p>Once your dataset folder containing <code>.npy</code> files is ready, the next step is configuring and launching the pretraining process.</p>
+<hr />
+<h3 id="1-configuration-setup">1. Configuration Setup</h3>
+<p>Navigate to the pretraining configuration file located at:</p>
+<div class="highlight"><pre><span></span><code>simple_llama/pretraining/config.py
+</code></pre></div>
+<p>This file defines all key hyperparameters used during training — model dimensions, learning rate schedules, dataset paths, and more.</p>
+<p>At the top of the configuration, confirm that your dataset and tokenizer paths point to the correct locations. By default, they are:</p>
+<div class="highlight"><pre><span></span><code><span class="n">dataset_dir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">root_path</span><span class="p">(</span><span class="s2">&quot;simple_llama&quot;</span><span class="p">,</span> <span class="s2">&quot;dataset&quot;</span><span class="p">,</span> <span class="s2">&quot;short&quot;</span><span class="p">)</span>
+<span class="n">tokenizer_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">root_path</span><span class="p">(</span><span class="s2">&quot;simple_llama&quot;</span><span class="p">,</span> <span class="s2">&quot;dataset&quot;</span><span class="p">,</span> <span class="s2">&quot;bpe_8k.json&quot;</span><span class="p">)</span>
+</code></pre></div>
+<p>If you’ve created a custom dataset (for example, in <code>simple_llama/dataset/my_custom_dataset</code>), then modify to:</p>
+<div class="highlight"><pre><span></span><code><span class="n">dataset_dir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">root_path</span><span class="p">(</span><span class="s2">&quot;simple_llama&quot;</span><span class="p">,</span> <span class="s2">&quot;dataset&quot;</span><span class="p">,</span> <span class="s2">&quot;my_custom_dataset&quot;</span><span class="p">)</span>
+</code></pre></div>
+<p>Each directory level is provided as a separate string to improve cross-platform compatibility (Windows, macOS, Linux).</p>
+<hr />
+<h3 id="2-adjusting-model-hyperparameters">2. Adjusting Model Hyperparameters</h3>
+<p>Scrolling down, you’ll find sections like these:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># === Batch &amp; Sequence ===</span>
+<span class="n">batch_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">4</span>             <span class="c1"># Minibatch size</span>
+<span class="n">max_seq_len</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2048</span>         <span class="c1"># Maximum sequence length per sample</span>
+<span class="n">tokens_per_update</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span><span class="o">**</span><span class="mi">19</span>  <span class="c1"># ~512K tokens per optimizer update</span>
 
-</blockquote>
-<p>Also, mention the command to use and also the resulting folder structure</p>
+<span class="c1"># === Model Architecture ===</span>
+<span class="n">n_embd</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2048</span>               <span class="c1"># Embedding dimension</span>
+<span class="n">n_heads</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">32</span>                <span class="c1"># Number of attention heads</span>
+<span class="n">n_layers</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">24</span>               <span class="c1"># Number of transformer layers</span>
+<span class="n">multiple_of</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">256</span>           <span class="c1"># Feedforward dim multiple for efficient matmul</span>
+<span class="n">eps</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-5</span>                <span class="c1"># Epsilon value to prevent div-by-zero in normalization layers</span>
+<span class="n">theta</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10_000</span>              <span class="c1"># Theta for RoPE rotation frequency</span>
+<span class="n">dropout</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span>             <span class="c1"># Dropout rate; typically 0.0 for pretraining</span>
+</code></pre></div>
+<p>These parameters govern the size and structure of your transformer model.</p>
+<p>For demonstration purposes, you can train a smaller model that fits comfortably on a consumer GPU (6–8 GB VRAM).<br />
+For instance, a <strong>~120M parameter</strong> model can be created by modifying:</p>
+<div class="highlight"><pre><span></span><code><span class="n">n_embd</span><span class="p">:</span> <span class="mi">2048</span> <span class="o">-&gt;</span> <span class="mi">1024</span>
+<span class="n">n_heads</span><span class="p">:</span> <span class="mi">32</span>  <span class="o">-&gt;</span> <span class="mi">16</span>
+<span class="n">n_layers</span><span class="p">:</span> <span class="mi">24</span> <span class="o">-&gt;</span> <span class="mi">8</span>
+</code></pre></div>
+<p>Leave the rest unchanged for now. This reduced configuration allows you to run meaningful pretraining experiments on a single GPU.</p>
+<p>If you want more frequent logging, you can reduce the following:</p>
+<div class="highlight"><pre><span></span><code><span class="n">tokens_per_update</span> <span class="o">=</span> <span class="mi">2</span><span class="o">**</span><span class="mi">16</span>
+<span class="n">eval_interval</span> <span class="o">=</span> <span class="mi">32</span>
+</code></pre></div>
+<p>This will increase the frequency of printed progress and evaluation metrics.</p>
+<hr />
+<h3 id="3-optional-compatibility-adjustments">3. Optional Compatibility Adjustments</h3>
+<p>Some systems may not support advanced optimizations such as FlashAttention or PyTorch’s compilation features. If you encounter errors related to CUDA kernels or model graph compilation, you can disable these options safely:</p>
+<div class="highlight"><pre><span></span><code><span class="n">use_flash_attention</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="n">enable_compilation</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+</code></pre></div>
+<p>These settings can be toggled in the same configuration file under the <strong>Performance Features</strong> section.</p>
+<hr />
+<h2 id="4-running-the-training-script">4. Running the Training Script</h2>
+<p>Once the configuration is finalized, start the pretraining process:</p>
+<div class="highlight"><pre><span></span><code>python3<span class="w"> </span>train.py
+</code></pre></div>
+<p>The script will immediately print initialization information — including dataset statistics, hyperparameters, model size, and hardware configuration. After that, training will begin and log metrics to the console and a text log file simultaneously.</p>
+<h3 id="example-console-output">Example Console Output</h3>
+<p>You should see periodic logs like this:</p>
+<div class="highlight"><pre><span></span><code>----------------
+Step: 128 steps   |   Training Progress: 0.00%   |   Training Loss: 8.9784   |   Perplexity: 7929.91   |   Learning Rate: 0.00001   |   Norm: 0.7714   |   Tokens Processed: 1M (1M)   |   tok/s: 40143   |   Time: 26s
+----------------
+Step: 384 steps   |   Training Progress: 0.01%   |   Training Loss: 7.5564   |   Perplexity: 1912.87   |   Learning Rate: 0.00002   |   Norm: 0.8971   |   Tokens Processed: 3M (3M)   |   tok/s: 32258   |   Time: 32s
+----------------
+Step: 640 steps   |   Training Progress: 0.01%   |   Training Loss: 6.9219   |   Perplexity: 1014.24   |   Learning Rate: 0.00003   |   Norm: 0.4312   |   Tokens Processed: 5M (5M)   |   tok/s: 54126   |   Time: 19s
+----------------
+Step: 896 steps   |   Training Progress: 0.02%   |   Training Loss: 6.4571   |   Perplexity: 637.23   |   Learning Rate: 0.00004   |   Norm: 0.4810   |   Tokens Processed: 7M (7M)   |   tok/s: 54020   |   Time: 19s
+----------------
+</code></pre></div>
+<p>Each block shows:  </p>
+<ul>
+<li><strong>Step:</strong> Number of training iterations completed  </li>
+<li><strong>Training Progress:</strong> Percentage of total tokens processed  </li>
+<li><strong>Loss &amp; Perplexity:</strong> Measures of model improvement  </li>
+<li><strong>Learning Rate:</strong> Updated dynamically by the cosine scheduler  </li>
+<li><strong>Norm:</strong> Gradient L2 norm for stability checking  </li>
+<li><strong>Tokens Processed:</strong> Cumulative and per-step token counts  </li>
+<li><strong>Throughput (tok/s):</strong> Processing speed  </li>
+<li><strong>Time:</strong> Elapsed time since last log</li>
+</ul>
+<p>These logs give a transparent view of the model’s learning curve and system performance.</p>
+<hr />
+<h3 id="checkpointing-and-logs">Checkpointing and Logs</h3>
+<p>Checkpointing frequency is controlled by the <code>token_ckpt</code> parameter in the configuration file.<br />
+For example, a value of <code>1e9</code> means that the model will be saved every <strong>1 billion tokens processed</strong>.</p>
+<p>All checkpoints and logs are stored under the directory specified by:</p>
+<div class="highlight"><pre><span></span><code><span class="n">ckpt_dir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">root_path</span><span class="p">(</span><span class="s2">&quot;simple_llama&quot;</span><span class="p">,</span> <span class="s2">&quot;pretraining&quot;</span><span class="p">,</span> <span class="s2">&quot;checkpoints&quot;</span><span class="p">)</span>
+</code></pre></div>
+<p>A typical checkpoint file will include the model weights, optimizer state, learning rate schedule, and current step counters.<br />
+You can later reload these checkpoints for evaluation, continuation of training, or fine-tuning stages.</p>
+<hr />
+<h3 id="summary">Summary</h3>
+<p>This concludes the <strong>pretraining execution walkthrough</strong>. You should now have:  </p>
+<ul>
+<li>A functional dataset of tokenized <code>.npy</code> files.  </li>
+<li>A configured model architecture suited to your GPU and experiment size.  </li>
+<li>A running training process logging metrics and saving periodic checkpoints.</li>
+</ul>
+<p>With this stage complete, the next section — <strong>Supervised Fine-Tuning (SFT)</strong> — will build upon the pretrained model to align it with human-like instruction-following behavior.</p>
 
 
 

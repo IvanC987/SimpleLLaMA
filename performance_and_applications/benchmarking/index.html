@@ -9,7 +9,7 @@
       
       
       
-        <link rel="prev" href="../../rlhf/methods/">
+        <link rel="prev" href="../../rlhf/preference_optimization/">
       
       
         <link rel="next" href="../inference/">
@@ -72,7 +72,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#misc-overview" class="md-skip">
+        <a href="#benchmarking" class="md-skip">
           Skip to content
         </a>
       
@@ -1300,12 +1300,12 @@
   
   
     <li class="md-nav__item">
-      <a href="../../rlhf/methods/" class="md-nav__link">
+      <a href="../../rlhf/preference_optimization/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
-    Methods
+    Preference Optimization
     
   </span>
   
@@ -1348,7 +1348,7 @@
   
   
   <span class="md-ellipsis">
-    Misc
+    Performance & Applications
     
   </span>
   
@@ -1359,7 +1359,7 @@
         <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_5">
             <span class="md-nav__icon md-icon"></span>
-            Misc
+            Performance & Applications
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -1379,6 +1379,19 @@
         
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Benchmarking
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="./" class="md-nav__link md-nav__link--active">
         
   
@@ -1390,6 +1403,127 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Overview
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-setup-instructions" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Setup Instructions
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Setup Instructions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-1-clone-the-eleutherai-harness" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 1 — Clone the EleutherAI Harness
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-integrate-simplellama-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 2 — Integrate SimpleLLaMA Model
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-3-extract-model-state-dict" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 3 — Extract Model State Dict
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-running-evaluation" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Running Evaluation
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-understanding-results" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Understanding Results
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-notes-recommendations" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Notes &amp; Recommendations
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Notes &amp; Recommendations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#normalized-accuracy-note" class="md-nav__link">
+    <span class="md-ellipsis">
+      Normalized Accuracy Note
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. Summary
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -1583,6 +1717,116 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Overview
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-setup-instructions" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Setup Instructions
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Setup Instructions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-1-clone-the-eleutherai-harness" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 1 — Clone the EleutherAI Harness
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-integrate-simplellama-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 2 — Integrate SimpleLLaMA Model
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-3-extract-model-state-dict" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 3 — Extract Model State Dict
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-running-evaluation" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Running Evaluation
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-understanding-results" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Understanding Results
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-notes-recommendations" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Notes &amp; Recommendations
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Notes &amp; Recommendations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#normalized-accuracy-note" class="md-nav__link">
+    <span class="md-ellipsis">
+      Normalized Accuracy Note
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. Summary
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -1597,8 +1841,228 @@
 
 
 
-<h1 id="misc-overview">Misc Overview</h1>
-<p>benchmarking.md file</p>
+<h1 id="benchmarking">Benchmarking</h1>
+<p>This section outlines how benchmarking is conducted for <strong>SimpleLLaMA</strong> using the <strong>EleutherAI LM Evaluation Harness</strong> (lm-eval). This standardized framework allows consistent and comparable evaluation of language models across multiple established NLP benchmarks.</p>
+<hr />
+<h2 id="1-overview">1. Overview</h2>
+<p>Benchmarking evaluates the model's reasoning, general knowledge, and commonsense understanding capabilities after different training stages (Pretraining, SFT, RLHF). The <strong>lm-eval-harness</strong> framework from EleutherAI is used for consistency with widely reported community benchmarks.</p>
+<p>Benchmarks used are:</p>
+<ul>
+<li><strong>HellaSwag</strong> – commonsense reasoning</li>
+<li><strong>PIQA</strong> – physical reasoning</li>
+<li><strong>ARC (Easy &amp; Challenge)</strong> – scientific question answering</li>
+</ul>
+<p>All results are reported as <strong>Normalized Accuracy (%)</strong> to align with other LLM benchmark tables.</p>
+<hr />
+<h2 id="2-setup-instructions">2. Setup Instructions</h2>
+<p>Benchmarking requires both the SimpleLLaMA repository and the EleutherAI evaluation harness to be installed.</p>
+<h3 id="step-1-clone-the-eleutherai-harness">Step 1 — Clone the EleutherAI Harness</h3>
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>clone<span class="w"> </span>--depth<span class="w"> </span><span class="m">1</span><span class="w"> </span>https://github.com/EleutherAI/lm-evaluation-harness.git
+<span class="nb">cd</span><span class="w"> </span>lm-evaluation-harness
+pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span>.
+</code></pre></div>
+<h3 id="step-2-integrate-simplellama-model">Step 2 — Integrate SimpleLLaMA Model</h3>
+<p>Copy the integration file from:</p>
+<div class="highlight"><pre><span></span><code>simple_llama/eleuther_harness_eval/my_custom_lm.py
+</code></pre></div>
+<p>into the folder:</p>
+<div class="highlight"><pre><span></span><code>lm-evaluation-harness/lm_eval/models/
+</code></pre></div>
+<p>Then edit <code>lm-evaluation-harness/lm_eval/models/__init__.py</code> and add <code>my_custom_lm</code> to the list of model imports</p>
+<h3 id="step-3-extract-model-state-dict">Step 3 — Extract Model State Dict</h3>
+<p>Before evaluation, the model checkpoint and config must be exported into a format that <code>lm-eval</code> can read.</p>
+<p>For example, if you have the <code>model_50B_2146L_4096MSQ.pth</code> model stored within <code>simple_llama/pretraining/checkpoints</code> folder and wish to evaluate that model, the procedures would be the following.</p>
+<p>Within the <code>simple_llama/eleuther_harness_eval</code> directory:</p>
+<div class="highlight"><pre><span></span><code>python3<span class="w"> </span>extract_state_dict.py<span class="w"> </span>-i<span class="w"> </span>../pretraining/checkpoints/model_50B_2146L_4096MSQ.pth
+</code></pre></div>
+<p>This will create two files under <code>save_dir/</code>:</p>
+<ul>
+<li><code>model_50B_2146L_4096MSQ_sd.pth</code> – state dictionary</li>
+<li><code>model_50B_2146L_4096MSQ_config.pth</code> – model configuration</li>
+</ul>
+<hr />
+<h2 id="3-running-evaluation">3. Running Evaluation</h2>
+<p>From the root of the <strong>SimpleLLaMA</strong> repository, run the following command:</p>
+<div class="highlight"><pre><span></span><code>lm_eval<span class="w"> </span>--model<span class="w"> </span>my_custom_llm<span class="w"> </span><span class="se">\</span>
+<span class="w">        </span>--model_args<span class="w"> </span><span class="nv">tokenizer_path</span><span class="o">=</span>dataset/bpe_8k.json,config_path<span class="o">=</span>eleuther_harness_eval/save_dir/model_50B_2146L_4096MSQ_config.pth,checkpoint_path<span class="o">=</span>eleuther_harness_eval/save_dir/model_50B_2146L_4096MSQ_sd.pth,pretrain_model<span class="o">=</span>True<span class="w"> </span><span class="se">\</span>
+<span class="w">        </span>--tasks<span class="w"> </span>hellaswag,piqa,arc_easy,arc_challenge<span class="w"> </span><span class="se">\</span>
+<span class="w">        </span>--batch_size<span class="w"> </span><span class="m">32</span><span class="w"> </span><span class="se">\</span>
+<span class="w">        </span>--device<span class="w"> </span>cuda:0
+</code></pre></div>
+<p><strong>Arguments:</strong></p>
+<ul>
+<li><code>tokenizer_path</code>: Path to the trained tokenizer JSON file.</li>
+<li><code>config_path</code>: Path to the saved config file generated by extraction.</li>
+<li><code>checkpoint_path</code>: Path to the extracted model weights.</li>
+<li><code>pretrain_model</code>: Set to <code>True</code> for pretrained model evaluation, or <code>False</code> for SFT/RLHF variants.</li>
+</ul>
+<p>For comparison, you can benchmark against existing open models, such as:</p>
+<div class="highlight"><pre><span></span><code>lm_eval<span class="w"> </span>--model<span class="w"> </span>hf<span class="w"> </span>--model_args<span class="w"> </span><span class="nv">pretrained</span><span class="o">=</span>EleutherAI/pythia-1.4b-v0,use_auth_token<span class="o">=</span>True<span class="w"> </span>--tasks<span class="w"> </span>hellaswag<span class="w"> </span>--batch_size<span class="w"> </span><span class="m">32</span><span class="w"> </span>--device<span class="w"> </span>cuda:0
+</code></pre></div>
+<hr />
+<h2 id="4-understanding-results">4. Understanding Results</h2>
+<p>After evaluation, results are displayed in the terminal and saved under:</p>
+<div class="highlight"><pre><span></span><code>lm-evaluation-harness/results/
+</code></pre></div>
+<p>Each benchmark reports metrics such as:</p>
+<ul>
+<li><strong>accuracy</strong> – raw task accuracy</li>
+<li><strong>normalized_accuracy</strong> – adjusted score accounting for multiple-choice bias</li>
+</ul>
+<p>Example output snippet:</p>
+<table>
+<thead>
+<tr>
+<th>Tasks</th>
+<th style="text-align: right;">Version</th>
+<th>Filter</th>
+<th style="text-align: right;">n-shot</th>
+<th>Metric</th>
+<th></th>
+<th style="text-align: right;">Value</th>
+<th></th>
+<th style="text-align: right;">Stderr</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>arc_challenge</td>
+<td style="text-align: right;">1</td>
+<td>none</td>
+<td style="text-align: right;">0</td>
+<td>acc</td>
+<td>↑</td>
+<td style="text-align: right;">0.2491</td>
+<td>±</td>
+<td style="text-align: right;">0.0126</td>
+</tr>
+<tr>
+<td></td>
+<td style="text-align: right;"></td>
+<td>none</td>
+<td style="text-align: right;">0</td>
+<td>acc_norm</td>
+<td>↑</td>
+<td style="text-align: right;">0.2739</td>
+<td>±</td>
+<td style="text-align: right;">0.0130</td>
+</tr>
+<tr>
+<td>arc_easy</td>
+<td style="text-align: right;">1</td>
+<td>none</td>
+<td style="text-align: right;">0</td>
+<td>acc</td>
+<td>↑</td>
+<td style="text-align: right;">0.5926</td>
+<td>±</td>
+<td style="text-align: right;">0.0101</td>
+</tr>
+<tr>
+<td></td>
+<td style="text-align: right;"></td>
+<td>none</td>
+<td style="text-align: right;">0</td>
+<td>acc_norm</td>
+<td>↑</td>
+<td style="text-align: right;">0.5396</td>
+<td>±</td>
+<td style="text-align: right;">0.0102</td>
+</tr>
+<tr>
+<td>hellaswag</td>
+<td style="text-align: right;">1</td>
+<td>none</td>
+<td style="text-align: right;">0</td>
+<td>acc</td>
+<td>↑</td>
+<td style="text-align: right;">0.3426</td>
+<td>±</td>
+<td style="text-align: right;">0.0047</td>
+</tr>
+<tr>
+<td></td>
+<td style="text-align: right;"></td>
+<td>none</td>
+<td style="text-align: right;">0</td>
+<td>acc_norm</td>
+<td>↑</td>
+<td style="text-align: right;">0.4062</td>
+<td>±</td>
+<td style="text-align: right;">0.0049</td>
+</tr>
+<tr>
+<td>piqa</td>
+<td style="text-align: right;">1</td>
+<td>none</td>
+<td style="text-align: right;">0</td>
+<td>acc</td>
+<td>↑</td>
+<td style="text-align: right;">0.6654</td>
+<td>±</td>
+<td style="text-align: right;">0.0110</td>
+</tr>
+<tr>
+<td></td>
+<td style="text-align: right;"></td>
+<td>none</td>
+<td style="text-align: right;">0</td>
+<td>acc_norm</td>
+<td>↑</td>
+<td style="text-align: right;">0.6692</td>
+<td>±</td>
+<td style="text-align: right;">0.0110</td>
+</tr>
+</tbody>
+</table>
+<p>These results match the summary table shown in the main documentation.</p>
+<table>
+<thead>
+<tr>
+<th>Dataset</th>
+<th>Metric</th>
+<th>Score</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ARC (Challenge)</td>
+<td>Normalized Accuracy</td>
+<td>27.39%</td>
+</tr>
+<tr>
+<td>ARC (Easy)</td>
+<td>Normalized Accuracy</td>
+<td>53.96%</td>
+</tr>
+<tr>
+<td>HellaSwag</td>
+<td>Normalized Accuracy</td>
+<td>40.62%</td>
+</tr>
+<tr>
+<td>PIQA</td>
+<td>Normalized Accuracy</td>
+<td>66.92%</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="5-notes-recommendations">5. Notes &amp; Recommendations</h2>
+<ul>
+<li><strong>Batch size</strong> can be adjusted depending on VRAM availability.</li>
+<li>Ensure <code>torchvision</code> and <code>hf_transfer</code> are installed in the environment.</li>
+<li>The integration supports both <strong>Pretrained</strong> and <strong>SFT</strong> checkpoints for evaluation.</li>
+<li>Results can vary slightly based on sequence length and temperature settings.</li>
+<li>Check out <code>simple_llama/eleuther_harness_eval/directions.txt</code> for more directions</li>
+</ul>
+<hr />
+<h3 id="normalized-accuracy-note">Normalized Accuracy Note</h3>
+<p>The <strong>normalized accuracy (acc_norm)</strong> metric corrects for a model's natural bias toward shorter responses. Since the harness computes log probabilities over tokens, longer continuations accumulate more negative log-likelihood, unfairly penalizing them. Normalized accuracy mitigates this by dividing total log probability by the number of tokens in each completion, providing a fairer comparison across response lengths.</p>
+<hr />
+<h2 id="6-summary">6. Summary</h2>
+<p>This benchmarking setup allows <strong>SimpleLLaMA</strong> models to be evaluated directly against other open models in the EleutherAI harness. By adhering to standardized protocols, the results are transparent, reproducible, and comparable to popular models like <strong>Pythia</strong>, <strong>GPT-Neo</strong>, and <strong>LLaMA</strong> itself.</p>
+<p>For deeper analysis or adding new tasks, see the <a href="https://github.com/EleutherAI/lm-evaluation-harness">EleutherAI lm-eval repository</a>.</p>
 
 
 

@@ -1505,12 +1505,12 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../rlhf/methods/" class="md-nav__link">
+      <a href="../../../rlhf/preference_optimization/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
-    Methods
+    Preference Optimization
     
   </span>
   
@@ -1551,7 +1551,7 @@
   
   
   <span class="md-ellipsis">
-    Misc
+    Performance & Applications
     
   </span>
   
@@ -1562,7 +1562,7 @@
         <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_5">
             <span class="md-nav__icon md-icon"></span>
-            Misc
+            Performance & Applications
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -1573,7 +1573,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../misc/benchmarking/" class="md-nav__link">
+      <a href="../../../performance_and_applications/benchmarking/" class="md-nav__link">
         
   
   
@@ -1596,7 +1596,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../misc/inference/" class="md-nav__link">
+      <a href="../../../performance_and_applications/inference/" class="md-nav__link">
         
   
   
@@ -1619,7 +1619,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../misc/notes/" class="md-nav__link">
+      <a href="../../../performance_and_applications/notes/" class="md-nav__link">
         
   
   
@@ -1995,7 +1995,7 @@
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;FP16 range: ~10^4 (much smaller - risk of overflow)&quot;</span><span class="p">)</span>
 </code></pre></div>
 <p>The key is that LLM training is more sensitive to range than precision. Gradient values can span many orders of magnitude, making BF16's preserved range crucial.</p>
-<p>Do note that although this would reduce memory usage substantially, but would not directly halve the memory usage, a few layers/activations in the model are kept in FP32 due to precision sensitivity, along with optimizer state dicts which stays in FP32. </p>
+<p>Do note that although this would reduce memory usage substantially, but would not directly halve the memory usage, a few layers/activations in the model are kept in FP32 due to precision sensitivity, along with optimizer state which remains in FP32. </p>
 <hr />
 <h2 id="2-automatic-mixed-precision-amp-with-autocast">2. Automatic Mixed Precision (AMP) with Autocast</h2>
 <p>As mentioned, not all operations benefit from lower precision. Some need FP32 for numerical stability:</p>

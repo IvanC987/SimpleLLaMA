@@ -72,7 +72,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#misc-overview" class="md-skip">
+        <a href="#inference" class="md-skip">
           Skip to content
         </a>
       
@@ -1300,12 +1300,12 @@
   
   
     <li class="md-nav__item">
-      <a href="../../rlhf/methods/" class="md-nav__link">
+      <a href="../../rlhf/preference_optimization/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
-    Methods
+    Preference Optimization
     
   </span>
   
@@ -1348,7 +1348,7 @@
   
   
   <span class="md-ellipsis">
-    Misc
+    Performance & Applications
     
   </span>
   
@@ -1359,7 +1359,7 @@
         <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_5">
             <span class="md-nav__icon md-icon"></span>
-            Misc
+            Performance & Applications
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -1402,6 +1402,19 @@
         
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Inference
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="./" class="md-nav__link md-nav__link--active">
         
   
@@ -1413,6 +1426,121 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Overview
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-system-requirements" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. System Requirements
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-installation" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Installation
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Installation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-1-clone-the-repository" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 1: Clone the Repository
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-install-dependencies" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 2: Install Dependencies
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-3-system-utilities-linuxwsl" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 3: System Utilities (Linux/WSL)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-downloading-model-checkpoints" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Downloading Model Checkpoints
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Configuration
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-running-inference" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. Running Inference
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      8. Summary
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -1583,6 +1711,110 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Overview
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-system-requirements" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. System Requirements
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-installation" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Installation
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Installation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-1-clone-the-repository" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 1: Clone the Repository
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-install-dependencies" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 2: Install Dependencies
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-3-system-utilities-linuxwsl" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 3: System Utilities (Linux/WSL)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-downloading-model-checkpoints" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Downloading Model Checkpoints
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Configuration
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-running-inference" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. Running Inference
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      8. Summary
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -1597,8 +1829,292 @@
 
 
 
-<h1 id="misc-overview">Misc Overview</h1>
-<p>inference.md file</p>
+<h1 id="inference">Inference</h1>
+<p>This section provides a guide for running SimpleLLaMA inference using pre-trained or fine-tuned model checkpoints. Unlike the training
+stages, inference is lightweight and can be performed on consumer hardware with minimal setup.</p>
+<p>Whether you want to experiment with the model's conversational capabilities, test different sampling strategies, or integrate SimpleLLaMA into your
+own applications, this guide covers everything needed to get started.</p>
+<hr />
+<h2 id="1-overview">1. Overview</h2>
+<p>SimpleLLaMA supports interactive inference through a command-line interface that:</p>
+<ul>
+<li>Loads pre-trained or fine-tuned model checkpoints</li>
+<li>Supports multiple sampling methods (greedy, top-k, top-p)</li>
+<li>Provides runtime configuration for temperature, max tokens, and system prompts</li>
+<li>Maintains conversation history for multi-turn dialogues (when using SFT models)</li>
+<li>Streams generated tokens in real-time</li>
+</ul>
+<p>Pre-trained models are available in 273M parameter and 1.3B parameter models.</p>
+<p>Fine-tuned (SFT) models are instruction-aligned versions of the pretrained models, optimized for conversational and task-oriented interactions.</p>
+<hr />
+<h2 id="2-system-requirements">2. System Requirements</h2>
+<p>Hardware Requirements</p>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Minimum</th>
+<th>Recommended</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>OS</td>
+<td>Linux (Ubuntu 20.04+) or Windows with WSL</td>
+<td>Ubuntu 24.04 LTS</td>
+</tr>
+<tr>
+<td>GPU</td>
+<td>NA</td>
+<td>NVIDIA GPU with 12GB+ VRAM</td>
+</tr>
+<tr>
+<td>CPU</td>
+<td>Any modern multi-core processor</td>
+<td>8+ cores</td>
+</tr>
+<tr>
+<td>RAM</td>
+<td>8GB system memory</td>
+<td>16GB+</td>
+</tr>
+<tr>
+<td>Disk Space</td>
+<td>20GB for models and dependencies</td>
+<td>50GB+ for custom training</td>
+</tr>
+</tbody>
+</table>
+<p>Note: CPU-only inference is possible but quite slow on the 1.3B parameter model and not recommended for practical use.</p>
+<p>Software Requirements</p>
+<ul>
+<li>Python: 3.10 or higher</li>
+<li>CUDA Toolkit: 11.8+ (for GPU acceleration)</li>
+<li>Operating System: Linux or WSL (Windows users should use Windows Subsystem for Linux)</li>
+</ul>
+<hr />
+<h2 id="3-installation">3. Installation</h2>
+<h3 id="step-1-clone-the-repository">Step 1: Clone the Repository</h3>
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/IvanC987/SimpleLLaMA.git
+<span class="nb">cd</span><span class="w"> </span>SimpleLLaMA
+</code></pre></div>
+<h3 id="step-2-install-dependencies">Step 2: Install Dependencies</h3>
+<p>Install required Python packages:</p>
+<div class="highlight"><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>requirements.txt
+pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span>.
+</code></pre></div>
+<p>Core dependencies include: </p>
+<ul>
+<li>torch==2.6.0 - PyTorch deep learning framework</li>
+<li>tokenizers==0.21.1 - Hugging Face tokenizer library</li>
+<li>numpy==2.2.6 - Numerical computing</li>
+<li>matplotlib==3.10.6 - For plotting (optional, used in training)</li>
+</ul>
+<h3 id="step-3-system-utilities-linuxwsl">Step 3: System Utilities (Linux/WSL)</h3>
+<p>If running on a fresh Linux installation or WSL, ensure wget is installed:</p>
+<div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>apt<span class="w"> </span>update
+sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>wget
+</code></pre></div>
+<p>This is needed for downloading model checkpoints from Hugging Face.</p>
+<hr />
+<h2 id="4-downloading-model-checkpoints">4. Downloading Model Checkpoints</h2>
+<p>SimpleLLaMA provides pre-trained and fine-tuned checkpoints hosted on Hugging Face:</p>
+<p>🔗 <a href="https://huggingface.co/DL-Hobbyist/simple-llama">Model Repository</a></p>
+<p>Available Models</p>
+<table>
+<thead>
+<tr>
+<th>Model</th>
+<th>Parameters</th>
+<th>Training</th>
+<th>Size</th>
+<th>Use Case</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Pretrained 273M</td>
+<td>273M</td>
+<td>12.5B tokens (FineWebEdu)</td>
+<td>~1.1 GB</td>
+<td>Basic text continuation, experimentation</td>
+</tr>
+<tr>
+<td>SFT 273M</td>
+<td>273M</td>
+<td>Pretrained + SFT</td>
+<td>~1.1 GB</td>
+<td>Recommended for most users to test</td>
+</tr>
+<tr>
+<td>Pretrained 1.3B</td>
+<td>1.3B</td>
+<td>50B tokens (FineWebEdu)</td>
+<td>~5.2 GB</td>
+<td>Better text generation (relative to 273M)</td>
+</tr>
+<tr>
+<td>SFT 1.3B</td>
+<td>1.3B</td>
+<td>Pretrained + SFT</td>
+<td>~5.2 GB</td>
+<td>Higher-quality conversation (relative to 273M)</td>
+</tr>
+</tbody>
+</table>
+<p>Download Instructions</p>
+<p>Navigate to the checkpoint directory:</p>
+<div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>simple_llama/finetune/full_sft
+mkdir<span class="w"> </span>sft_checkpoints
+<span class="nb">cd</span><span class="w"> </span>sft_checkpoints
+</code></pre></div>
+<p>Download the 273M SFT model (or whichever one you may want to test out) by going to the model repository link up above, navigate to the specific model file ending in <code>.pth</code> and copy the download link</p>
+<p><img alt="Download Image" src="../../images/copy_download_link.png" /></p>
+<p>Then use wget to fetch the file</p>
+<div class="highlight"><pre><span></span><code>wget<span class="w"> </span>&lt;MODEL_URL&gt;
+</code></pre></div>
+<hr />
+<h2 id="5-configuration">5. Configuration</h2>
+<p>Before running inference, configure the model path and generation parameters by navigating to the inference directory, <code>simple_llama/inference</code> and open <code>inference_config.py</code> in your preferred text editor</p>
+<p>Locate the model_path parameter and update it to point to your downloaded checkpoint, for example:</p>
+<div class="highlight"><pre><span></span><code><span class="n">model_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">root_path</span><span class="p">(</span><span class="s2">&quot;simple_llama&quot;</span><span class="p">,</span> <span class="s2">&quot;finetune&quot;</span><span class="p">,</span> <span class="s2">&quot;full_sft&quot;</span><span class="p">,</span> <span class="s2">&quot;sft_checkpoints&quot;</span><span class="p">,</span> <span class="s2">&quot;sft_3E_1570L_2048MSQ.pth&quot;</span><span class="p">)</span>
+</code></pre></div>
+<p>Important: If using a pretrained model (not SFT), also set:</p>
+<div class="highlight"><pre><span></span><code><span class="n">pretrain_model</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>  <span class="c1"># Set to True for pretrained, False for SFT</span>
+</code></pre></div>
+<p>The default configuration is geared towards the SFT 273M model. You can customize:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># === Generation Parameters ===</span>
+<span class="n">max_new_tokens</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">256</span>        <span class="c1"># Maximum tokens to generate per response</span>
+<span class="n">temperature</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.1</span>         <span class="c1"># Lower = more deterministic, higher = more creative</span>
+<span class="n">top_p</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.3</span>               <span class="c1"># Nucleus sampling threshold</span>
+<span class="n">top_k</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">50</span>                  <span class="c1"># Top-k sampling parameter</span>
+<span class="n">sampling_method</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;greedy&quot;</span><span class="p">,</span> <span class="s2">&quot;top_k&quot;</span><span class="p">,</span> <span class="s2">&quot;top_p&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;top_p&quot;</span>
+
+<span class="c1"># === Model Behavior ===</span>
+<span class="n">system_prompt</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;CUSTOM&quot;</span>    <span class="c1"># Use default system prompt, or provide custom</span>
+<span class="n">skip_special_tokens</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span> <span class="c1"># Remove special tokens from output</span>
+</code></pre></div>
+<p>General hyperparameter use-case:</p>
+<table>
+<thead>
+<tr>
+<th>Use Case</th>
+<th>Temperature</th>
+<th>Top-p</th>
+<th>Sampling Method</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Factual QA</td>
+<td>0.1</td>
+<td>0.3</td>
+<td>top_p</td>
+</tr>
+<tr>
+<td>Creative Writing</td>
+<td>0.7-0.9</td>
+<td>0.8</td>
+<td>top_p</td>
+</tr>
+<tr>
+<td>Deterministic Output</td>
+<td>N/A</td>
+<td>N/A</td>
+<td>greedy</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="6-running-inference">6. Running Inference</h2>
+<p>Once configured, start the interactive inference session:</p>
+<div class="highlight"><pre><span></span><code>python3<span class="w"> </span>inference.py
+</code></pre></div>
+<p>Interactive Commands</p>
+<p>During inference, the following commands are available:</p>
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>/exit</td>
+<td>Exit the inference session</td>
+</tr>
+<tr>
+<td>/clear</td>
+<td>Clear conversation history</td>
+</tr>
+<tr>
+<td>/history</td>
+<td>Display current conversation</td>
+</tr>
+<tr>
+<td>/configs</td>
+<td>Show current generation settings</td>
+</tr>
+<tr>
+<td>/set <param>=<value></td>
+<td>Adjust parameters on-the-fly</td>
+</tr>
+<tr>
+<td>/help</td>
+<td>Display all available commands</td>
+</tr>
+</tbody>
+</table>
+<p>Example Session</p>
+<div class="highlight"><pre><span></span><code>Using device=&#39;cuda&#39;
+(Enter &#39;/help&#39; to view a list of commands for a better user experience)
+Using inf_cfg.model_path=&#39;/workspace/SL_Package/simple_llama/finetune/full_sft/sft_checkpoints/sft_3E_1570L_2048MSQ.pth&#39;
+Now loading model...
+Model loaded! (1.8s)
+
+&gt;&gt;&gt; Hello
+ Hello! How can I help you today? Is there something you would like to talk about or ask me a question? I&#39;m here to assist you with any information or advice you may need.&lt;EOA&gt;
+
+********************
+Total Generation Time: 0.46s
+Tokens/Second: 90.69
+********************
+
+
+
+&gt;&gt;&gt; What&#39;s the capital of France?
+ The capital of France is Paris.&lt;EOA&gt;
+
+********************
+Total Generation Time: 0.09s
+Tokens/Second: 105.01
+********************
+
+
+
+&gt;&gt;&gt; /exit
+</code></pre></div>
+<p>You can modify generation parameters without restarting:</p>
+<ul>
+<li>/set temperature=0.7</li>
+<li>/set top_p=0.8</li>
+<li>/set max_new_tokens=128</li>
+</ul>
+<hr />
+<h2 id="8-summary">8. Summary</h2>
+<p>This inference guide covered:</p>
+<ul>
+<li>System requirements and installation</li>
+<li>Downloading pre-trained and fine-tuned checkpoints</li>
+<li>Configuring inference parameters</li>
+<li>Running interactive inference sessions</li>
+</ul>
+<p>For training your own models, see the <a href="../../custom_training/pretraining/">Custom Training</a> documentation.</p>
+<p>For benchmarking model performance, see <a href="../benchmarking/">Benchmarking</a>.</p>
+<p>For deeper technical details, refer to <a href="../../pretraining/overview/">Pretraining</a>.</p>
+<hr />
+<p>Happy experimenting with SimpleLLaMA!</p>
 
 
 

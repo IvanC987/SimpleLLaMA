@@ -1470,12 +1470,12 @@
   
   
     <li class="md-nav__item">
-      <a href="../../rlhf/methods/" class="md-nav__link">
+      <a href="../../rlhf/preference_optimization/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
-    Methods
+    Preference Optimization
     
   </span>
   
@@ -1516,7 +1516,7 @@
   
   
   <span class="md-ellipsis">
-    Misc
+    Performance & Applications
     
   </span>
   
@@ -1527,7 +1527,7 @@
         <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_5">
             <span class="md-nav__icon md-icon"></span>
-            Misc
+            Performance & Applications
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -1538,7 +1538,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../misc/benchmarking/" class="md-nav__link">
+      <a href="../../performance_and_applications/benchmarking/" class="md-nav__link">
         
   
   
@@ -1561,7 +1561,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../misc/inference/" class="md-nav__link">
+      <a href="../../performance_and_applications/inference/" class="md-nav__link">
         
   
   
@@ -1584,7 +1584,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../misc/notes/" class="md-nav__link">
+      <a href="../../performance_and_applications/notes/" class="md-nav__link">
         
   
   
@@ -1933,7 +1933,7 @@ It would also learn assistant-like behavior, such as prioritizing conciseness, b
 </ul>
 <h2 id="key-technical-concepts">Key Technical Concepts</h2>
 <h3 id="the-sft-training-objective">The SFT Training Objective</h3>
-<p>Unlike pretraining where we train on a massive text corpora, SFT is more about behavior tuning, using a much smaller dataset, composed to 3 main components:  </p>
+<p>Unlike pretraining where we train on a massive text corpus, SFT is more about behavior tuning, using a much smaller dataset, composed to 3 main components:  </p>
 <ul>
 <li>System Instructions</li>
 <li>User Query</li>
@@ -1958,12 +1958,12 @@ All other tokens (system prompt, user query, special tokens) are ignored via pad
 <p><strong>Single-GPU Training</strong>: Unlike the DDP implementation in pretraining, the SFT pipeline currently uses single-GPU training. This decision is mostly because SFT typically requires orders of magnitude fewer iterations than pretraining and results in faster iteration and debugging without synchronization complexities that DDP introduces.</p>
 <p><strong>Full Fine-Tuning Approach</strong>: This currently implement full parameter updates rather than parameter-efficient methods like LoRA, though the infrastructure for LoRA integration exists and might be documented in future updates.</p>
 <h2 id="performance-expectations">Performance Expectations</h2>
-<p>For this 1.3B parameter model: (Need to come back and update this later on after going through full process)</p>
+<p>For this 1.3B parameter model:</p>
 <ul>
-<li><strong>Training Time</strong>: ~12 hours (vs months for pretraining)  </li>
-<li><strong>Dataset Size</strong>: 200,000 high-quality examples  </li>
-<li><strong>Convergence</strong>: Usually within 3-5 epochs  </li>
-<li><strong>Quality Improvement</strong>: Dramatic improvement in instruction following with relatively little training</li>
+<li><strong>Training Time</strong>: Several hours on single GPU (vs months for pretraining)</li>
+<li><strong>Dataset Size</strong>: Filtered from lmsys-chat-1m, ShareGPT, and smol-smoltalk</li>
+<li><strong>Convergence</strong>: Typically 3-5 epochs</li>
+<li><strong>Quality Improvement</strong>: Significant improvement in instruction-following and conversational coherence</li>
 </ul>
 
 

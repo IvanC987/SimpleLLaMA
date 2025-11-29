@@ -1432,12 +1432,12 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../rlhf/methods/" class="md-nav__link">
+      <a href="../../../rlhf/preference_optimization/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
-    Methods
+    Preference Optimization
     
   </span>
   
@@ -1478,7 +1478,7 @@
   
   
   <span class="md-ellipsis">
-    Misc
+    Performance & Applications
     
   </span>
   
@@ -1489,7 +1489,7 @@
         <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_5">
             <span class="md-nav__icon md-icon"></span>
-            Misc
+            Performance & Applications
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -1500,7 +1500,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../misc/benchmarking/" class="md-nav__link">
+      <a href="../../../performance_and_applications/benchmarking/" class="md-nav__link">
         
   
   
@@ -1523,7 +1523,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../misc/inference/" class="md-nav__link">
+      <a href="../../../performance_and_applications/inference/" class="md-nav__link">
         
   
   
@@ -1546,7 +1546,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../misc/notes/" class="md-nav__link">
+      <a href="../../../performance_and_applications/notes/" class="md-nav__link">
         
   
   
@@ -1849,7 +1849,8 @@ This section walks through how this was done in SimpleLLaMA.</p>
 </code></pre></div>
 <p>Note the <code>vocab_size=8192</code> part. This is a value that we can adjust as needed. A vocabulary size of <code>8192</code> means that we undergo compression until we have 8192 mapping in our dict. 
 One can think of it as a balancer: If vocab size is set too low (e.g. 256), BPE will collaspe into character level tokenization. However if vocab size is too large, like 1 million, it will converge towards something like a word level tokenizer. 
-Generally, BPE tokenizers have vocabulary size of 32k+, however since we are dealing with ascii only dataset, 8192 works fine. </p>
+Generally, BPE tokenizers have vocabulary sizes of 32K+ for multilingual models. 
+However, for ASCII-only with a 50B token budget, 8192 prevents sparsity issues while maintaining good compression (~3.9 characters per token). A 32K vocab would spread training signal too thin across rarely-seen tokens.</p>
 <h4 id="key-design-choices">Key Design Choices</h4>
 <ul>
 <li><strong>ByteLevel PreTokenizer</strong> → Ensures consistent handling of whitespace. For example, <code>" dog"</code> and <code>"dog"</code> are treated as distinct.  </li>
@@ -1887,8 +1888,11 @@ Generally, BPE tokenizers have vocabulary size of 32k+, however since we are dea
 <li>For a 10,000 character text file, this typically compresses down to ~2,500 tokens, depending on content.  </li>
 </ul>
 <hr />
-<p>By the end of this stage, the dataset has gone from raw text → clean shards → token IDs, all ready to be fed into the pretraining pipeline.
-For the remainder of this documentation/tutorial, I will show tokenization on word level for simplicity. </p>
+<p>By the end of this stage, the dataset has gone from raw text → clean shards → token IDs, all ready to be fed into the pretraining pipeline.</p>
+<p><strong>Note on Examples:</strong>
+For illustrative purposes in later architecture diagrams, tokenization may be shown at
+word-level for readability (e.g., ["Hello", "world"] instead of ["He", "llo", " world"]).
+However, the actual implementation uses BPE subword tokenization as described above.</p>
 
 
 

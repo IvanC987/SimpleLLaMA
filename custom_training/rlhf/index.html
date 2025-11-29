@@ -69,6 +69,11 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
+        
+        <a href="#reinforcement-learning-from-human-feedback-rlhf" class="md-skip">
+          Skip to content
+        </a>
+      
     </div>
     <div data-md-component="announce">
       
@@ -1293,12 +1298,12 @@
   
   
     <li class="md-nav__item">
-      <a href="../../rlhf/methods/" class="md-nav__link">
+      <a href="../../rlhf/preference_optimization/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
-    Methods
+    Preference Optimization
     
   </span>
   
@@ -1339,7 +1344,7 @@
   
   
   <span class="md-ellipsis">
-    Misc
+    Performance & Applications
     
   </span>
   
@@ -1350,7 +1355,7 @@
         <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_5">
             <span class="md-nav__icon md-icon"></span>
-            Misc
+            Performance & Applications
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -1361,7 +1366,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../misc/benchmarking/" class="md-nav__link">
+      <a href="../../performance_and_applications/benchmarking/" class="md-nav__link">
         
   
   
@@ -1384,7 +1389,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../misc/inference/" class="md-nav__link">
+      <a href="../../performance_and_applications/inference/" class="md-nav__link">
         
   
   
@@ -1407,7 +1412,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../misc/notes/" class="md-nav__link">
+      <a href="../../performance_and_applications/notes/" class="md-nav__link">
         
   
   
@@ -1529,6 +1534,21 @@
       <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
       
       
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    RLHF
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
       
       <a href="./" class="md-nav__link md-nav__link--active">
         
@@ -1541,6 +1561,109 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-purpose-of-rlhf-dpo" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Purpose of RLHF (DPO)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-dataset" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Dataset
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Dataset">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#datasets-used" class="md-nav__link">
+    <span class="md-ellipsis">
+      Datasets Used
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Configuration
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-training-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Training Workflow
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Training Workflow">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-happens-internally" class="md-nav__link">
+    <span class="md-ellipsis">
+      What Happens Internally
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#checkpointing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Checkpointing
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Summary
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -1571,6 +1694,100 @@
   
   
   
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-purpose-of-rlhf-dpo" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Purpose of RLHF (DPO)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-dataset" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Dataset
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Dataset">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#datasets-used" class="md-nav__link">
+    <span class="md-ellipsis">
+      Datasets Used
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Configuration
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-training-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Training Workflow
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Training Workflow">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-happens-internally" class="md-nav__link">
+    <span class="md-ellipsis">
+      What Happens Internally
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#checkpointing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Checkpointing
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Summary
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
   
 </nav>
                   </div>
@@ -1586,9 +1803,125 @@
 
 
 
-  <h1>RLHF</h1>
+<h1 id="reinforcement-learning-from-human-feedback-rlhf">Reinforcement Learning from Human Feedback (RLHF)</h1>
+<p>This section covers the <strong>Reinforcement Learning from Human Feedback (RLHF)</strong> stage using the <strong>Direct Preference Optimization (DPO)</strong> approach.<br />
+Rather than training a separate reward model or performing policy optimization (as in PPO), DPO fine-tunes the model directly using <strong>preference pairs</strong> (where one response is preferred over another).</p>
+<p>This makes it both simpler and more stable, while still achieving meaningful alignment improvements.</p>
+<hr />
+<h2 id="1-purpose-of-rlhf-dpo">1. Purpose of RLHF (DPO)</h2>
+<p>After <strong>Supervised Fine-Tuning (SFT)</strong>, the model can respond conversationally, but it may still produce undesirable or unsafe outputs such as biased statements, harmful suggestions, or rule-breaking responses.</p>
+<p><strong>RLHF addresses this</strong> by aligning model behavior with human values and intent.<br />
+It teaches the model <em>which</em> responses are better using human (or synthetic) preference data.</p>
+<p>Instead of maximizing likelihood on a single correct answer, DPO optimizes the model so that its probability for the <em>preferred</em> response (<span class="arithmatex">\(y_\text{chosen}\)</span>) is higher than for the <em>rejected</em> one (<span class="arithmatex">\(y_\text{rejected}\)</span>):</p>
+<div class="arithmatex">\[
+L_\text{DPO} = -\log \sigma\big( \beta[(\log \pi_\theta(y_\text{chosen}|x) - \log \pi_\text{ref}(y_\text{chosen}|x)) - (\log \pi_\theta(y_\text{rejected}|x) - \log \pi_\text{ref}(y_\text{rejected}|x))] \big)
+\]</div>
+<p>Here, <span class="arithmatex">\(\pi_\theta\)</span> is the current model, <span class="arithmatex">\(\pi_\text{ref}\)</span> is the frozen SFT model, and <span class="arithmatex">\(\beta\)</span> controls the sharpness of preference weighting.</p>
+<p>This encourages the fine-tuned model to behave more like humans prefer, while staying close to its base SFT model.</p>
+<hr />
+<h2 id="2-dataset">2. Dataset</h2>
+<p>DPO requires a dataset of <strong>paired examples</strong>: for each input (prompt), one response is labeled as <em>accepted</em> (preferred) and another as <em>rejected</em>.</p>
+<p>Each entry must include the following keys:</p>
+<ul>
+<li><code>Template</code>: list containing one string (the system prompt or persona). Use <code>["CUSTOM"]</code> to apply the default system prompt.</li>
+<li><code>User</code>: list of user messages forming the dialogue.</li>
+<li><code>Accepted</code>: list of model responses that are <strong>preferred</strong>.</li>
+<li><code>Rejected</code>: list of <strong>dispreferred</strong> responses.</li>
+</ul>
+<p>All four lists must be the same length, and each pair represents one user–assistant exchange.</p>
+<p>Here's an example:</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;Template&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;CUSTOM&quot;</span><span class="p">],</span>
+<span class="w">  </span><span class="nt">&quot;User&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="s2">&quot;My roommate keeps borrowing my clothes without asking. I&#39;m really frustrated—how can I express my anger physically, like pushing him away, without actually hurting him?&quot;</span>
+<span class="w">  </span><span class="p">],</span>
+<span class="w">  </span><span class="nt">&quot;Accepted&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="s2">&quot;It’s best to stay non-physical. Tell your roommate calmly that you don’t appreciate him taking your clothes, and if he reaches for them, you can step back or move his hand away gently. Setting clear boundaries will make your message stronger than physical reactions.&quot;</span>
+<span class="w">  </span><span class="p">],</span>
+<span class="w">  </span><span class="nt">&quot;Rejected&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="s2">&quot;You can push him lightly to show your frustration, just enough to make your point. If he keeps doing it, push a bit harder next time so he understands you’re serious, but stop before it becomes aggressive.&quot;</span>
+<span class="w">  </span><span class="p">]</span>
+<span class="p">}</span>
+</code></pre></div>
+<h3 id="datasets-used">Datasets Used</h3>
+<p>The following open datasets were used for constructing the DPO training data:</p>
+<table>
+<thead>
+<tr>
+<th>Dataset</th>
+<th>Purpose</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>PKU-SafeRLHF</strong></td>
+<td>Preference Alignment</td>
+<td>A high-quality human preference dataset emphasizing <em>helpfulness</em>, <em>honesty</em>, and <em>harmlessness</em> across safety-critical prompts.</td>
+</tr>
+<tr>
+<td><strong>Custom Curated Safety Samples</strong></td>
+<td>Safety Behavior Refinement</td>
+<td>Additional synthetic examples created to balance ethical edge cases and safety training examples.</td>
+</tr>
+</tbody>
+</table>
+<p>PKU-SafeRLHF was obtained from the <a href="https://huggingface.co/datasets">Hugging Face Datasets Hub</a></p>
+<hr />
+<h2 id="3-configuration">3. Configuration</h2>
+<p>The RLHF stage uses a dedicated configuration class: <code>DPOConfig</code>, defined in:
+<div class="highlight"><pre><span></span><code>simple_llama/reinforcement_learning/rlhf/dpo_config.py
+</code></pre></div></p>
+<p>Key settings:
+<div class="highlight"><pre><span></span><code><span class="n">model_path</span> <span class="o">=</span> <span class="n">root_path</span><span class="p">(</span><span class="s2">&quot;simple_llama&quot;</span><span class="p">,</span> <span class="s2">&quot;finetune&quot;</span><span class="p">,</span> <span class="s2">&quot;full_sft&quot;</span><span class="p">,</span> <span class="s2">&quot;sft_checkpoints&quot;</span><span class="p">)</span>
+<span class="n">tokenize_path</span> <span class="o">=</span> <span class="n">root_path</span><span class="p">(</span><span class="s2">&quot;simple_llama&quot;</span><span class="p">,</span> <span class="s2">&quot;dataset&quot;</span><span class="p">,</span> <span class="s2">&quot;bpe_8k.json&quot;</span><span class="p">)</span>
+<span class="n">rlhf_dataset_path</span> <span class="o">=</span> <span class="n">root_path</span><span class="p">(</span><span class="s2">&quot;simple_llama&quot;</span><span class="p">,</span> <span class="s2">&quot;reinforcement_learning&quot;</span><span class="p">,</span> <span class="s2">&quot;rl_dataset&quot;</span><span class="p">)</span>
+<span class="n">ckpt_dir</span> <span class="o">=</span> <span class="n">root_path</span><span class="p">(</span><span class="s2">&quot;simple_llama&quot;</span><span class="p">,</span> <span class="s2">&quot;reinforcement_learning&quot;</span><span class="p">,</span> <span class="s2">&quot;rlhf&quot;</span><span class="p">,</span> <span class="s2">&quot;rlhf_checkpoints&quot;</span><span class="p">)</span>
 
-
+<span class="n">batch_size</span> <span class="o">=</span> <span class="mi">16</span>
+<span class="n">grad_accum_steps</span> <span class="o">=</span> <span class="mi">8</span>
+<span class="n">beta</span> <span class="o">=</span> <span class="mf">0.5</span>  <span class="c1"># Preference weighting term</span>
+<span class="n">epochs</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="n">warmup_iterations</span> <span class="o">=</span> <span class="mi">50</span>
+<span class="n">max_lr</span> <span class="o">=</span> <span class="mf">5e-7</span>
+<span class="n">min_lr</span> <span class="o">=</span> <span class="mf">1e-7</span>
+</code></pre></div></p>
+<p>Ensure that the <code>model_path</code> and <code>rlhf_dataset_path</code> points to the correct file location.</p>
+<hr />
+<h2 id="4-training-workflow">4. Training Workflow</h2>
+<p>Launch the training using: </p>
+<div class="highlight"><pre><span></span><code>python3<span class="w"> </span>simple_llama/reinforcement_learning/rlhf/apply_dpo.py
+</code></pre></div>
+<p>or</p>
+<div class="highlight"><pre><span></span><code>python3<span class="w"> </span>apply_dpo.py
+</code></pre></div>
+<p>Depending on current location.</p>
+<h3 id="what-happens-internally">What Happens Internally</h3>
+<ol>
+<li>The <strong>SFT checkpoint</strong> is loaded twice:</li>
+<li>Once as the trainable <code>model</code>.</li>
+<li>Once as the frozen <code>ref_model</code> (baseline).</li>
+<li>The <strong>RLHF dataset</strong> is loaded and verified by <code>RLDatasetLoader</code>.</li>
+<li>Each batch yields tuples of:
+   <div class="highlight"><pre><span></span><code><span class="p">(</span><span class="n">accepted_chat</span><span class="p">,</span> <span class="n">accepted_suffix</span><span class="p">,</span> <span class="n">rejected_chat</span><span class="p">,</span> <span class="n">rejected_suffix</span><span class="p">)</span>
+</code></pre></div></li>
+<li>Data is padded and aligned for training.</li>
+<li>Both models compute log-probabilities; the <strong>PreferenceLoss</strong> computes the DPO objective.</li>
+<li>Gradients are accumulated and updated per optimizer step.</li>
+<li>Evaluation and sample generations occur periodically.</li>
+</ol>
+<h3 id="checkpointing">Checkpointing</h3>
+<ul>
+<li>Checkpoints are saved each epoch to <code>rlhf_checkpoints/</code>.</li>
+<li>Each includes:</li>
+<li>Model weights</li>
+<li>Config dataclass</li>
+<li>Training metadata</li>
+</ul>
+<hr />
+<h2 id="5-summary">5. Summary</h2>
+<p>After this stage, the result is an aligned SimpleLLaMA model ready for inference or further experiments.</p>
+<p>This concludes the <strong>RLHF (DPO) stage</strong>, completing the core SimpleLLaMA training pipeline, from <strong>pretraining → SFT → RLHF</strong>.</p>
 
 
 

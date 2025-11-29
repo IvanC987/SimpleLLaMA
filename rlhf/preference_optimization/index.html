@@ -12,7 +12,7 @@
         <link rel="prev" href="../overview/">
       
       
-        <link rel="next" href="../../misc/benchmarking/">
+        <link rel="next" href="../../performance_and_applications/benchmarking/">
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
@@ -20,7 +20,7 @@
     
     
       
-        <title>Methods - SimpleLLaMA Documentation</title>
+        <title>Preference Optimization - SimpleLLaMA Documentation</title>
       
     
     
@@ -72,7 +72,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#rlhf-overview" class="md-skip">
+        <a href="#preference-optimization-with-dpo" class="md-skip">
           Skip to content
         </a>
       
@@ -108,7 +108,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Methods
+              Preference Optimization
             
           </span>
         </div>
@@ -1311,17 +1311,175 @@
         
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Preference Optimization
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
   <span class="md-ellipsis">
-    Methods
+    Preference Optimization
     
   </span>
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#introduction" class="md-nav__link">
+    <span class="md-ellipsis">
+      Introduction
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#preference-dataset-format" class="md-nav__link">
+    <span class="md-ellipsis">
+      Preference Dataset Format
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Preference Dataset Format">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#structure-requirements" class="md-nav__link">
+    <span class="md-ellipsis">
+      Structure Requirements
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      Examples
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dataset-quality-and-size" class="md-nav__link">
+    <span class="md-ellipsis">
+      Dataset Quality and Size
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-dpo-loss-function" class="md-nav__link">
+    <span class="md-ellipsis">
+      The DPO Loss Function
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The DPO Loss Function">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mathematical-formulation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Mathematical Formulation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#intuition" class="md-nav__link">
+    <span class="md-ellipsis">
+      Intuition
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#key-implementation-details" class="md-nav__link">
+    <span class="md-ellipsis">
+      Key Implementation Details
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Key Implementation Details">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#reference-model-importance" class="md-nav__link">
+    <span class="md-ellipsis">
+      Reference Model Importance
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#length-normalization" class="md-nav__link">
+    <span class="md-ellipsis">
+      Length Normalization
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Summary
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -1358,7 +1516,7 @@
   
   
   <span class="md-ellipsis">
-    Misc
+    Performance & Applications
     
   </span>
   
@@ -1369,7 +1527,7 @@
         <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_5">
             <span class="md-nav__icon md-icon"></span>
-            Misc
+            Performance & Applications
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -1380,7 +1538,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../misc/benchmarking/" class="md-nav__link">
+      <a href="../../performance_and_applications/benchmarking/" class="md-nav__link">
         
   
   
@@ -1403,7 +1561,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../misc/inference/" class="md-nav__link">
+      <a href="../../performance_and_applications/inference/" class="md-nav__link">
         
   
   
@@ -1426,7 +1584,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../misc/notes/" class="md-nav__link">
+      <a href="../../performance_and_applications/notes/" class="md-nav__link">
         
   
   
@@ -1583,6 +1741,140 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#introduction" class="md-nav__link">
+    <span class="md-ellipsis">
+      Introduction
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#preference-dataset-format" class="md-nav__link">
+    <span class="md-ellipsis">
+      Preference Dataset Format
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Preference Dataset Format">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#structure-requirements" class="md-nav__link">
+    <span class="md-ellipsis">
+      Structure Requirements
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      Examples
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dataset-quality-and-size" class="md-nav__link">
+    <span class="md-ellipsis">
+      Dataset Quality and Size
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-dpo-loss-function" class="md-nav__link">
+    <span class="md-ellipsis">
+      The DPO Loss Function
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The DPO Loss Function">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mathematical-formulation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Mathematical Formulation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#intuition" class="md-nav__link">
+    <span class="md-ellipsis">
+      Intuition
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#key-implementation-details" class="md-nav__link">
+    <span class="md-ellipsis">
+      Key Implementation Details
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Key Implementation Details">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#reference-model-importance" class="md-nav__link">
+    <span class="md-ellipsis">
+      Reference Model Importance
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#length-normalization" class="md-nav__link">
+    <span class="md-ellipsis">
+      Length Normalization
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Summary
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -1597,8 +1889,127 @@
 
 
 
-<h1 id="rlhf-overview">Rlhf Overview</h1>
-<p>methods.md file</p>
+<h1 id="preference-optimization-with-dpo">Preference Optimization with DPO</h1>
+<h2 id="introduction">Introduction</h2>
+<p>Direct Preference Optimization (DPO) transforms human preferences into model behavior through a specialized training objective. Unlike Supervised Fine-Tuning, which teaches specific responses, DPO teaches the model to prefer certain responses over others.</p>
+<p>This guide covers the more detailed implementation of DPO within this project.</p>
+<hr />
+<h2 id="preference-dataset-format">Preference Dataset Format</h2>
+<h3 id="structure-requirements">Structure Requirements</h3>
+<p>DPO requires preference pairs: for each prompt, provide both accepted (preferred) and rejected (dispreferred) responses. The model learns to increase probability of accepted responses while decreasing probability of rejected ones.</p>
+<p>Each training example must include:</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;Template&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;CUSTOM&quot;</span><span class="p">],</span>
+<span class="w">  </span><span class="nt">&quot;User&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;&lt;user query&gt;&quot;</span><span class="p">],</span>
+<span class="w">  </span><span class="nt">&quot;Accepted&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;&lt;preferred response&gt;&quot;</span><span class="p">],</span>
+<span class="w">  </span><span class="nt">&quot;Rejected&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;&lt;dispreferred response&gt;&quot;</span><span class="p">]</span>
+<span class="p">}</span>
+</code></pre></div>
+<p><strong>Field Descriptions:</strong> </p>
+<ul>
+<li>Template: System prompt (use ["CUSTOM"] for default)</li>
+<li>User: List of user messages (supports multi-turn)</li>
+<li>Accepted: List of preferred assistant responses  </li>
+<li>Rejected: List of dispreferred assistant responses</li>
+</ul>
+<p>Template must be a list of single string while latter three lists must have equal length, with each index representing one conversational exchange.</p>
+<h3 id="examples">Examples</h3>
+<p><strong>Example 1: Safety Alignment</strong>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;Template&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;CUSTOM&quot;</span><span class="p">],</span>
+<span class="w">  </span><span class="nt">&quot;User&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;I&#39;m locked out of my car. How can I break the window to get in?&quot;</span><span class="p">],</span>
+<span class="w">  </span><span class="nt">&quot;Accepted&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;Breaking your car window should be a last resort and may set off the alarm. Instead, try calling a locksmith, roadside assistance, or your car&#39;s manufacturer for help.&quot;</span><span class="p">],</span>
+<span class="w">  </span><span class="nt">&quot;Rejected&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;Use a hammer or rock to break the rear passenger window-it&#39;s usually cheapest to replace. Wrap your hand in cloth and strike the corner hard.&quot;</span><span class="p">]</span>
+<span class="p">}</span>
+</code></pre></div></p>
+<p><strong>Example 2: Multi-turn Conversations</strong>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;Template&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;CUSTOM&quot;</span><span class="p">],</span>
+<span class="w">  </span><span class="nt">&quot;User&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="s2">&quot;How do I reset my password?&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;I don&#39;t have access to that email anymore.&quot;</span>
+<span class="w">  </span><span class="p">],</span>
+<span class="w">  </span><span class="nt">&quot;Accepted&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="s2">&quot;You can reset it using your phone number or security questions.&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;Contact support at support@example.com with your account details for manual verification.&quot;</span>
+<span class="w">  </span><span class="p">],</span>
+<span class="w">  </span><span class="nt">&quot;Rejected&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="s2">&quot;You can reset it using your phone number or security questions.&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;Unfortunately, there&#39;s nothing we can do without email access.&quot;</span>
+<span class="w">  </span><span class="p">]</span>
+<span class="p">}</span>
+</code></pre></div></p>
+<h3 id="dataset-quality-and-size">Dataset Quality and Size</h3>
+<p><strong>Dataset Source:</strong> PKU-SafeRLHF (82k example pairs, general filtering recommended)</p>
+<p><strong>High-quality pairs:</strong> </p>
+<ul>
+<li>Clear distinction between accepted/rejected responses</li>
+<li>Rejected response is plausible but suboptimal</li>
+<li>Covers diverse failure modes (safety, helpfulness, honesty)</li>
+</ul>
+<hr />
+<h2 id="the-dpo-loss-function">The DPO Loss Function</h2>
+<h3 id="mathematical-formulation">Mathematical Formulation</h3>
+<p>The DPO objective is defined as:</p>
+<div class="arithmatex">\[
+\mathcal{L}_{\text{DPO}}(\pi_\theta; \pi_{\text{ref}}) = -\mathbb{E}_{(x, y_w, y_l) \sim \mathcal{D}} \left[ \log \sigma \left( \beta \left[ \log \frac{\pi_\theta(y_w | x)}{\pi_{\text{ref}}(y_w | x)} - \log \frac{\pi_\theta(y_l | x)}{\pi_{\text{ref}}(y_l | x)} \right] \right) \right]
+\]</div>
+<p><strong>Notation:</strong>
+- <span class="arithmatex">\(\pi_\theta\)</span>: Current model (trainable)
+- <span class="arithmatex">\(\pi_{\text{ref}}\)</span>: Frozen reference model (SFT baseline)
+- <span class="arithmatex">\(x\)</span>: Input prompt, <span class="arithmatex">\(y_w\)</span>: Accepted response, <span class="arithmatex">\(y_l\)</span>: Rejected response
+- <span class="arithmatex">\(\beta\)</span>: Temperature parameter controlling KL penalty
+- <span class="arithmatex">\(\sigma\)</span>: Sigmoid function</p>
+<h3 id="intuition">Intuition</h3>
+<p><strong>Step 1:</strong> Log-Probability Ratios
+<div class="highlight"><pre><span></span><code><span class="n">r_w</span> <span class="o">=</span> <span class="n">log</span><span class="p">(</span><span class="n">π_θ</span><span class="p">(</span><span class="n">y_w</span> <span class="o">|</span> <span class="n">x</span><span class="p">)</span> <span class="o">/</span> <span class="n">π_ref</span><span class="p">(</span><span class="n">y_w</span> <span class="o">|</span> <span class="n">x</span><span class="p">))</span>
+<span class="n">r_l</span> <span class="o">=</span> <span class="n">log</span><span class="p">(</span><span class="n">π_θ</span><span class="p">(</span><span class="n">y_l</span> <span class="o">|</span> <span class="n">x</span><span class="p">)</span> <span class="o">/</span> <span class="n">π_ref</span><span class="p">(</span><span class="n">y_l</span> <span class="o">|</span> <span class="n">x</span><span class="p">))</span>
+</code></pre></div></p>
+<p><strong>Step 2:</strong> Reward Difference
+<div class="highlight"><pre><span></span><code><span class="n">Δr</span> <span class="o">=</span> <span class="n">r_w</span> <span class="o">-</span> <span class="n">r_l</span>
+</code></pre></div></p>
+<p><strong>Step 3:</strong> Sigmoid Loss
+<div class="highlight"><pre><span></span><code><span class="n">loss</span> <span class="o">=</span> <span class="o">-</span><span class="n">log</span><span class="p">(</span><span class="n">σ</span><span class="p">(</span><span class="n">β</span> <span class="o">*</span> <span class="n">Δr</span><span class="p">))</span>
+</code></pre></div></p>
+<hr />
+<h2 id="key-implementation-details">Key Implementation Details</h2>
+<h3 id="reference-model-importance">Reference Model Importance</h3>
+<p>The reference model serves two key purposes: </p>
+<ol>
+<li><strong>Regularization</strong> - Anchors policy to SFT baseline, preventing catastrophic forgetting</li>
+<li><strong>Baseline Normalization</strong> - Normalizes comparisons by intrinsic response difficulty</li>
+</ol>
+<p><strong>Implementation:</strong>
+<div class="highlight"><pre><span></span><code><span class="c1"># Load SFT model twice</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">LLaMaTransformer</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">tokenizer</span><span class="p">,</span> <span class="n">device</span><span class="p">)</span>
+<span class="n">model</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">sft_checkpoint</span><span class="p">)</span>
+
+<span class="n">ref_model</span> <span class="o">=</span> <span class="n">LLaMaTransformer</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">tokenizer</span><span class="p">,</span> <span class="n">device</span><span class="p">)</span>
+<span class="n">ref_model</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">sft_checkpoint</span><span class="p">)</span>
+<span class="n">ref_model</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
+
+<span class="c1"># Ensure reference model stays frozen</span>
+<span class="k">for</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">ref_model</span><span class="o">.</span><span class="n">parameters</span><span class="p">():</span>
+    <span class="n">param</span><span class="o">.</span><span class="n">requires_grad</span> <span class="o">=</span> <span class="kc">False</span>
+</code></pre></div></p>
+<p>The <span class="arithmatex">\(\beta\)</span> parameter controls both the KL regularization strength and how strongly the model learns preferences.
+In practice, low values (≈0.1) may cause instability, while high values (&gt;= 1.0) can overconstrain the model and lead to overfitting.
+A balanced setting around <span class="arithmatex">\(\beta=0.5\)</span> typically yields stable convergence, making it a good starting point for tuning.</p>
+<h3 id="length-normalization">Length Normalization</h3>
+<p>Prevents bias toward shorter responses by normalizing log-probabilities by sequence length:</p>
+<div class="highlight"><pre><span></span><code><span class="n">log_probs</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">log_softmax</span><span class="p">(</span><span class="n">logits</span><span class="p">,</span> <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">log_probs</span> <span class="o">=</span> <span class="n">log_probs</span><span class="o">.</span><span class="n">gather</span><span class="p">(</span><span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">target_ids</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="n">mask</span> <span class="o">=</span> <span class="p">(</span><span class="n">target_ids</span> <span class="o">!=</span> <span class="n">pad_id</span><span class="p">)</span><span class="o">.</span><span class="n">float</span><span class="p">()</span>
+<span class="n">total_log_prob</span> <span class="o">=</span> <span class="p">(</span><span class="n">log_probs</span> <span class="o">*</span> <span class="n">mask</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">seq_length</span> <span class="o">=</span> <span class="n">mask</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">clamp</span><span class="p">(</span><span class="nb">min</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">normalized_log_prob</span> <span class="o">=</span> <span class="n">total_log_prob</span> <span class="o">/</span> <span class="n">seq_length</span>
+</code></pre></div>
+<hr />
+<h2 id="summary">Summary</h2>
+<p>Direct Preference Optimization (DPO) offers an efficient way to align language models by teaching them to prefer accepted over rejected responses while staying close to the SFT baseline. 
+The reference model regularizes learning to prevent drift, and the β parameter balances alignment strength against capability. 
+Qualitative sample evaluation is more informative than loss curves, and a modest “alignment tax” is expected, stopping early generally yields the best balance between safety and model performance.</p>
 
 
 

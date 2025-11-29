@@ -1424,12 +1424,12 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../rlhf/methods/" class="md-nav__link">
+      <a href="../../../rlhf/preference_optimization/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
-    Methods
+    Preference Optimization
     
   </span>
   
@@ -1470,7 +1470,7 @@
   
   
   <span class="md-ellipsis">
-    Misc
+    Performance & Applications
     
   </span>
   
@@ -1481,7 +1481,7 @@
         <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_5">
             <span class="md-nav__icon md-icon"></span>
-            Misc
+            Performance & Applications
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -1492,7 +1492,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../misc/benchmarking/" class="md-nav__link">
+      <a href="../../../performance_and_applications/benchmarking/" class="md-nav__link">
         
   
   
@@ -1515,7 +1515,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../misc/inference/" class="md-nav__link">
+      <a href="../../../performance_and_applications/inference/" class="md-nav__link">
         
   
   
@@ -1538,7 +1538,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../misc/notes/" class="md-nav__link">
+      <a href="../../../performance_and_applications/notes/" class="md-nav__link">
         
   
   
@@ -1822,7 +1822,7 @@ P(y_1, y_2, \dots, y_N) = \prod_{t=1}^N p(y_t \mid x_{&lt;t})
 <div class="arithmatex">\[
 P = p(y_1)p(y_2 \mid y_1)p(y_3 \mid y_1,y_2)...
 \]</div>
-<p>This product can become <em>extremely small</em>. Even if each predicted correct token has a very high probability like ~0.8, for a mere 250 tokens, \(0.8^{100} \approx 6 * 10^{-25}\). That’s practically a value of zero.  </p>
+<p>This product can become <em>extremely small</em>. Even if each predicted correct token has a very high probability like ~0.8, for a mere 250 tokens, \(0.8^{250} \approx 6 * 10^{-25}\). That’s practically a value of zero.  </p>
 <p>Taking the log turns the product into a sum:</p>
 <div class="arithmatex">\[
 \log P(y_1, \dots, y_N) = \sum_{t=1}^N \log p(y_t \mid x_{&lt;t})

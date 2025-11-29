@@ -72,7 +72,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#supervised-fine-tuning-dataset-creation" class="md-skip">
+        <a href="#supervised-fine-tuning-dataset" class="md-skip">
           Skip to content
         </a>
       
@@ -1192,28 +1192,46 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#why-synthetic-instead-of-using-hugging-face-datasets" class="md-nav__link">
+  <a href="#introduction-the-role-of-sft-data" class="md-nav__link">
     <span class="md-ellipsis">
-      Why Synthetic Instead of Using Hugging Face Datasets?
+      Introduction: The Role of SFT Data
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#dataset-composition" class="md-nav__link">
+  <a href="#dataset-sources" class="md-nav__link">
     <span class="md-ellipsis">
-      Dataset Composition
+      Dataset Sources
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Dataset Composition">
+    <nav class="md-nav" aria-label="Dataset Sources">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#subcategories" class="md-nav__link">
+  <a href="#1-lmsys-chat-1m" class="md-nav__link">
     <span class="md-ellipsis">
-      Subcategories
+      1. lmsys-chat-1m
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-sharegpt_vicuna_unfiltered" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. ShareGPT_Vicuna_unfiltered
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-smol-smoltalk" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. smol-smoltalk
     </span>
   </a>
   
@@ -1225,46 +1243,28 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#generation-pipeline" class="md-nav__link">
+  <a href="#why-real-conversational-data" class="md-nav__link">
     <span class="md-ellipsis">
-      Generation Pipeline
+      Why Real Conversational Data?
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Generation Pipeline">
+    <nav class="md-nav" aria-label="Why Real Conversational Data?">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#step-1-few-shot-prompting" class="md-nav__link">
+  <a href="#the-authenticity-advantage" class="md-nav__link">
     <span class="md-ellipsis">
-      Step 1: Few-Shot Prompting
+      The Authenticity Advantage
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#step-2-strict-formatting" class="md-nav__link">
+  <a href="#trade-offs-acknowledged" class="md-nav__link">
     <span class="md-ellipsis">
-      Step 2: Strict Formatting
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#step-3-ascii-enforcement" class="md-nav__link">
-    <span class="md-ellipsis">
-      Step 3: ASCII Enforcement
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#step-4-quality-controls" class="md-nav__link">
-    <span class="md-ellipsis">
-      Step 4: Quality Controls
+      Trade-offs Acknowledged
     </span>
   </a>
   
@@ -1276,20 +1276,62 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#example-of-prompt-construction" class="md-nav__link">
+  <a href="#data-processing-pipeline" class="md-nav__link">
     <span class="md-ellipsis">
-      Example of Prompt Construction
+      Data Processing Pipeline
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Data Processing Pipeline">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-1-format-standardization" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 1: Format Standardization
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#generation-samples" class="md-nav__link">
+        
+          <li class="md-nav__item">
+  <a href="#step-2-ascii-filtering" class="md-nav__link">
     <span class="md-ellipsis">
-      Generation Samples
+      Step 2: ASCII Filtering
     </span>
   </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-3-length-filtering" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 3: Length Filtering
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-4-deduplication" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 4: Deduplication
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-5-template-assignment" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 5: Template Assignment
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -1479,12 +1521,12 @@
   
   
     <li class="md-nav__item">
-      <a href="../../rlhf/methods/" class="md-nav__link">
+      <a href="../../rlhf/preference_optimization/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
-    Methods
+    Preference Optimization
     
   </span>
   
@@ -1525,7 +1567,7 @@
   
   
   <span class="md-ellipsis">
-    Misc
+    Performance & Applications
     
   </span>
   
@@ -1536,7 +1578,7 @@
         <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_5">
             <span class="md-nav__icon md-icon"></span>
-            Misc
+            Performance & Applications
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -1547,7 +1589,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../misc/benchmarking/" class="md-nav__link">
+      <a href="../../performance_and_applications/benchmarking/" class="md-nav__link">
         
   
   
@@ -1570,7 +1612,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../misc/inference/" class="md-nav__link">
+      <a href="../../performance_and_applications/inference/" class="md-nav__link">
         
   
   
@@ -1593,7 +1635,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../misc/notes/" class="md-nav__link">
+      <a href="../../performance_and_applications/notes/" class="md-nav__link">
         
   
   
@@ -1757,28 +1799,46 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#why-synthetic-instead-of-using-hugging-face-datasets" class="md-nav__link">
+  <a href="#introduction-the-role-of-sft-data" class="md-nav__link">
     <span class="md-ellipsis">
-      Why Synthetic Instead of Using Hugging Face Datasets?
+      Introduction: The Role of SFT Data
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#dataset-composition" class="md-nav__link">
+  <a href="#dataset-sources" class="md-nav__link">
     <span class="md-ellipsis">
-      Dataset Composition
+      Dataset Sources
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Dataset Composition">
+    <nav class="md-nav" aria-label="Dataset Sources">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#subcategories" class="md-nav__link">
+  <a href="#1-lmsys-chat-1m" class="md-nav__link">
     <span class="md-ellipsis">
-      Subcategories
+      1. lmsys-chat-1m
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-sharegpt_vicuna_unfiltered" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. ShareGPT_Vicuna_unfiltered
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-smol-smoltalk" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. smol-smoltalk
     </span>
   </a>
   
@@ -1790,46 +1850,28 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#generation-pipeline" class="md-nav__link">
+  <a href="#why-real-conversational-data" class="md-nav__link">
     <span class="md-ellipsis">
-      Generation Pipeline
+      Why Real Conversational Data?
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Generation Pipeline">
+    <nav class="md-nav" aria-label="Why Real Conversational Data?">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#step-1-few-shot-prompting" class="md-nav__link">
+  <a href="#the-authenticity-advantage" class="md-nav__link">
     <span class="md-ellipsis">
-      Step 1: Few-Shot Prompting
+      The Authenticity Advantage
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#step-2-strict-formatting" class="md-nav__link">
+  <a href="#trade-offs-acknowledged" class="md-nav__link">
     <span class="md-ellipsis">
-      Step 2: Strict Formatting
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#step-3-ascii-enforcement" class="md-nav__link">
-    <span class="md-ellipsis">
-      Step 3: ASCII Enforcement
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#step-4-quality-controls" class="md-nav__link">
-    <span class="md-ellipsis">
-      Step 4: Quality Controls
+      Trade-offs Acknowledged
     </span>
   </a>
   
@@ -1841,20 +1883,62 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#example-of-prompt-construction" class="md-nav__link">
+  <a href="#data-processing-pipeline" class="md-nav__link">
     <span class="md-ellipsis">
-      Example of Prompt Construction
+      Data Processing Pipeline
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Data Processing Pipeline">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-1-format-standardization" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 1: Format Standardization
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#generation-samples" class="md-nav__link">
+        
+          <li class="md-nav__item">
+  <a href="#step-2-ascii-filtering" class="md-nav__link">
     <span class="md-ellipsis">
-      Generation Samples
+      Step 2: ASCII Filtering
     </span>
   </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-3-length-filtering" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 3: Length Filtering
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-4-deduplication" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 4: Deduplication
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-5-template-assignment" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 5: Template Assignment
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -1907,204 +1991,166 @@
 
 
 
-<h1 id="supervised-fine-tuning-dataset-creation">Supervised Fine-Tuning Dataset Creation</h1>
-<p>This document explains in detail how the <strong>Supervised Fine-Tuning (SFT) dataset</strong> was created for the SimpleLLaMA project. The dataset contains <strong>216,000 synthetic samples</strong> generated using DeepSeek and Gemini 2.5 (Flash and Pro). It is designed specifically for a 1.3B parameter model — which is much smaller and simpler than the 7B+ models often targeted by publicly available datasets — and therefore required careful curation and balance.</p>
+<h1 id="supervised-fine-tuning-dataset">Supervised Fine-Tuning Dataset</h1>
+<h2 id="introduction-the-role-of-sft-data">Introduction: The Role of SFT Data</h2>
+<p>Supervised Fine-Tuning (SFT) data is fundamentally different from pretraining data. While pretraining uses raw text to teach language patterns, SFT
+uses <strong>structured conversations</strong> to teach behavioral alignment—how to follow instructions, adopt roles, and provide helpful responses.</p>
+<p>The quality and diversity of SFT data directly determine how well the model transitions from "language predictor" to "helpful assistant."</p>
 <hr />
-<h2 id="why-synthetic-instead-of-using-hugging-face-datasets">Why Synthetic Instead of Using Hugging Face Datasets?</h2>
-<p>While there are many instruction-tuning datasets available on Hugging Face, such as <strong>Alpaca, ShareGPT, OASST</strong>, etc., they are generally constructed for <strong>larger-scale models (7B–70B parameters)</strong>. Using them directly could misalign a smaller model in several ways:</p>
+<h2 id="dataset-sources">Dataset Sources</h2>
+<p>This project uses three high-quality open-source conversational datasets from HuggingFace, chosen for their diversity, scale, and real-world
+authenticity:</p>
+<h3 id="1-lmsys-chat-1m">1. lmsys-chat-1m</h3>
 <ul>
-<li><strong>Level of difficulty</strong> – Datasets like OASST or ShareGPT contain complex, nuanced conversations. For a 1.3B model, this would often lead to failure cases. A controlled dataset is used to confirm examples are at the right difficulty level.  </li>
-<li><strong>Distribution mismatch</strong> – Public datasets are often skewed toward open-domain chit-chat, or contain an imbalanced ratio of tasks. Here, the dataset was constructed with explicit category proportions (see below).  </li>
-<li><strong>Control over content</strong> – By generating synthetic data, we can tightly control what categories exist, their frequency, and their complexity. This reduces noise and makes the model more reliable for its intended use.  </li>
+<li><strong>Description</strong>: Large-scale corpus of real user interactions with 25 different LLMs (GPT-4, Claude, Gemini, etc.)</li>
+<li><strong>Size</strong>: ~1 million conversations</li>
+<li><strong>Link</strong>: <a href="https://huggingface.co/datasets/lmsys/lmsys-chat-1m">https://huggingface.co/datasets/lmsys/lmsys-chat-1m</a></li>
 </ul>
-<p>In short: <strong>synthetic generation provides balance, scalability, and suitability for a smaller model</strong>, while avoiding the pitfalls of “overshooting” with datasets made for much larger systems.</p>
+<h3 id="2-sharegpt_vicuna_unfiltered">2. ShareGPT_Vicuna_unfiltered</h3>
+<ul>
+<li><strong>Description</strong>: Community-curated conversations from the ShareGPT/Vicuna lineage</li>
+<li><strong>Size</strong>: ~53,000 examples</li>
+<li><strong>Link</strong>:
+<a href="https://huggingface.co/datasets/anon8231489123/ShareGPT_Vicuna_unfiltered">https://huggingface.co/datasets/anon8231489123/ShareGPT_Vicuna_unfiltered</a></li>
+</ul>
+<h3 id="3-smol-smoltalk">3. smol-smoltalk</h3>
+<ul>
+<li><strong>Description</strong>: Compact, high-quality conversational dataset designed for efficient SFT</li>
+<li><strong>Size</strong>: ~460,000 examples</li>
+<li><strong>Link</strong>: <a href="https://huggingface.co/datasets/HuggingFaceTB/smol-smoltalk">https://huggingface.co/datasets/HuggingFaceTB/smol-smoltalk</a></li>
+</ul>
 <hr />
-<h2 id="dataset-composition">Dataset Composition</h2>
-<p>The dataset is broken down into <strong>8 categories</strong>, each representing a different skill domain. These categories were chosen to ensure broad but manageable coverage of practical use cases. Below is the distribution:</p>
-<table>
-<thead>
-<tr>
-<th>Category</th>
-<th>Share</th>
-<th>Purpose</th>
-<th>Example</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><strong>Instruction Following</strong></td>
-<td>30%</td>
-<td>Core alignment skill: teaching the model to obey explicit instructions.</td>
-<td>“Summarize this article in 2 sentences.”</td>
-</tr>
-<tr>
-<td><strong>User Conversation</strong></td>
-<td>20%</td>
-<td>Multi-turn dialogues, simulating back-and-forth exchanges. Adds robustness to conversational flow.</td>
-<td>“Hello! How are you?” → “I’m good, how are you?”</td>
-</tr>
-<tr>
-<td><strong>Reasoning &amp; Logic</strong></td>
-<td>15%</td>
-<td>Arithmetic, logical reasoning, multi-step thought. Strengthens structure in answers.</td>
-<td>“If Sarah has 5 apples and eats 2, how many are left?”</td>
-</tr>
-<tr>
-<td><strong>QA (Factual)</strong></td>
-<td>10%</td>
-<td>Short, grounded factual responses. Prevents drift and strengthens retrieval-like capabilities.</td>
-<td>“What is the capital of Canada?”</td>
-</tr>
-<tr>
-<td><strong>Error Correction</strong></td>
-<td>5%</td>
-<td>Simple grammar/spelling fixes. Teaches token-level precision.</td>
-<td>Input: “She go to market.” → Output: “She goes to the market.”</td>
-</tr>
-<tr>
-<td><strong>Structured Transformation</strong></td>
-<td>5%</td>
-<td>Converting between formats, summarization, bullet-pointing, JSON transformations.</td>
-<td>“Turn this paragraph into a bulleted list.”</td>
-</tr>
-<tr>
-<td><strong>Long Response Generation</strong></td>
-<td>5%</td>
-<td>Encourages extended outputs, storytelling, and maintaining coherence across long sequences.</td>
-<td>“Write a short story about a lost robot.”</td>
-</tr>
-<tr>
-<td><strong>Identity / Miscellaneous</strong></td>
-<td>10%</td>
-<td>Handles “Who are you?” queries, opinions, small-talk, and personality alignment.</td>
-<td>“Who are you?” → “I’m SimpleLLaMA, your assistant.”</td>
-</tr>
-</tbody>
-</table>
+<h2 id="why-real-conversational-data">Why Real Conversational Data?</h2>
+<h3 id="the-authenticity-advantage">The Authenticity Advantage</h3>
+<p>While synthetic data generation (via LLM APIs like GPT-4, Claude, Gemini) is a common approach, <strong>real user conversations provide critical
+advantages</strong>:</p>
+<p><strong>1. Natural Language Variation</strong>
+- Real users have inconsistent grammar, spelling errors, and colloquialisms
+- Queries are often incomplete, ambiguous, or poorly phrased
+- This diversity prevents the model from overfitting to "clean" synthetic patterns</p>
+<p><strong>2. Authentic Distribution</strong>
+- Reflects how people <em>actually</em> use chat assistants (not how we think they should)
+- Captures edge cases and unexpected query types
+- Includes contextual nuances that synthetic generation often misses</p>
+<p><strong>3. No Generation Artifacts</strong>
+- LLM-generated synthetic data can be repetitive (similar phrasing patterns across examples)
+- May inherit biases or stylistic quirks from the generator model
+- Real data avoids these "fingerprints"</p>
+<p><strong>4. Proven Quality</strong>
+- These datasets have been battle-tested by the community
+- Used successfully in training models like Vicuna, StableLM, and others
+- Less risk than untested synthetic pipelines</p>
+<h3 id="trade-offs-acknowledged">Trade-offs Acknowledged</h3>
+<p>Real data isn't perfect:
+- May contain noise or low-quality examples (requires filtering)
+- Can't perfectly control category distribution like synthetic generation
+- Potential for data contamination (examples appearing in model pretraining)</p>
+<p>However, for a <strong>1.3B parameter model</strong> trained on <strong>50B pretrain tokens</strong>, the authenticity and diversity outweigh these concerns.</p>
 <hr />
-<h3 id="subcategories">Subcategories</h3>
-<p>Within each major category, subcategories were mixed in to increase diversity. For example:</p>
-<ul>
-<li>
-<p><strong>Instruction Following</strong></p>
-<ul>
-<li>Summarization (“Summarize this paragraph in 3 bullet points”).  </li>
-<li>Classification (“Classify this review as positive or negative”).  </li>
-<li>Style constraints (“Explain this like I’m 5”).  </li>
-</ul>
-</li>
-<li>
-<p><strong>User Conversation</strong></p>
-<ul>
-<li>Multi-turn casual conversation.  </li>
-<li>Task-based (helping with scheduling, answering follow-ups).  </li>
-</ul>
-</li>
-<li>
-<p><strong>Reasoning &amp; Logic</strong></p>
-<ul>
-<li>Arithmetic problems.  </li>
-<li>Deductive logic.  </li>
-<li>Simple word problems.  </li>
-</ul>
-</li>
-<li>
-<p><strong>Structured Transformation</strong></p>
-<ul>
-<li>Bullet point compression.  </li>
-<li>Extracting keywords.  </li>
-</ul>
-</li>
-</ul>
-<p>This is to make sure that within each category, the model isn’t just repeating a narrow skill, but instead sees varied applications of the same general ability.</p>
-<hr />
-<h2 id="generation-pipeline">Generation Pipeline</h2>
-<h3 id="step-1-few-shot-prompting">Step 1: Few-Shot Prompting</h3>
-<p>Examples were generated using <strong>few-shot prompts</strong> with Gemini and DeepSeek. A handful of verified examples were embedded into the system prompt, ensuring that outputs were consistent with the required format:</p>
+<h2 id="data-processing-pipeline">Data Processing Pipeline</h2>
+<p>The raw HuggingFace datasets undergo several transformation steps before use:</p>
+<h3 id="step-1-format-standardization">Step 1: Format Standardization</h3>
+<p>Each dataset has a different schema. We convert all to a unified JSON structure:</p>
 <div class="highlight"><pre><span></span><code><span class="p">{</span>
-<span class="w">  </span><span class="nt">&quot;Template&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;Speak like a teacher&quot;</span><span class="p">],</span>
-<span class="w">  </span><span class="nt">&quot;User&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;Why does the sun set?&quot;</span><span class="p">],</span>
-<span class="w">  </span><span class="nt">&quot;Assistant&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;The sun appears to set because the Earth rotates, making it seem like the sun is moving across the sky.&quot;</span><span class="p">]</span>
+<span class="w">  </span><span class="nt">&quot;Template&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;CUSTOM&quot;</span><span class="p">],</span>
+<span class="w">  </span><span class="nt">&quot;User&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;What is 2+2?&quot;</span><span class="p">],</span>
+<span class="w">  </span><span class="nt">&quot;Assistant&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;4&quot;</span><span class="p">]</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>Multi-turn conversations are preserved:</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;Template&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;CUSTOM&quot;</span><span class="p">],</span>
+<span class="w">  </span><span class="nt">&quot;User&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;Hello!&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;How are you doing today?&quot;</span><span class="p">],</span>
+<span class="w">  </span><span class="nt">&quot;Assistant&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;Hi there! How can I help?&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;I&#39;m doing well, thanks for asking!&quot;</span><span class="p">]</span>
+<span class="p">}</span>
+</code></pre></div>
+<h3 id="step-2-ascii-filtering">Step 2: ASCII Filtering</h3>
+<p>Since the BPE tokenizer was trained only on ASCII text, all non-ASCII characters are filtered or normalized:</p>
+<ul>
+<li>Examples with non-ASCII content are discarded</li>
+<li>This prevents tokenization mismatches during training</li>
+<li>Ensures consistency with pretraining data distribution</li>
+</ul>
+<p>Examples of normalization:</p>
+<ul>
+<li>"café" → "cafe"</li>
+<li>"π" → "pi"</li>
+<li>Em dashes ("—") → hyphens ("-")</li>
+</ul>
+<h3 id="step-3-length-filtering">Step 3: Length Filtering</h3>
+<p>Examples exceeding max_seq_len (2048 or 4096 tokens) are discarded:</p>
+<div class="highlight"><pre><span></span><code><span class="n">tokenized_length</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">full_prompt</span><span class="p">)</span><span class="o">.</span><span class="n">ids</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">tokenized_length</span> <span class="o">&gt;</span> <span class="n">max_seq_len</span><span class="p">:</span>
+    <span class="n">discard</span><span class="p">()</span>
+</code></pre></div>
+<p>This prevents out-of-memory errors during training and truncation artifacts that could confuse the model</p>
+<h3 id="step-4-deduplication">Step 4: Deduplication</h3>
+<p>Near-duplicate conversations are removed to: </p>
+<ul>
+<li>Reduce memorization risk</li>
+<li>Increase effective dataset diversity</li>
+<li>Prevent overfitting to repeated patterns</li>
+</ul>
+<h3 id="step-5-template-assignment">Step 5: Template Assignment</h3>
+<p>Most examples use "Template": ["CUSTOM"], which defaults to the project's standard system prompt:</p>
+<p><code>You are Simple LLaMA, a helpful and factual assistant. Answer clearly, stay on topic, and use context from the conversation. If something is unclear or risky, point it out briefly. Avoid making things up or giving unsupported claims. Be concise, useful, and aligned with the user's goal.</code></p>
+<p>A small subset (~15-20%) includes custom templates for role-playing or style adaptation:</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;Template&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;Explain concepts as if you are a patient teacher.&quot;</span><span class="p">],</span>
+<span class="w">  </span><span class="nt">&quot;User&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;What is gravity?&quot;</span><span class="p">],</span>
+<span class="w">  </span><span class="nt">&quot;Assistant&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;Gravity is the force that pulls objects toward each other...&quot;</span><span class="p">]</span>
 <span class="p">}</span>
 </code></pre></div>
 <hr />
-<h3 id="step-2-strict-formatting">Step 2: Strict Formatting</h3>
-<p>The output had to always be a <strong>list of JSON dicts</strong> with exactly three keys: <code>Template</code>, <code>User</code>, <code>Assistant</code>. Each value was wrapped in a list of strings to ensure uniformity with the later dataset loader.</p>
-<hr />
-<h3 id="step-3-ascii-enforcement">Step 3: ASCII Enforcement</h3>
-<p>Since the tokenizer was trained only on <strong>ASCII English text</strong>, all outputs were passed through a normalization step that replaced or removed non-ASCII characters. For example:</p>
-<ul>
-<li>“café” → “cafe”  </li>
-<li>“π” → “pi”  </li>
-<li>“–” (en dash) → “-”  </li>
-</ul>
-<p>This avoided subtle tokenization mismatches that could destabilize training.</p>
-<hr />
-<h3 id="step-4-quality-controls">Step 4: Quality Controls</h3>
-<ul>
-<li><strong>Multi-model variation</strong> – Three different LLMs (DeepSeek, Gemini Flash, Gemini Pro) were used for generation. This provided diverse styles and avoided overfitting to one model’s quirks.  </li>
-<li><strong>Non-ASCII filter</strong> – All responses passed through a script that rejected or normalized invalid characters.  </li>
-<li><strong>Manual inspection</strong> – Roughly <strong>0.5% of the dataset (≈1,000 samples)</strong> was manually checked. Results showed very low hallucination or formatting issues.  </li>
-<li><strong>Broad scope</strong> – Prompts were intentionally kept <strong>simple and general</strong> (instruction following, reasoning, factual questions). This avoided cases where even state-of-the-art models might hallucinate.</li>
-</ul>
-<hr />
-<h2 id="example-of-prompt-construction">Example of Prompt Construction</h2>
-<p>Below is a simplified version of the generation prompt used for instruction-following data:</p>
-<div class="highlight"><pre><span></span><code>You are generating high-quality instruction-following examples for an SFT dataset.
-Make sure responses are ASCII only.
-Each example must be a JSON dict with keys: &quot;Template&quot;, &quot;User&quot;, &quot;Assistant&quot;.
-Responses must be coherent, varied, and reflect the style in &quot;Template&quot;.
-Generate 5 JSON dicts, each containing a unique instruction-response pair.
+<p>Example Conversations from Processed Dataset</p>
+<p>Below are representative samples showing the final JSON format after processing:</p>
+<p>Example 1: Multi-turn with topic switch</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;Template&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;CUSTOM&quot;</span><span class="p">],</span>
+<span class="w">    </span><span class="nt">&quot;User&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="s2">&quot;Can you explain the greenhouse effect in simple terms?&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;Switching topics, how do I organize a messy garage?&quot;</span>
+<span class="w">    </span><span class="p">],</span>
+<span class="w">    </span><span class="nt">&quot;Assistant&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="s2">&quot;The greenhouse effect is when gases in Earth&#39;s atmosphere trap heat from the sun, like glass in a greenhouse. This keeps Earth warm, but</span>
+<span class="s2">human activities have increased these gases, causing more heat retention and climate change.&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;Start by sorting items into categories: keep, donate, recycle, trash. Use the &#39;5-box method&#39; and work in small sections. Install wall hooks</span>
+<span class="s2">for tools, use clear bins for visibility, and label everything.&quot;</span>
+<span class="w">    </span><span class="p">]</span>
+<span class="p">}</span>
 </code></pre></div>
-<p>In the actual generation script, varying values such as <code>top_p</code>, <code>temperature</code>, fewshot examples, were injected into the prompt to prevent the LLM from generating the same, or extremely similar, results. </p>
-<hr />
-<h2 id="generation-samples">Generation Samples</h2>
-<p>Here are some examples within the SFT dataset: </p>
-<div class="highlight"><pre><span></span><code><span class="p">[</span>
-<span class="w">    </span><span class="p">{</span>
-<span class="w">        </span><span class="nt">&quot;Template&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-<span class="w">            </span><span class="s2">&quot;CUSTOM&quot;</span>
-<span class="w">        </span><span class="p">],</span>
-<span class="w">        </span><span class="nt">&quot;User&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-<span class="w">            </span><span class="s2">&quot;Can you explain the greenhouse effect in simple terms and how it relates to climate change? I&#39;ve heard the term a lot but don&#39;t fully grasp the mechanism.&quot;</span><span class="p">,</span>
-<span class="w">            </span><span class="s2">&quot;Switching topics completely, what&#39;s your favorite method for organizing a messy garage that hasn&#39;t been cleaned in years? I need practical steps to tackle this overwhelming project.&quot;</span>
-<span class="w">        </span><span class="p">],</span>
-<span class="w">        </span><span class="nt">&quot;Assistant&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-<span class="w">            </span><span class="s2">&quot;The greenhouse effect is when certain gases in Earth&#39;s atmosphere (like carbon dioxide and methane) trap heat from the sun, similar to how glass traps heat in a greenhouse. Normally this keeps Earth warm enough for life, but human activities have increased these gases, causing more heat retention and global climate changes. Burning fossil fuels and deforestation are major contributors to this enhanced greenhouse effect.&quot;</span><span class="p">,</span>
-<span class="w">            </span><span class="s2">&quot;Start by sorting items into categories: keep, donate, recycle, trash. Use the &#39;5-box method&#39; - one box for each category plus a &#39;relocate&#39; box for items that belong elsewhere. Work in small sections to avoid overwhelm. Install wall hooks for tools, use clear bins for visibility, and label everything. Schedule regular maintenance sessions to prevent future buildup.&quot;</span>
-<span class="w">        </span><span class="p">]</span>
-<span class="w">    </span><span class="p">},</span>
-<span class="w">    </span><span class="p">{</span>
-<span class="w">        </span><span class="nt">&quot;Template&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-<span class="w">            </span><span class="s2">&quot;CUSTOM&quot;</span>
-<span class="w">        </span><span class="p">],</span>
-<span class="w">        </span><span class="nt">&quot;User&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-<span class="w">            </span><span class="s2">&quot;All birds have feathers. A penguin is a bird. Does a penguin have feathers?&quot;</span>
-<span class="w">        </span><span class="p">],</span>
-<span class="w">        </span><span class="nt">&quot;Assistant&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-<span class="w">            </span><span class="s2">&quot;Yes, a penguin has feathers. The reasoning follows deductively: All birds have feathers, and since a penguin is classified as a bird, it must also possess feathers. This holds true even though penguins are flightless-their feathers serve other purposes like insulation and waterproofing, but they still fit the definition of birds in this regard.&quot;</span>
-<span class="w">        </span><span class="p">]</span>
-<span class="w">    </span><span class="p">},</span>
-<span class="w">    </span><span class="p">{</span>
-<span class="w">        </span><span class="nt">&quot;Template&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-<span class="w">            </span><span class="s2">&quot;Explain concepts as if you are a wise, patient, and old librarian. Use metaphors related to books, stories, and knowledge.&quot;</span>
-<span class="w">        </span><span class="p">],</span>
-<span class="w">        </span><span class="nt">&quot;User&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-<span class="w">            </span><span class="s2">&quot;Can you explain what a &#39;database&#39; is?&quot;</span>
-<span class="w">        </span><span class="p">],</span>
-<span class="w">        </span><span class="nt">&quot;Assistant&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-<span class="w">            </span><span class="s2">&quot;Ah, a wonderful question. Imagine this library is the whole of your information. A &#39;database&#39; is like a magical card catalog. It doesn&#39;t hold the books themselves, but it knows exactly where each one is. It has a card for every story, every fact, every character. When you need to find something, you don&#39;t wander the stacks for ages. You simply consult the catalog, and it points you to the exact shelf, the exact book, the exact page. It&#39;s a system of perfect order for a world of chaotic information.&quot;</span>
-<span class="w">        </span><span class="p">]</span>
-<span class="w">    </span><span class="p">}</span>
-<span class="p">]</span>
+<p>Example 2: Logical reasoning</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;Template&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;CUSTOM&quot;</span><span class="p">],</span>
+<span class="w">    </span><span class="nt">&quot;User&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="s2">&quot;All birds have feathers. A penguin is a bird. Does a penguin have feathers?&quot;</span>
+<span class="w">    </span><span class="p">],</span>
+<span class="w">    </span><span class="nt">&quot;Assistant&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="s2">&quot;Yes, a penguin has feathers. The reasoning follows: All birds have feathers, and since a penguin is a bird, it must also have feathers.</span>
+<span class="s2">Penguin feathers serve purposes like insulation and waterproofing.&quot;</span>
+<span class="w">    </span><span class="p">]</span>
+<span class="p">}</span>
 </code></pre></div>
-<ul>
-<li>The first example shows a <code>CUSTOM</code> system prompt and demonstrates flexibility — answering a science question and then switching to a practical, unrelated task.  </li>
-<li>The second example uses categorical logic (“all birds have feathers”), which strengthens the model’s structured reasoning abilities.  </li>
-<li>The third example illustrates a style template (the whimsical librarian), which enriches the dataset with persona-following behavior.</li>
-</ul>
-<p>Most entries use <code>CUSTOM</code> as the template, which defaults to the general system prompt. Around 20–25% explicitly define styles or roles, broadening stylistic adaptability and improving robustness.
-More will be discussed in the next section, Prompt Formatting. </p>
+<p>Example 3: Custom template (role-playing)</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;Template&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="s2">&quot;Explain concepts as if you are a wise, patient librarian. Use book metaphors.&quot;</span>
+<span class="w">    </span><span class="p">],</span>
+<span class="w">    </span><span class="nt">&quot;User&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="s2">&quot;What is a database?&quot;</span>
+<span class="w">    </span><span class="p">],</span>
+<span class="w">    </span><span class="nt">&quot;Assistant&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="s2">&quot;Ah, a database is like a magical card catalog for this library. It doesn&#39;t hold the books themselves, but knows exactly where each one is.</span>
+<span class="s2">When you need information, you consult the catalog, and it points you to the exact shelf and page. It&#39;s perfect order for a world of chaotic</span>
+<span class="s2">information.&quot;</span>
+<span class="w">    </span><span class="p">]</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>These examples demonstrate:
+- Natural language variation (some verbose, some concise)
+- Multi-turn conversation handling
+- Template-based role adaptation
+- Diverse task types (QA, reasoning, instruction-following)</p>
 <hr />
 <h2 id="jsondatasetloader">JSONDatasetLoader</h2>
 <p>Finally, the <strong><code>JSONDatasetLoader</code></strong> class. This is used for loading, processing, and serving the SFT dataset during fine-tuning. It handles both the training and validation data splits, manages batching, and keeps track of epoch progress.</p>

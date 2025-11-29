@@ -71,6 +71,11 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
+        
+        <a href="#supervised-fine-tuning-sft" class="md-skip">
+          Skip to content
+        </a>
+      
     </div>
     <div data-md-component="announce">
       
@@ -1295,12 +1300,12 @@
   
   
     <li class="md-nav__item">
-      <a href="../../rlhf/methods/" class="md-nav__link">
+      <a href="../../rlhf/preference_optimization/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
-    Methods
+    Preference Optimization
     
   </span>
   
@@ -1341,7 +1346,7 @@
   
   
   <span class="md-ellipsis">
-    Misc
+    Performance & Applications
     
   </span>
   
@@ -1352,7 +1357,7 @@
         <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_5">
             <span class="md-nav__icon md-icon"></span>
-            Misc
+            Performance & Applications
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -1363,7 +1368,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../misc/benchmarking/" class="md-nav__link">
+      <a href="../../performance_and_applications/benchmarking/" class="md-nav__link">
         
   
   
@@ -1386,7 +1391,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../misc/inference/" class="md-nav__link">
+      <a href="../../performance_and_applications/inference/" class="md-nav__link">
         
   
   
@@ -1409,7 +1414,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../misc/notes/" class="md-nav__link">
+      <a href="../../performance_and_applications/notes/" class="md-nav__link">
         
   
   
@@ -1508,6 +1513,21 @@
       <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
       
       
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Supervised Fine Tuning
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
       
       <a href="./" class="md-nav__link md-nav__link--active">
         
@@ -1520,6 +1540,136 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-purpose-of-sft" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Purpose of SFT
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-dataset" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Dataset
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Dataset">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#example-1-single-turn-conversation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example 1 — Single-Turn Conversation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-2-single-turn-with-custom-system-prompt" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example 2 — Single-Turn with Custom System Prompt
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-3-multi-turn-conversation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example 3 — Multi-Turn Conversation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#datasets-used" class="md-nav__link">
+    <span class="md-ellipsis">
+      Datasets Used
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-configuration-and-setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Configuration and Setup
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-training-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Training Workflow
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Training Workflow">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-happens-internally" class="md-nav__link">
+    <span class="md-ellipsis">
+      What Happens Internally
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#logging-and-checkpoints" class="md-nav__link">
+    <span class="md-ellipsis">
+      Logging and Checkpoints
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Summary
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -1573,6 +1723,127 @@
   
   
   
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-purpose-of-sft" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Purpose of SFT
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-dataset" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Dataset
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Dataset">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#example-1-single-turn-conversation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example 1 — Single-Turn Conversation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-2-single-turn-with-custom-system-prompt" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example 2 — Single-Turn with Custom System Prompt
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-3-multi-turn-conversation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example 3 — Multi-Turn Conversation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#datasets-used" class="md-nav__link">
+    <span class="md-ellipsis">
+      Datasets Used
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-configuration-and-setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Configuration and Setup
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-training-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Training Workflow
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Training Workflow">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-happens-internally" class="md-nav__link">
+    <span class="md-ellipsis">
+      What Happens Internally
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#logging-and-checkpoints" class="md-nav__link">
+    <span class="md-ellipsis">
+      Logging and Checkpoints
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Summary
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
   
 </nav>
                   </div>
@@ -1588,9 +1859,162 @@
 
 
 
-  <h1>Supervised Fine Tuning</h1>
+<h1 id="supervised-fine-tuning-sft">Supervised Fine-Tuning (SFT)</h1>
+<p>This section provides details on how to perform <strong>Supervised Fine-Tuning (SFT)</strong> on a pretrained SimpleLLaMA model.<br />
+The goal is to adapt a pretrained model, which has learned general language patterns, into one that can follow instructions and respond conversationally.<br />
+This focuses on <strong>how to apply</strong> SFT within this project, not on the theoretical explanation (for that, refer to the earlier <em>Supervised Fine-Tuning</em> section).</p>
+<hr />
+<h2 id="1-purpose-of-sft">1. Purpose of SFT</h2>
+<p>After pretraining, the model has learned the structure and distribution of natural language from large-scale unsupervised text. However, it doesn’t inherently know how to <em>answer</em> questions—it merely predicts what text comes next.</p>
+<p>Consider the following:</p>
+<p>If you ask a pretrained model:
+<div class="highlight"><pre><span></span><code>Why are plants green?
+</code></pre></div>
+It might respond with another question like:
+<div class="highlight"><pre><span></span><code>What are chloroplasts? What&#39;s the role of chlorophyll?
+</code></pre></div>
+Because during pretraining, the model may have seen a biology textbook section containing study questions, and thus learned to associate a question with <em>more questions</em>.  </p>
+<p>Or, it might answer correctly:
+<div class="highlight"><pre><span></span><code>Plants are green because of chlorophyll pigments that absorb red and blue light.
+</code></pre></div>
+This could happen because it has also seen answer-key sections elsewhere in the dataset.</p>
+<p>These ambiguous behaviors are expected—pretraining teaches language <em>completion</em>, not <em>task-oriented reasoning</em>.</p>
+<p><strong>SFT bridges this gap.</strong> It fine-tunes the model using explicit examples of user instructions and correct responses, teaching it to behave more like a conversational assistant.  </p>
+<p>After SFT, the model becomes capable of instruction following, Q&amp;A, and other task-based behaviors.</p>
+<hr />
+<h2 id="2-dataset">2. Dataset</h2>
+<p>The SFT dataset in this project is expected to be a single JSON file containing structured conversation samples. Each sample must have <strong>three required keys</strong>:</p>
+<ul>
+<li><code>Template</code>: List containing one string (system prompt).  </li>
+<li>If set to <code>"CUSTOM"</code>, the model will use the <strong>default system prompt</strong> internally.  </li>
+<li>Otherwise, this string defines the tone or role of the model (e.g., "You are a friendly tutor").</li>
+<li><code>User</code>: List of user messages.</li>
+<li><code>Assistant</code>: List of corresponding assistant responses.</li>
+</ul>
+<p>The lengths of <code>User</code> and <code>Assistant</code> <strong>must be equal</strong>. Each pair forms one conversational exchange.<br />
+Both single-turn and multi-turn dialogues are supported.</p>
+<h3 id="example-1-single-turn-conversation">Example 1 — Single-Turn Conversation</h3>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;Template&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;CUSTOM&quot;</span><span class="p">],</span>
+<span class="w">  </span><span class="nt">&quot;User&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;What is the capital of France?&quot;</span><span class="p">],</span>
+<span class="w">  </span><span class="nt">&quot;Assistant&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;The capital of France is Paris.&quot;</span><span class="p">]</span>
+<span class="p">}</span>
+</code></pre></div>
+<h3 id="example-2-single-turn-with-custom-system-prompt">Example 2 — Single-Turn with Custom System Prompt</h3>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;Template&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;Respond as a helpful but concise science teacher.&quot;</span><span class="p">],</span>
+<span class="w">  </span><span class="nt">&quot;User&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;Explain Newton&#39;s First Law.&quot;</span><span class="p">],</span>
+<span class="w">  </span><span class="nt">&quot;Assistant&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;An object in motion stays in motion unless acted upon by an external force.&quot;</span><span class="p">]</span>
+<span class="p">}</span>
+</code></pre></div>
+<h3 id="example-3-multi-turn-conversation">Example 3 — Multi-Turn Conversation</h3>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;Template&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;CUSTOM&quot;</span><span class="p">],</span>
+<span class="w">  </span><span class="nt">&quot;User&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="s2">&quot;What is photosynthesis and why is it important?&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;So, is oxygen just a byproduct of that process?&quot;</span>
+<span class="w">  </span><span class="p">],</span>
+<span class="w">  </span><span class="nt">&quot;Assistant&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="s2">&quot;Photosynthesis is the process used by plants to convert light energy into chemical energy. It produces glucose and releases oxygen as a byproduct, which is vital for most life on Earth.&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;Exactly. Plants produce oxygen while creating glucose—they use the sugar for energy and release oxygen into the atmosphere.&quot;</span>
+<span class="w">  </span><span class="p">]</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>The dataset must be saved as a single <code>.json</code> file, e.g.:
+<div class="highlight"><pre><span></span><code>simple_llama/finetune/ft_dataset/merged_ft_dataset.json
+</code></pre></div></p>
+<p>During training, the loader automatically handles tokenization, formatting, padding, and sharding of the dataset.</p>
+<hr />
+<h3 id="datasets-used">Datasets Used</h3>
+<p>The following open datasets were used in this project to construct the SFT dataset:</p>
+<table>
+<thead>
+<tr>
+<th>Dataset</th>
+<th>Purpose</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>LMSYS-Chat-1M</strong></td>
+<td>Instruction Tuning</td>
+<td>Real human–LLM chat transcripts collected from 25 models. Provides diverse conversational structures and response styles.</td>
+</tr>
+<tr>
+<td><strong>Smol-Smoltalk</strong></td>
+<td>Efficiency-Focused Fine-Tuning</td>
+<td>High-quality, compact dialogue dataset designed for small-model fine-tuning and alignment stability.</td>
+</tr>
+<tr>
+<td><strong>ShareGPT (Vicuna Unfiltered)</strong></td>
+<td>General Instruction Data</td>
+<td>A large-scale collection of real user–assistant conversations used for diverse instruction-following capability.</td>
+</tr>
+</tbody>
+</table>
+<p>All datasets were sourced from the <a href="https://huggingface.co/datasets">Hugging Face Datasets Hub</a> and are redistributed under their respective open licenses.</p>
+<hr />
+<h2 id="3-configuration-and-setup">3. Configuration and Setup</h2>
+<p>Open the configuration file:
+<div class="highlight"><pre><span></span><code>simple_llama/finetune/full_sft/sft_config.py
+</code></pre></div></p>
+<p>Key parameters:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># === Paths and Dataset ===</span>
+<span class="n">model_path</span> <span class="o">=</span> <span class="n">root_path</span><span class="p">(</span><span class="s2">&quot;simple_llama&quot;</span><span class="p">,</span> <span class="s2">&quot;pretraining&quot;</span><span class="p">,</span> <span class="s2">&quot;checkpoints&quot;</span><span class="p">)</span>
+<span class="n">tokenizer_path</span> <span class="o">=</span> <span class="n">root_path</span><span class="p">(</span><span class="s2">&quot;simple_llama&quot;</span><span class="p">,</span> <span class="s2">&quot;dataset&quot;</span><span class="p">,</span> <span class="s2">&quot;bpe_8k.json&quot;</span><span class="p">)</span>
+<span class="n">ft_json_path</span> <span class="o">=</span> <span class="n">root_path</span><span class="p">(</span><span class="s2">&quot;simple_llama&quot;</span><span class="p">,</span> <span class="s2">&quot;finetune&quot;</span><span class="p">,</span> <span class="s2">&quot;ft_dataset&quot;</span><span class="p">,</span> <span class="s2">&quot;merged_ft_dataset.json&quot;</span><span class="p">)</span>
+<span class="n">ckpt_dir</span> <span class="o">=</span> <span class="n">root_path</span><span class="p">(</span><span class="s2">&quot;simple_llama&quot;</span><span class="p">,</span> <span class="s2">&quot;finetune&quot;</span><span class="p">,</span> <span class="s2">&quot;full_sft&quot;</span><span class="p">,</span> <span class="s2">&quot;sft_checkpoints&quot;</span><span class="p">)</span>
 
+<span class="c1"># === Batch &amp; Sequence ===</span>
+<span class="n">batch_size</span> <span class="o">=</span> <span class="mi">32</span>
+<span class="n">grad_accum_steps</span> <span class="o">=</span> <span class="mi">16</span>
 
+<span class="c1"># === Training Schedule ===</span>
+<span class="n">max_lr</span> <span class="o">=</span> <span class="mf">1e-5</span>
+<span class="n">min_lr</span> <span class="o">=</span> <span class="mf">1e-6</span>
+<span class="n">warmup_iterations</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="n">epochs</span> <span class="o">=</span> <span class="mi">3</span>
+
+<span class="c1"># === Evaluation ===</span>
+<span class="n">eval_interval</span> <span class="o">=</span> <span class="mi">8</span>  <span class="c1"># Evaluate every N optimizer steps</span>
+<span class="n">eval_num_samples</span> <span class="o">=</span> <span class="mi">256</span>
+</code></pre></div>
+<p>You can adjust these values depending on GPU memory or experiment goals.
+Most crucially, ensure that the <code>model_path</code> and <code>ft_json_path</code> points to the correct file locations</p>
+<hr />
+<h2 id="4-training-workflow">4. Training Workflow</h2>
+<p>After gathering the SFT dataset, run the following command to start fine-tuning:</p>
+<div class="highlight"><pre><span></span><code>python3<span class="w"> </span>finetune/full_sft/finetune.py
+</code></pre></div>
+<p>Or, if you're already in the <code>simple_llama/finetune/full_sft/</code> directory:</p>
+<div class="highlight"><pre><span></span><code>python3<span class="w"> </span>finetune.py
+</code></pre></div>
+<p>If within the <code>full_sft</code> directory already</p>
+<h3 id="what-happens-internally">What Happens Internally</h3>
+<ol>
+<li>The pretrained checkpoint is loaded from the pretraining phase.</li>
+<li>The JSON dataset is loaded and <strong>tokenized automatically</strong> by <code>JSONDatasetLoader</code>.</li>
+<li>Tokenized data is sharded and saved temporarily for fast access.</li>
+<li>Each batch is dynamically padded to match the longest sequence in the batch.</li>
+<li>The model is fine-tuned using <strong>CrossEntropyLoss</strong>, ignoring <code>&lt;PAD&gt;</code> tokens.</li>
+<li>Periodic validation and text generation samples are logged.</li>
+<li>Checkpoints are saved every epoch under <code>sft_checkpoints/</code>.</li>
+</ol>
+<h3 id="logging-and-checkpoints">Logging and Checkpoints</h3>
+<ul>
+<li>Logs are written to <code>sft_progress.txt</code>.</li>
+<li>Each checkpoint file includes:</li>
+<li>Model weights</li>
+<li>Config dataclass (for later reconstruction)</li>
+<li>Training progress metadata</li>
+</ul>
+<p>To resume training from a checkpoint, set <code>load_ckpt=True</code> in your config.</p>
+<hr />
+<h2 id="5-summary">5. Summary</h2>
+<p>By the end of SFT, you will have a <strong>fine-tuned SimpleLLaMA model</strong> capable of conversational, instruction-following behavior.
+At this point, the model can be used for inference, or it can be further tuned (aligned) using Reinforcement Learning.</p>
+<p>This concludes the <strong>Supervised Fine-Tuning stage</strong>. The next section, <strong>Reinforcement Learning</strong>, builds on this to align model behavior with human preferences using Direct Preference Optimization (DPO).</p>
 
 
 
