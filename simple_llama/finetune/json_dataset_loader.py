@@ -238,14 +238,14 @@ class JSONDatasetLoader:
 
             if self.train_idx + self.batch_size >= len(self.train_shard):
                 self.train_idx = 0
-                self._read_shard(train=True)
+                self.train_shard = self._read_shard(train=True)
         else:
             batch = self.val_shard[self.val_idx: self.val_idx + self.batch_size]
             self.val_idx += self.batch_size
 
             if self.val_idx + self.batch_size >= len(self.val_shard):
                 self.val_idx = 0
-                self._read_shard(train=False)
+                self.val_shard = self._read_shard(train=False)
 
         return batch
 
