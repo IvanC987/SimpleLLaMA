@@ -14,10 +14,24 @@ This same sentence can be broken down in different ways depending on the tokeniz
 - **Word-level:** `["Hawaii","is","great","for","vacationing","."]`
 - **Subword-level:** `["Ha","wa","ii ","is ","great ","for ","vac","ation","ing","."]`
 
-Notice how some words remain whole in the subword case (`"is"`, `"great"`, `"for"`), while others like `"Hawaii"` and `"vacationing"` are broken into pieces. Subword tokenization hits the middle ground between characters and words — efficient compression without losing flexibility for new or unusual words.
+Notice how some words remain whole in the subword case (`"is"`, `"great"`, `"for"`), while others like `"Hawaii"` and `"vacationing"` are broken into pieces. Subword tokenization hits the middle ground between characters and words - efficient compression without losing flexibility for new or unusual words.
 
 ## Why Subword Tokenization?
 
 Character-level tokenization is too inefficient (long sequences), while word-level tokenization has problems with exploding vocabulary size and out-of-vocabulary words. Subword tokenization avoids both: it keeps vocabulary manageable while still handling unseen words by splitting them into smaller known pieces. That balance is why modern LLMs almost always use subword tokenization.
 
 So how do we actually decide the splits? That’s where the tokenizer itself comes in. In the next section, we’ll walk through how tokenizers are trained, starting with the most common approach: Byte Pair Encoding (BPE).
+
+
+## References
+
+For a deeper understanding of tokenization algorithms and their implementations:
+
+- **[Let's build the GPT Tokenizer](https://www.youtube.com/watch?v=zduSFxRajkE)** (Andrej Karpathy, 2024) - Comprehensive 2-hour video lecture that builds a GPT
+tokenizer from scratch and explains why tokenization causes many common LLM limitations (spelling, arithmetic, non-English performance). Highly recommended.
+
+- **[HuggingFace Tokenizers Documentation](https://huggingface.co/docs/tokenizers/index)** - Comprehensive documentation for the tokenizers library used in this
+project. Includes details on ByteLevel BPE, pre-tokenizers, and special token handling.
+
+- **[Tokenization Playground](https://tiktokenizer.vercel.app/)** - Interactive tool to visualize how different tokenizers (GPT-2, GPT-3.5, GPT-4) split text into
+tokens. Great for building intuition.

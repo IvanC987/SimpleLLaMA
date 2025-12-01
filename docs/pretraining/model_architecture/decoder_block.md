@@ -13,6 +13,7 @@ A decoder block has two main parts:
 2. **Feedforward Network (FFN)** → transforms the attended features into richer representations.  
 
 Surrounding these are:  
+
 - **RMSNorm** → stabilizes training by normalizing activations.  
 - **Residual Connections** → ensure information from earlier layers isn’t lost.  
 
@@ -56,6 +57,7 @@ h = x + attn_out
 - This is called a **residual connection** (or skip connection).  
 
 Why is this important?  
+
 - Imagine stacking dozens of layers. Without skip connections, the network could "forget" the original signal after being transformed multiple times.  
 - By adding `x` back, we preserve the original information while also giving the model access to the new transformed features from attention.  
 - During backpropagation, residuals also help gradients flow more smoothly, preventing vanishing or exploding gradients.  

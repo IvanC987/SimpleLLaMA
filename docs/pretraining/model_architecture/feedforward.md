@@ -52,6 +52,7 @@ class FeedForward(nn.Module):
 ```
 
 Let’s walk through this carefully:  
+
 1. Input tensor `x` has shape `(batch, seq_len, n_embd)`.  
 2. First layer projects it into `(batch, seq_len, 4 * n_embd)`.  
 3. Apply ReLU to introduce non-linearity (important because without it, stacking linear layers would still just be linear).  

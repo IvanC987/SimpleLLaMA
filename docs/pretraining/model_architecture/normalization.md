@@ -21,6 +21,7 @@ As the network gets deeper, these unexpected shifts **compound**, making trainin
 They act like a teacher who ensures that every new exam stays at the same Algebra level — same general difficulty, same type of questions — just slightly adjusted each time. This consistency allows each layer to steadily improve rather than getting thrown off by wild distribution shifts.
 
 In short:  
+
 - *Without normalization*: “I prepared for Algebra, but got Calculus.”  
 - *With normalization*: “I keep getting Algebra, just with different numbers.”  
 
@@ -35,6 +36,7 @@ Normalization layers stabilize the distribution of activations, keep gradients m
 In Transformers (like the original paper “Attention Is All You Need”), the normalization method of choice was **Layer Normalization (LayerNorm)**.
 
 How it works:  
+
 - Given a tensor `x` of shape `(batch, seq_len, n_embd)`, LayerNorm normalizes **across the embedding dimension** for each token.  
 - For each token vector, it computes the mean and variance across its `n_embd` values.  
 - The normalized vector is then scaled and shifted by learnable parameters (`gamma` and `beta`).  
@@ -72,6 +74,7 @@ RMSNorm(x) = (x / RMS(x)) * weight
 ```
 
 Where:  
+
 - `RMS(x) = sqrt(mean(x^2))`  
 - `weight` is a learnable scaling vector (similar to `gamma` in LayerNorm).  
 - No `beta`, since there’s no re-centering.  
@@ -93,6 +96,7 @@ class RMSNorm(nn.Module):
 ```
 
 Step by step:  
+
 1. Square all elements (`x.pow(2)`).  
 2. Take the mean across the last dimension (`mean(-1, keepdim=True)`).  
 3. Add a tiny epsilon for numerical stability.  
