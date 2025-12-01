@@ -1823,9 +1823,11 @@ Each block combines <strong>attention</strong>, <strong>feedforward networks</st
 <li><strong>Multi-Head Self-Attention (MHA)</strong> → lets tokens exchange information.  </li>
 <li><strong>Feedforward Network (FFN)</strong> → transforms the attended features into richer representations.  </li>
 </ol>
-<p>Surrounding these are:<br />
-- <strong>RMSNorm</strong> → stabilizes training by normalizing activations.<br />
-- <strong>Residual Connections</strong> → ensure information from earlier layers isn’t lost.  </p>
+<p>Surrounding these are:  </p>
+<ul>
+<li><strong>RMSNorm</strong> → stabilizes training by normalizing activations.  </li>
+<li><strong>Residual Connections</strong> → ensure information from earlier layers isn’t lost.  </li>
+</ul>
 <p>The primary block flow is:</p>
 <div class="highlight"><pre><span></span><code>Input → Norm → Attention → Residual → Norm → Feedforward → Residual → Output
 </code></pre></div>
@@ -1852,11 +1854,13 @@ Suppose we have an input tensor <code>x</code> of shape <code>(batch, seq_len, n
 </code></pre></div>
 - Here we add the original input <code>x</code> back to the attention output.<br />
 - This is called a <strong>residual connection</strong> (or skip connection).  </p>
-<p>Why is this important?<br />
-- Imagine stacking dozens of layers. Without skip connections, the network could "forget" the original signal after being transformed multiple times.<br />
-- By adding <code>x</code> back, we preserve the original information while also giving the model access to the new transformed features from attention.<br />
-- During backpropagation, residuals also help gradients flow more smoothly, preventing vanishing or exploding gradients.<br />
-- In practice, you can think of it as: <em>the model learns adjustments (deltas) on top of the original input, instead of rewriting it from scratch every time.</em>  </p>
+<p>Why is this important?  </p>
+<ul>
+<li>Imagine stacking dozens of layers. Without skip connections, the network could "forget" the original signal after being transformed multiple times.  </li>
+<li>By adding <code>x</code> back, we preserve the original information while also giving the model access to the new transformed features from attention.  </li>
+<li>During backpropagation, residuals also help gradients flow more smoothly, preventing vanishing or exploding gradients.  </li>
+<li>In practice, you can think of it as: <em>the model learns adjustments (deltas) on top of the original input, instead of rewriting it from scratch every time.</em>  </li>
+</ul>
 <h3 id="4-second-normalization">4. Second Normalization</h3>
 <p><div class="highlight"><pre><span></span><code><span class="n">h_norm</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">norm2</span><span class="p">(</span><span class="n">h</span><span class="p">)</span>
 </code></pre></div>

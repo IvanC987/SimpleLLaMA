@@ -1877,11 +1877,13 @@ It allows the model to map representations into a higher-dimensional space, appl
     <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">layer2</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">functional</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">layer1</span><span class="p">(</span><span class="n">x</span><span class="p">)))</span>
 </code></pre></div>
-<p>Let’s walk through this carefully:<br />
-1. Input tensor <code>x</code> has shape <code>(batch, seq_len, n_embd)</code>.<br />
-2. First layer projects it into <code>(batch, seq_len, 4 * n_embd)</code>.<br />
-3. Apply ReLU to introduce non-linearity (important because without it, stacking linear layers would still just be linear).<br />
-4. Second layer projects it back down to <code>(batch, seq_len, n_embd)</code>.  </p>
+<p>Let’s walk through this carefully:  </p>
+<ol>
+<li>Input tensor <code>x</code> has shape <code>(batch, seq_len, n_embd)</code>.  </li>
+<li>First layer projects it into <code>(batch, seq_len, 4 * n_embd)</code>.  </li>
+<li>Apply ReLU to introduce non-linearity (important because without it, stacking linear layers would still just be linear).  </li>
+<li>Second layer projects it back down to <code>(batch, seq_len, n_embd)</code>.  </li>
+</ol>
 <p>So while the shape going into and out of the FFN is the same, the hidden computation in between allows the network to express far richer functions.</p>
 <hr />
 <h2 id="llama-style-ffn-swiglu">LLaMA-Style FFN (SwiGLU)</h2>
