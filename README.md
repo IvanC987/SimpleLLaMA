@@ -4,16 +4,6 @@
 
 ---
 
-## Development Status
-
-This project/readme as a whole is currently under **active development**.  
-Certain parts, like documentation and RLHF modules, are still being finalized, with expected completion around **[Late November, 2025]**.  
-While the pretraining and SFT stages is mostly complete and functional, certain components (e.g., RLHF implementation, extended benchmarks) remains WIP.
-
-Feel free to explore, test, and contribute, but please note that the repository may change significantly before its final release.
-
----
-
 ## Overview
 
 **SimpleLLaMA** is a comprehensive project designed to demystify the lifecycle of LLM development, starting from raw data to a functioning aligned model.  
